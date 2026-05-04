@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NYONDO Hardware Stock System</title>
+
+    <style>
+      * {
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove default padding */
+        box-sizing: border-box; /* Add border-box sizing to all elements */
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #eef3f8, #dfe9f3);
+      }
+
+      /* HEADER */
+      .top-header {
+        display: flex; /* Display the header in a flex container */
+        align-items: center;
+        gap: 15px;
+        padding: 15px 30px;
+        background: #1e2a38;
+        color: white;
+      }
+
+      .top-header img {
+        width: 60px;
+      }
+
+      h1 {
+        font-size: 18px;
+      }
+
+      .container {
+        padding: 25px; /*adds space between the container and the content*/
+      }
+
+      .layout {
+        display: grid; /* Display the grid in a grid container */
+        grid-template-columns: 1fr 1fr; /* Create two columns */
+        gap: 25px;
+      }
+
+      /* FORM + TABLE CARDS */
+      .form-section,
+      .table-section {
+        background: white;
+        padding: 25px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-top: 5px solid #1e2a38;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 18px;
+        color: #1e2a38;
+      }
+
+      /* FORM */
+      .form-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .input-groupy {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      input,
+      select {
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        outline: none;
+        transition: 0.2s;
+      }
+
+      button,
+      .btn {
+        width: 100%;
+        margin-top: 15px;
+        padding: 12px;
+        background: linear-gradient(135deg, #1e2a38, #2f4f6f);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        transition: 0.3s;
+      }
+
+      button:hover,
+      .btn:hover {
+        background: #0f1720;
+      }
+
+      /* TABLE */
+      .stock-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 10px; /*adds a curve to the table*/
+        overflow: hidden; /*it puts a curve to a table*/
+      }
+
+      .stock-table th {
+        background: #1e2a38;
+        color: white;
+        padding: 12px; /*adds space between the table cells*/
+        font-size: 12px;
+      }
+
+      .stock-table td {
+        padding: 12px;
+        text-align: center;
+        font-size: 13px;
+        border: 1px solid black; /* Add lines to the table */
+        border-bottom: 1px solid #eee;
+      }
+
+      /* MOBILE VIEW */
+      @media (max-width: 900px) {
+        .layout {
+          grid-template-columns: 1fr; /* Make the columns stack on top of each other on mobile */
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    {% load static %}
+
+    <header class="top-header">
+      {% load static %}
+      <img src="{% static 'images/logo22.png' %}" />
+      <h1>NYONDO HARDWARE STOCK SYSTEM</h1>
+    </header>
+
+    <div class="container">
+      <div class="layout">
+        <div class="form-section">
+          <h2>Stock Form</h2>
+
+          <form class="form-grid" method="POST">
+            {% csrf_token %}
+
+            <div class="input-groupy">
+              <label>Item Name</label>
+              <select name="item_name" required>
+                <option value="">Select Item</option>
+                <option value="Cement">Cement</option>
+                <option value="Nails">Nails</option>
+                <option value="Paint">Paint</option>
+                <option value="Wood">Wood</option>
+                <option value="Glass">Glass</option>
+              </select>
+            </div>
+
+            <div class="input-groupy">
+              <label>Item Quantity</label>
+              <input type="number" name="quantity" required />
+            </div>
+
+            <div class="input-groupy">
+              <label>Unit Cost</label>
+              <input type="number" name="unit_cost" required />
+            </div>
+
+            <div class="input-groupy">
+              <label>Unit Price</label>
+              <input type="number" name="unit_price" required />
+            </div>
+
+            <div class="input-groupy">
+              <label>Date</label>
+              <input type="date" name="date" required />
+            </div>
+
+            <div class="input-groupy">
+              <label>Supplier</label>
+              <input type="text" name="supplier" required />
+            </div>
+
+            <div class="input-groupy">
+              <label>Specification</label>
+              <select name="specification">
+                <option value="Nails">Nails</option>
+                <option value="Cement">Cement</option>
+                <option value="Iron Sheets">Iron Sheets</option>
+                <option value="Wood">Wood</option>
+                <option value="Glass">Glass</option>
+                <option value="Pipes">Pipes</option>
+                <option value="Iron Bars">Iron Bars</option>
+                <option value="Steel Rods">Steel Rods</option>
+                <option value="Paint">Paint</option>
+              </select>
+            </div>
+
+            <div class="input-groupy">
+              <label>Payment Method</label>
+              <select name="payment_method">
+                <option value="">Select</option>
+                <option value="Mobile Money">Mobile Money</option>
+                <option value="Cash">Cash</option>
+                <option value="Bank">Bank</option>
+                <option value="Transaction">Transaction</option>
+              </select>
+            </div>
+
+            <button type="submit">Save Stock</button>
+            <a href="{% url 'suppliers' %}" class="btn">Add Supplier</a>
+          </form>
+        </div>
+
+        <div class="table-section">
+          <h2>Stock Table</h2>
+
+          <table class="stock-table">
+            <tr>
+              <th>Item</th>
+              <th>Supplier</th>
+              <th>Cost</th>
+              <th>Price</th>
+              <th>Date</th>
+              <th>Qty</th>
+              <th>Spec</th>
+              <th>Payment</th>
+            </tr>
+
+            {% for stock in stocks %}
+            <tr>
+              <td>{{ stock.item_name }}</td>
+              <td>{{ stock.supplier }}</td>
+              <td>{{ stock.unit_cost }}</td>
+              <td>{{ stock.unit_price }}</td>
+              <td>{{ stock.date }}</td>
+              <td>{{ stock.quantity }}</td>
+              <td>{{ stock.specification }}</td>
+              <td>{{ stock.payment_method }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="8">No stock data available</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #eef3f8, #dfe9f3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /*make the form not to be fixed up*/
+      }
+
+      /* CARD */
+      .container {
+        width: 100%;
+        max-width: 350px;
+        background: white;
+        padding: 30px;
+        border-radius: 14px; /*adds a curve to the card*/
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-top: 5px solid #1e2a38; /*adds color to the top of the card*/
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #1e2a38;
+        font-size: 22px;
+      }
+
+      label {
+        display: block;
+        margin-top: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        margin-top: 6px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        outline: none;
+        font-size: 14px;
+        transition: 0.2s;
+      }
+
+      input:focus {
+        border-color: #1e2a38;
+        box-shadow: 0 0 0 3px rgba(30, 42, 56, 0.1);
+      }
+
+      button {
+        width: 100%;
+        margin-top: 18px;
+        padding: 12px;
+        background: linear-gradient(135deg, #1e2a38, #2f4f6f);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 15px;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background: #0f1720;
+      }
+
+      p {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+        color: #555;
+      }
+
+      a {
+        color: #1e2a38;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 500px) {
+        .container {
+          margin: 15px;
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Welcome Back!</h1>
+
+      <form method="POST" action="{% url 'log' %}">
+        {% csrf_token %}
+
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+          autocomplete="off"
+        />
+
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+          autocomplete="new-password"
+        />
+
+        <button type="submit">Login</button>
+
+        <p>
+          Don't have an account?
+          <a href="{% url 'sign' %}">Sign Up</a>
+        </p>
+      </form>
+    </div>
+  </body>
+</html>

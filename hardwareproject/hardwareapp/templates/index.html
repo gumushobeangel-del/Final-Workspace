@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nyondo Hardware</title>
+
+    <style>
+      /* RESET */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: #f5f7fb;
+        color: #333;
+      }
+
+      /* HEADER */
+      header {
+        background: #1f2a40;
+        color: white;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      header h1 {
+        font-size: 28px;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        font-size: 16px;
+        transition: 0.3s;
+      }
+
+      nav a:hover {
+        color: #2f6fed;
+      }
+
+      /* HERO SECTION */
+      .her {
+        height: 80vh;
+        background: linear-gradient(135deg, #2f6fed, #1f2a40);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        padding: 20px;
+      }
+
+      .her h2 {
+        font-size: 42px;
+        margin-bottom: 15px;
+      }
+
+      .her p {
+        font-size: 18px;
+        margin-bottom: 25px;
+        opacity: 0.9;
+      }
+
+      /* BUTTON */
+      .btn {
+        padding: 12px 25px;
+        background: white;
+        color: #1f2a40;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background: #2f6fed;
+        color: white;
+      }
+
+      /* SERVICES */
+      .services {
+        padding: 60px 20px;
+        text-align: center;
+      }
+
+      .services h2 {
+        margin-bottom: 30px;
+        font-size: 28px;
+        color: #1f2a40;
+      }
+
+      .service-boxes {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .box {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        width: 250px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-top: 4px solid #2f6fed;
+        transition: 0.3s;
+      }
+
+      .box:hover {
+        transform: translateY(-5px);
+        border-top: 4px solid #1f2a40;
+      }
+
+      .box h3 {
+        margin-bottom: 10px;
+        color: #1f2a40;
+      }
+
+      /* ABOUT */
+      .about {
+        padding: 60px 20px;
+        background: white;
+        text-align: center;
+      }
+
+      .about h2 {
+        margin-bottom: 20px;
+        color: #1f2a40;
+      }
+
+      .about p {
+        max-width: 700px;
+        margin: auto;
+        color: #555;
+      }
+
+      /* CONTACT */
+      .contact {
+        padding: 60px 20px;
+        text-align: center;
+      }
+
+      .contact h2 {
+        margin-bottom: 15px;
+        color: #1f2a40;
+      }
+
+      /* FOOTER */
+      footer {
+        background: #1f2a40;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        font-size: 14px;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 768px) {
+        nav {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+        }
+
+        nav a {
+          margin-left: 0;
+        }
+
+        .her h2 {
+          font-size: 28px;
+        }
+
+        .box {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Nyondo Hardware</h1>
+      <nav>
+        <a href="{% url 'sales'%}">Services</a>
+        <a href="{% url 'stock'%}">About</a>
+        <a href="{% url 'dash'%}">Dashboard</a>
+      </nav>
+    </header>
+
+    <section class="her">
+      <h2>Your Trusted Hardware Partner</h2>
+      <p>
+        Quality building materials and tools for all your construction needs.
+      </p>
+      <a href="{% url 'log'%}" class="btn">Get Started</a>
+    </section>
+
+    <section class="services">
+      <h2>Our Services</h2>
+      <div class="service-boxes">
+        <div class="box">
+          <h3>Building Materials</h3>
+          <p>Cement, Wood, Glass, iron sheets, iron bars and more.</p>
+        </div>
+
+        <div class="box">
+          <h3>Tools & Equipment</h3>
+          <p>High-quality tools for professionals and home use.</p>
+        </div>
+
+        <div class="box">
+          <h3>Expert Advice</h3>
+          <p>Get guidance from experienced professionals.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about">
+      <h2>About Us</h2>
+      <p>
+        Nyondo Hardware is committed to providing quality construction materials
+        and reliable service. We support builders, contractors, and homeowners
+        with everything they need to complete their projects successfully.
+      </p>
+    </section>
+
+    <section class="contact">
+      <h2>Contact Us</h2>
+      <p>Nansana, Wakiso</p>
+      <p>📞 +256 740230081</p>
+      <p>info@nyondohardware.com</p>
+    </section>
+
+    <footer>
+      <p>&copy; 2026 Nyondo Hardware. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

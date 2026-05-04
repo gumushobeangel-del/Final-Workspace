@@ -1,0 +1,294 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nyondo Hardware Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+      body {
+        margin: 0; /* removes default browser spacing */
+        font-family: Arial, sans-serif; /* sets font style */
+        background: linear-gradient(
+          135deg,
+          #eef3f8,
+          #dfe9f3
+        ); /* background gradient */
+        padding-top: 80px; /* pushes content below fixed header */
+      }
+
+      .header {
+        background: linear-gradient(135deg, #1e2a38, #2f4f6f);
+        color: white;
+        padding: 20px; /* space inside header */
+        font-size: 28px;
+        text-align: center;
+        font-weight: bold;
+
+        position: fixed; /* keeps header fixed on top */
+        top: 0; /* sticks to top */
+        left: 240px; /* leaves space for sidebar */
+        right: 0; /* stretches to right side */
+        z-index: 1000; /* keeps it above other elements */
+      }
+
+      .sidebar {
+        background: #1e2a38; /* dark sidebar background */
+        color: white; /* white text */
+
+        position: fixed; /* makes the sidebar static */
+        top: 0; /* starts from top */
+        left: 0; /* sticks to left side */
+        width: 240px;
+        height: 100vh;
+
+        overflow-y: auto; /* scroll if content is long */
+        padding-top: 80px; /* space for header */
+      }
+
+      .sidebar a {
+        display: block; /* makes links full width */
+        padding: 15px; /* space inside links */
+        color: white;
+        text-decoration: none; /* removes underline */
+        transition: 0.3s;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* subtle divider */
+      }
+
+      .sidebar a:hover {
+        background: #2f4f6f;
+        padding-left: 20px; /* slide effect */
+      }
+
+      .logo {
+        text-align: center;
+        padding: 15px; /* spacing around logo */
+      }
+
+      .logo-img {
+        width: 100px; /* logo size */
+      }
+
+      .main {
+        margin-left: 240px; /* pushes content away from sidebar */
+        padding: 20px; /* inner spacing */
+      }
+
+      .cards {
+        display: grid; /* grid layout */
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(220px, 1fr)
+        ); /* responsive columns */
+        gap: 20px; /* spacing between cards */
+      }
+
+      .card {
+        background: white;
+        padding: 20px; /* inner spacing */
+        border-radius: 14px; /* rounded corners */
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: 0.3s;
+        border-top: 4px solid #1e2a38; /* it gives a color to the top of the card */
+      }
+
+      .card:hover {
+        transform: translateY(-5px); /* moves card up */
+        cursor: pointer;
+      }
+
+      .card h3 {
+        margin: 0; /* remove default spacing */
+        color: #1e2a38;
+        font-size: 18px;
+      }
+
+      .card p {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 10px; /* spacing above */
+        color: #2f4f6f;
+      }
+
+      table {
+        width: 100%; /* full width table */
+        border-collapse: collapse; /* removes spacing between borders */
+        background: white;
+        border-radius: 12px; /* rounded corners */
+        overflow: hidden; /* clips corners */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        table-layout: fixed; /* equal column layout */
+      }
+
+      th {
+        background: #1e2a38;
+        color: white;
+        padding: 10px; /* spacing */
+        font-size: 14px;
+      }
+
+      td {
+        padding: 12px; /* cell spacing */
+        border-bottom: 1px solid #eee;
+        font-size: 14px; /* text size */
+        text-align: center;
+      }
+
+      tr:hover {
+        background: #eaf3ff;
+        cursor: pointer;
+      }
+
+      .low {
+        color: red;
+        font-weight: bold;
+      }
+
+      .stock {
+        color: green;
+        font-weight: bold; /* bold text */
+      }
+
+      footer {
+        text-align: center;
+        padding: 15px; /* spacing */
+        font-size: 14px; /* small text */
+        color: #444;
+      }
+
+      @media (max-width: 760px) {
+        .sidebar {
+          position: relative; /* stack sidebar */
+          width: 100%; /* full width */
+          height: auto; /* auto height */
+        }
+
+        .header {
+          left: 0; /* reset header position */
+        }
+
+        .main {
+          margin-left: 0; /* remove sidebar space */
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <div class="logo">
+        <img src="{% static 'images/logo22.png' %}" class="logo-img" />
+      </div>
+
+      <a href="{% url 'dash' %}">🏠 Dashboard</a>
+      <a href="{% url 'log' %}">➕ Log in</a>
+      <a href="{% url 'sales' %}">💰 Add Sale</a>
+      <a href="{% url 'deposit' %}">🏦 Customer Deposit</a>
+      <a href="{% url 'stock' %}">📦 Add Stock</a>
+      <a href="{% url 'suppliers' %}">🚚 Suppliers</a>
+    </div>
+
+    <div class="header">Nyondo General Hardware Dashboard</div>
+
+    <div class="main">
+      <div class="cards">
+        <div class="card">
+          <h3>Total Products</h3>
+          <p>670</p>
+        </div>
+
+        <div class="card">
+          <h3>Total Sales</h3>
+          <p>UGX 6,500,000</p>
+        </div>
+
+        <div class="card">
+          <h3>Low Stock Items</h3>
+          <p>63</p>
+        </div>
+
+        <div class="card">
+          <h3>Suppliers</h3>
+          <p>18</p>
+        </div>
+      </div>
+
+      <h2>Stock Overview</h2>
+      <table>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Status</th>
+          <th>Price</th>
+        </tr>
+
+        <tr>
+          <td>Cement</td>
+          <td>50</td>
+          <td class="stock">In Stock</td>
+          <td>UGX 55,000</td>
+        </tr>
+
+        <tr>
+          <td>Paint</td>
+          <td>13</td>
+          <td class="low">Low Stock</td>
+          <td>UGX 45,000</td>
+        </tr>
+      </table>
+
+      <h2>Sales Overview</h2>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Today's Sales</h3>
+          <p>UGX 1,000,000</p>
+        </div>
+
+        <div class="card">
+          <h3>This Week</h3>
+          <p>UGX 7,200,000</p>
+        </div>
+
+        <div class="card">
+          <h3>This Month</h3>
+          <p>UGX 15,500,000</p>
+        </div>
+
+        <div class="card">
+          <h3>Top Product</h3>
+          <p>Cement</p>
+        </div>
+      </div>
+
+      <canvas id="salesChart"></canvas>
+    </div>
+
+    <footer>
+      &copy; 2026 @Nyondo General Hardware Ltd All rights reserved
+    </footer>
+
+    <script>
+      const ctx = document.getElementById("salesChart");
+
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+          datasets: [
+            {
+              label: "Sales (UGX)",
+              data: [1000000, 800000, 600000, 900000, 1000000, 3000000],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+    </script>
+  </body>
+</html>

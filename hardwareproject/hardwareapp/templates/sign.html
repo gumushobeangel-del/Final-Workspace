@@ -1,0 +1,77 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="logo">
+        {% load static %}
+        <img
+          src="{% static 'images/logo22.png' %}"
+          alt="Logo"
+          class="logo-img"
+        />
+      </div>
+
+      <h1>CUSTOMER REGISTRATION FORM</h1>
+
+      <form method="POST">
+        {% csrf_token %}
+        <label for="username">Username</label>
+        <input
+          type="text"
+          name="username"
+          placeholder="Enter username"
+          required
+        />
+
+        <label for="nin">NIN Number</label>
+        <input type="text" id="nin" placeholder="Enter NIN number" required />
+
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter email address"
+          required
+        />
+
+        <label for="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter password"
+          required
+        />
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="+256..." required />
+
+        <!-- Role -->
+        <label for="role">Log in As</label>
+        <select id="role" required>
+          <option value="" disabled selected>Select your role</option>
+          <option value="admin">Admin</option>
+          <option value="cashier">Cashier</option>
+          <option value="manager">Manager</option>
+          <option value="staff">Staff</option>
+        </select>
+
+        <div class="remember-box">
+          <input type="checkbox" id="remember" />
+          <label for="remember">Remember me</label>
+        </div>
+
+        <button type="submit">Log in</button>
+        <a href="{% url 'sales'%}" class="btn">Add Sale</a>
+      </form>
+    </div>
+  </body>
+</html>
