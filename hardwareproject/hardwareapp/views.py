@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Stock, Sale, Deposit
+from .models import Stock, Sale, Deposit, Receipt
+
 
 
 # HOME PAGE VIEW
@@ -14,24 +15,22 @@ def log(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
 
-        # VALIDATION (correct indentation)
         if email == "admin@gmail.com" and password == "1234":
-            return redirect("stock")#go to the stock page
-        
+            return redirect("dash")  # go to dashboard
 
         else:
             return render(request, "log.html", {
                 "error": "Invalid email or password"
             })
-        return redirect("dash")
-    return render(request, "log.html")  # shows the log page properly
+
+    return render(request, "log.html") # shows the log page properly
 
 
 
 
 # SALES PAGE VIEW
 
-
+from django.utils import timezone
 def sales(request):
     if request.method == "POST":#saves the data in the database
         product_name = request.POST.get('product_name')
@@ -41,7 +40,7 @@ def sales(request):
         customer_contact = request.POST.get('customer_contact')
         item_type = request.POST.get('item_type')
         item_brand = request.POST.get('item_brand')
-        date = request.POST.get('date')
+        date = timezone.now().date()
 
         # VALIDATION (correct indentation)
         if not quantity or not unit_price:
@@ -62,7 +61,7 @@ def sales(request):
             customer_contact=customer_contact,
             item_type=item_type,
             item_brand=item_brand,
-            date=date,
+            date=timezone.now().date(),
             total=total
         )
 
@@ -73,6 +72,8 @@ def sales(request):
     return render(request, 'sales.html', {'sales': sales})
 
 # STOCK MANAGEMENT VIEW
+from django.utils import timezone
+# this saves the user data in the database
 def stock_view(request):
     if request.method == "POST":
 
@@ -89,7 +90,7 @@ def stock_view(request):
             quantity=int(quantity),
             unit_cost=float(request.POST.get("unit_cost")),
             unit_price=float(request.POST.get("unit_price")),
-            date=request.POST.get("date"),
+            date=timezone.now().date(), 
             supplier=request.POST.get("supplier"),
             specification=request.POST.get("specification"),
             payment_method=request.POST.get("payment_method"),
@@ -99,9 +100,6 @@ def stock_view(request):
 
     stocks = Stock.objects.all()#shows live data on the web page
     return render(request, "stock.html", {"stocks": stocks})
-
-
-
 
 
 # DASHBOARD
@@ -155,40 +153,22 @@ from django.shortcuts import render, redirect
 
 #this saves the user data in the database
 def sign(request):
-    #this handles the sign up request
-    
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+    if request.method == "POST":
+        role = request.POST.get("role")
+        print("ROLE:", role)
 
-        print("USERNAME:", username)
-        print("EMAIL:", email)
+        if role == "admin":
+            return redirect("dash")
 
+        elif role == "sales":
+            return redirect("sales")
 
-        if not username or not password:
-            print("MISSING DATA")
-            return render(request, 'sign.html', {
-                'error': 'Username and password required'
-            })
-        
+        elif role == "stock_manager":
+            return redirect("stock")
 
-        #if the user already exists then it will return an error
-        if User.objects.filter(username=username).exists():
-            print("USER EXISTS")
-            return render(request, 'sign.html', {
-                'error': 'User already exists'
-            })
+    return render(request, "sign.html")
 
-        # this creates the user
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password
-        )
-       #saves the user
-        print("USER CREATED:", user)
-
-        return redirect('sales')
-
-    return render(request, 'sign.html')
+# RECEIPT PAGE
+def receipt(request): # this is the receipt page    
+    receipts = Receipt.objects.all() # this shows all the receipts in the database
+    return render(request, 'reciept.html', {'receipt': receipts})

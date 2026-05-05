@@ -43,5 +43,18 @@ class Deposit(models.Model):
 def __str__(self):
        return self.name
 
+class Receipt(models.Model):
+    number = models.IntegerField(default=0)
+    date = models.DateField(auto_now_add=True)
+    customer_name = models.CharField(max_length=100)
+    subtotal = models.FloatField(default=0)
+    tax = models.FloatField(default=0)
+    total = models.FloatField(default=0)
+    paid = models.FloatField(default=0)
+    balance = models.FloatField(default=0)  
+
+    def __str__(self): # this is the receipt number that is displayed on the receipt page
+        return self.number
+
 
   

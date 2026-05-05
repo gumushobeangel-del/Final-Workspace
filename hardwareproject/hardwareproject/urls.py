@@ -30,6 +30,7 @@ urlpatterns = [
     path('suppliers/', views.suppliers, name='suppliers'),
     path('dash/', views.dash, name='dash'),
     path('deposit/', views.deposit, name='deposit'),
+    path('receipt/', views.receipt, name='receipt'),
 
          
 ]

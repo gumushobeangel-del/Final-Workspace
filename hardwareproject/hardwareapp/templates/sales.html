@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sales Form</title>
-
     <style>
       * {
         margin: 0;
@@ -14,7 +13,7 @@
       }
 
       body {
-        background: linear-gradient(135deg, #eef3f8, #dfe9f3);
+        background: #f4f6f9;
         min-height: 100vh;
         padding: 20px;
       }
@@ -22,19 +21,20 @@
       .container {
         display: flex;
         gap: 20px;
-        background: #fff;
+        background: #ffffff;
         padding: 20px;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
       }
 
+      /* FORM */
       .form-box {
         width: 40%;
         background: #ffffff;
         padding: 20px;
         border-radius: 12px;
-        border-top: 5px solid #1e2a38; /* Add a border to the top of the card */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Add a shadow effect to the card */
+        border-top: 5px solid #1e2a38;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
       }
 
       .form-box h2 {
@@ -63,8 +63,10 @@
       input:focus {
         border-color: #1e2a38;
         box-shadow: 0 0 0 3px rgba(30, 42, 56, 0.1);
+        outline: none;
       }
 
+      /* BUTTONS */
       button,
       .btn {
         width: 100%;
@@ -87,6 +89,7 @@
         background: #0f1720;
       }
 
+      /* TABLE */
       .table-box {
         width: 60%;
         background: #ffffff;
@@ -105,21 +108,22 @@
       table {
         width: 100%;
         border-collapse: collapse;
-        border-radius: 10px;
         overflow: hidden;
+        border-radius: 10px;
       }
 
       table th {
         background: #1e2a38;
         color: white;
         padding: 12px;
-        font-size: 13px;
+        font-size: 10px;
       }
 
       table td {
         padding: 12px;
         border-bottom: 1px solid #eee;
-        font-size: 14px;
+        font-size: 12px;
+        color: #333;
       }
 
       tr:hover {
@@ -141,79 +145,88 @@
   </head>
 
   <body>
-    <div class="main">
-      <div class="container">
-        <div class="form-box">
-          <h2>REGISTER SALE</h2>
+    <div class="container">
+      <!-- FORM -->
+      <div class="form-box">
+        <h2>REGISTER SALE</h2>
 
-          <form method="POST">
-            {% csrf_token %}
+        <form method="POST">
+          {% csrf_token %}
 
-            <label>Product Name</label>
-            <input type="text" name="product_name" required />
+          <label>Product Name</label>
+          <input type="text" name="product_name" required />
 
-            <label>Quantity</label>
-            <input type="number" name="quantity" required />
+          <label>Quantity</label>
+          <input type="number" name="quantity" required />
 
-            <label>Date</label>
-            <input type="date" name="date" required />
+          <label>Date</label>
+          <input type="date" name="date" required />
 
-            <label>Unit Price</label>
-            <input type="number" name="unit_price" required />
+          <label>Unit Price</label>
+          <input type="number" name="unit_price" required />
 
-            <label>Customer Name</label>
-            <input type="text" name="customer_name" required />
+          <label>Customer Name</label>
+          <input type="text" name="customer_name" required />
 
-            <label>Customer Contact</label>
-            <input type="tel" name="customer_contact" required />
+          <label>Customer Contact</label>
+          <input type="tel" name="customer_contact" required />
 
-            <label>Item Type</label>
-            <input type="text" name="item_type" required />
+          <label>Item Type</label>
+          <input type="text" name="item_type" required />
 
-            <label>Item Brand</label>
-            <input type="text" name="item_brand" required />
+          <label>Item Brand</label>
+          <input type="text" name="item_brand" required />
 
-            <button type="submit">Add Sale</button>
+          <label>Total</label>
+          <input type="number" name="total" required />
 
-            <a href="{% url 'deposit' %}" class="btn">
-              Register Customer Deposit
-            </a>
-          </form>
-        </div>
+          <button type="submit">Add Sale</button>
 
-        <div class="table-box">
-          <h2>Sales Inventory</h2>
+          <a href="{% url 'deposit' %}" class="btn">
+            Register Customer Deposit
+          </a>
+        </form>
+      </div>
 
-          <table>
+      <!-- TABLE -->
+      <div class="table-box">
+        <h2>Sales Table</h2>
+
+        <table>
+          <thead>
             <tr>
               <th>Product</th>
               <th>Quantity</th>
-              <th>Price</th>
+              <th>Date</th>
+              <th>Unit Price</th>
+              <th>Customer Name</th>
+              <th>Customer Contact</th>
+              <th>Item Type</th>
+              <th>Item Brand</th>
               <th>Total</th>
             </tr>
+          </thead>
 
+          <tbody>
+            {% for sale in sales %}
             <tr>
-              <td>Cement</td>
-              <td>10</td>
-              <td>35,000</td>
-              <td>350,000</td>
+              <td>{{ sale.product_name }}</td>
+              <td>{{ sale.quantity }}</td>
+              <td>{{ sale.date }}</td>
+              <td>{{ sale.unit_price }}</td>
+              <td>{{ sale.customer_name }}</td>
+              <td>{{ sale.customer_contact }}</td>
+              <td>{{ sale.item_type }}</td>
+              <td>{{ sale.item_brand }}</td>
+              <td>{{ sale.total }}</td>
             </tr>
-
+            {% empty %}
             <tr>
-              <td>Nails</td>
-              <td>5</td>
-              <td>5,000</td>
-              <td>25,000</td>
+              <td colspan="7">No sales recorded yet</td>
             </tr>
-
-            <tr>
-              <td>Pipes</td>
-              <td>30</td>
-              <td>6,000</td>
-              <td>180,000</td>
-            </tr>
-          </table>
-        </div>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </body>
