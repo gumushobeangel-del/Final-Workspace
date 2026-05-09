@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Edit Sales</title>
+    <style>
+      body {
+        font-family: Arial;
+        background: #eef3f8;
+        display: flex;
+        justify-content: center;
+        padding: 40px;
+      }
+
+      .box {
+        width: 450px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 6px 0;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background: #1e2a38;
+        color: white;
+        border: none;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box">
+      <h2>Edit Sale</h2>
+
+      <form method="POST">
+        {% csrf_token %}
+        <label>Item Name</label>
+        <input name="item_name" value="{{ sale.item_name }}" />
+
+        <label>Quantity</label>
+        <input name="quantity" value="{{ sale.quantity }}" />
+
+        <label>Unit Price</label>
+        <input name="unit_price" value="{{ sale.unit_price }}" />
+
+        <label>Customer Name</label>
+        <input name="customer_name" value="{{ sale.customer_name }}" />
+
+        <label>Customer Contact</label>
+        <input name="customer_contact" value="{{ sale.customer_contact }}" />
+
+        <label>Item Type</label>
+        <input name="item_type" value="{{ sale.item_type }}" />
+
+        <label>Item Brand</label>
+        <input name="item_brand" value="{{ sale.item_brand }}" />
+
+        <label>Date</label>
+        <input type="date" name="date" value="{{ sale.date }}" />
+        <button type="submit">Update</button>
+      </form>
+    </div>
+  </body>
+</html>

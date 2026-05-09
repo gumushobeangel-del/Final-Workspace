@@ -7,66 +7,60 @@
 
     <style>
       * {
-        margin: 0; /* Remove default margin */
-        padding: 0; /* Remove default padding */
-        box-sizing: border-box; /* Make the padding inside the box include the padding and border */
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
         font-family: Arial, sans-serif;
       }
 
       body {
-        background: linear-gradient(135deg, #eef3f8, #dfe9f3);
-        display: flex; /* Display the content in the center */
-        justify-content: center; /* Center the content horizontally */
-        align-items: center;
-        min-height: 100vh; /* Make the body take up the entire viewport */
+        background: #f4f6f9;
+        min-height: 100vh;
         padding: 20px;
       }
 
-      /* CARD */
       .container {
-        width: 100%;
-        max-width: 520px;
+        display: flex;
+        gap: 20px;
         background: #ffffff;
-        padding: 30px;
-        border-radius: 16px; /* Add a border radius to the card */
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Add a shadow effect to the card */
-        border-top: 5px solid #1e2a38; /* Add a border to the top of the card */
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
       }
 
-      /* LOGO */
-      .logo {
+      /* FORM */
+      .form-box {
+        width: 40%;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        border-top: 5px solid #1e2a38;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .form-box h2 {
         text-align: center;
         margin-bottom: 15px;
-      }
-
-      .logo img {
-        width: 120px;
-      }
-
-      h2 {
-        text-align: center;
-        margin-bottom: 20px;
         color: #1e2a38;
-        font-size: 22px;
       }
 
       label {
         display: block;
-        margin-top: 12px;
-        font-size: 14px;
+        margin-top: 10px;
         font-weight: 600;
+        font-size: 14px;
         color: #333;
       }
 
       input,
       select {
         width: 100%;
-        padding: 12px;
-        margin-top: 6px;
+        padding: 10px;
+        margin-top: 5px;
         border: 1px solid #d1d5db;
-        border-radius: 10px;
-        outline: none; /* Remove the default outline */
-        transition: 0.2s; /* Add a transition effect to the input */
+        border-radius: 8px;
         font-size: 14px;
       }
 
@@ -74,23 +68,25 @@
       select:focus {
         border-color: #1e2a38;
         box-shadow: 0 0 0 3px rgba(30, 42, 56, 0.1);
+        outline: none;
       }
 
+      /* BUTTONS */
       button,
       .btn {
         width: 100%;
-        margin-top: 18px;
+        margin-top: 15px;
         padding: 12px;
         background: linear-gradient(135deg, #1e2a38, #2f4f6f);
         color: white;
         border: none;
         border-radius: 10px;
-        cursor: pointer;
         font-weight: bold;
-        font-size: 15px;
         text-align: center;
-        display: block;
         text-decoration: none;
+        display: block;
+        cursor: pointer;
+        transition: 0.3s;
       }
 
       button:hover,
@@ -98,68 +94,177 @@
         background: #0f1720;
       }
 
-      .rec {
-        text-align: center;
-        margin-top: 15px;
-        font-size: 13px;
-        color: #555;
+      /* TABLE */
+      .table-box {
+        width: 60%;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 17px;
+        border-top: 5px solid #1e2a38;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        overflow-x: auto;
       }
-      /*mobile view*/
-      @media (max-width: 600px) {
+
+      .table-box h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #1e2a38;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        white-space: nowrap;
+      }
+
+      th {
+        background: #1e2a38;
+        color: white;
+        font-size: 11px;
+      }
+
+      tr:hover {
+        background: #f3f8ff;
+      }
+
+      /* ACTION BUTTONS */
+      .actions {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+      }
+
+      .edit-btn {
+        background: #facc15;
+        color: black;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: bold;
+      }
+
+      .delete-btn {
+        background: #ef4444;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: bold;
+      }
+
+      @media (max-width: 768px) {
         .container {
-          padding: 20px;
+          flex-direction: column;
+        }
+
+        .form-box,
+        .table-box {
+          width: 100%;
         }
       }
     </style>
   </head>
 
   <body>
-    <div class="container">
-      {% load static %}
+    {% load static %}
 
-      <div class="logo">
-        <img src="{% static 'images/logo22.png' %}" alt="Logo" />
+    <div class="container">
+      <!-- FORM -->
+      <div class="form-box">
+        <h2>DEPOSIT FORM</h2>
+
+        <form method="POST">
+          {% csrf_token %}
+
+          <label>Full Name</label>
+          <input type="text" name="name" required />
+
+          <label>NIN</label>
+          <input type="text" name="nin" required />
+
+          <label>Phone</label>
+          <input
+            type="text"
+            name="phone"
+            maxlength="14"
+            required
+            placeholder="Enter phone number"
+          />
+
+          <label>Item Name</label>
+          <select name="item_name" required>
+            <option value="">Select Item</option>
+            <option value="Cement">Cement</option>
+            <option value="Iron Sheets">Iron Sheets</option>
+            <option value="Iron Bars">Iron Bars</option>
+          </select>
+
+          <label>Amount</label>
+          <input type="number" name="amount" required />
+
+          <label>Date</label>
+          <input type="date" name="date" required />
+
+          <label>Payment Method</label>
+          <select name="method" required>
+            <option>Mobile Money</option>
+            <option>Bank Transfer</option>
+            <option>Cash</option>
+          </select>
+
+          <button type="submit">Submit Deposit</button>
+
+          <!-- STOCK BUTTON (NOW MATCHES STYLE) -->
+          <a href="{% url 'stock' %}" class="btn">Go to Stock System</a>
+        </form>
       </div>
 
-      <h2>Deposit Scheme</h2>
+      <!-- TABLE -->
+      <div class="table-box">
+        <h2>Deposits Table</h2>
 
-      <!-- FORM -->
-      <form method="POST">
-        {% csrf_token %}
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>NIN</th>
+            <th>Phone</th>
+            <th>Item</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Actions</th>
+          </tr>
 
-        <label>Full Name</label>
-        <input type="text" name="name" placeholder="Enter your name" required />
+          {% for d in deposits %}
+          <tr>
+            <td>{{ d.name }}</td>
+            <td>{{ d.nin }}</td>
+            <td>{{ d.phone }}</td>
+            <td>{{ d.item_name }}</td>
+            <td>{{ d.date }}</td>
+            <td>{{ d.amount }}</td>
 
-        <label>Phone</label>
-        <input type="text" name="phone" placeholder="+256..." required />
-
-        <label>Amount</label>
-        <input
-          type="number"
-          name="amount"
-          placeholder="Enter amount"
-          required
-        />
-
-        <label>Method</label>
-        <select name="method" required>
-          <option value="">Select method</option>
-          <option>Mobile Money</option>
-          <option>Bank Transfer</option>
-          <option>Cash</option>
-        </select>
-
-        <label>Purpose</label>
-        <input type="text" name="purpose" placeholder="e.g Cement purchase" />
-
-        <button type="submit">Submit Deposit</button>
-
-        <a href="{% url 'stock' %}" class="btn">Go to Stock System</a>
-
-        <p class="rec">
-          Secure deposit system • All transactions are recorded safely
-        </p>
-      </form>
+            <td class="actions">
+              <a href="{% url 'edit_deposit' d.id %}" class="edit-btn">Edit</a>
+              <a href="{% url 'delete_deposit' d.id %}" class="delete-btn"
+                >Delete</a
+              >
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
     </div>
   </body>
 </html>

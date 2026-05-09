@@ -10,19 +10,22 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;/*make the form not to be fixed up*/
-  padding: 20px;
+  min-height: 100vh; /* make the form not fixed */
+  padding: 20px;/*this adds space to the page*/
 }
 
 /* CARD */
 .container {
   width: 100%;
-  max-width: 550px;
+  max-width: 550px;/*this sets the maximum width of the card*/
   background: #ffffff;
   padding: 25px;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
   border-top: 5px solid #1e2a38;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
 }
 
 /* LOGO */
@@ -122,6 +125,10 @@ button:hover,
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+
+  border-top: 5px solid #1e2a38;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
 }
 
 /* SUMMARY SECTION */

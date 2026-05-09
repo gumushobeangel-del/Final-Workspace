@@ -23,14 +23,23 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #this handles the index request
     path('', views.index, name='index'),
-    path('log/', views.log, name='log'),
+    path('log/', views.login_view, name='log'),
     path('sales/', views.sales, name='sales'),
     path('sign/', views.sign, name='sign'),
     path('stock/', views.stock_view, name='stock'),
-    path('suppliers/', views.suppliers, name='suppliers'),
+    path('supplier/', views.suppliers, name='supplier'),
     path('dash/', views.dash, name='dash'),
     path('deposit/', views.deposit, name='deposit'),
-    path('receipt/', views.receipt, name='receipt'),
-
+    path('receipt/<int:id>/', views.receipt, name='receipt'),
+    path('edit/<int:id>/', views.edit_stock, name='edit_stock'),
+    path('delete/<int:id>/', views.delete_stock, name='delete_stock'),
+    path('edit_sales/<int:id>/', views.edit_sales, name='edit_sales'),
+    path('delete_sale/<int:id>/', views.delete_sale, name='delete_sale'),
+    path('deposit/edit/<int:id>/', views.edit_deposit, name='edit_deposit'),
+    path('deposit/delete/<int:id>/', views.delete_deposit, name='delete_deposit'),
+    path('edit_supplier/<int:id>/', views.edit_supplier, name='edit_supplier'),
+    path('delete_supplier/<int:id>/', views.delete_supplier, name='delete_supplier'),
          
 ]
+
+

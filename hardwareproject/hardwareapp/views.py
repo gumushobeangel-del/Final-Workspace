@@ -1,161 +1,19 @@
-from django.shortcuts import render, redirect
-from .models import Stock, Sale, Deposit, Receipt
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login
+
+from .models import Stock, Sale, Deposit, Receipt, Supplier
 
 
+# HOME
 
-# HOME PAGE VIEW
+
 def index(request):
-    return render(request, 'index.html')
+    return render(request, "index.html")
 
 
-# LOGIN PAGE VIEW
-
-def log(request):
-    if request.method == "POST":
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-
-        if email == "admin@gmail.com" and password == "1234":
-            return redirect("dash")  # go to dashboard
-
-        else:
-            return render(request, "log.html", {
-                "error": "Invalid email or password"
-            })
-
-    return render(request, "log.html") # shows the log page properly
-
-
-
-
-# SALES PAGE VIEW
-
-from django.utils import timezone
-def sales(request):
-    if request.method == "POST":#saves the data in the database
-        product_name = request.POST.get('product_name')
-        quantity = request.POST.get('quantity')
-        unit_price = request.POST.get('unit_price')
-        customer_name = request.POST.get('customer_name')
-        customer_contact = request.POST.get('customer_contact')
-        item_type = request.POST.get('item_type')
-        item_brand = request.POST.get('item_brand')
-        date = timezone.now().date()
-
-        # VALIDATION (correct indentation)
-        if not quantity or not unit_price:
-            return render(request, 'sales.html', {
-                'error': 'Quantity and Unit Price are required'
-            })
-
-        quantity = int(quantity)
-        unit_price = int(unit_price)
-
-        total = quantity * unit_price# this makes the system calculate the total automatically
-
-        Sale.objects.create(
-            product_name=product_name,
-            quantity=quantity,
-            unit_price=unit_price,
-            customer_name=customer_name,
-            customer_contact=customer_contact,
-            item_type=item_type,
-            item_brand=item_brand,
-            date=timezone.now().date(),
-            total=total
-        )
-
-        return redirect('sales')
-    print("SAVED SUCCESSFULLY")
-
-    sales = Sale.objects.all()#shows live data on the web page
-    return render(request, 'sales.html', {'sales': sales})
-
-# STOCK MANAGEMENT VIEW
-from django.utils import timezone
-# this saves the user data in the database
-def stock_view(request):
-    if request.method == "POST":
-
-        quantity = request.POST.get("quantity")
-
-        if not quantity:
-            return render(request, "stock.html", {
-                "stocks": Stock.objects.all(),
-                "error": "Quantity is required"
-            })
-
-        Stock.objects.create(
-            item_name=request.POST.get("item_name"),
-            quantity=int(quantity),
-            unit_cost=float(request.POST.get("unit_cost")),
-            unit_price=float(request.POST.get("unit_price")),
-            date=timezone.now().date(), 
-            supplier=request.POST.get("supplier"),
-            specification=request.POST.get("specification"),
-            payment_method=request.POST.get("payment_method"),
-        )
-
-        return redirect("stock")
-
-    stocks = Stock.objects.all()#shows live data on the web page
-    return render(request, "stock.html", {"stocks": stocks})
-
-
-# DASHBOARD
-def dash(request):
-    return render(request, 'dash.html')
-
-
-# DEPOSIT PAGE
-from decimal import Decimal
-
-def deposit(request):
-    if request.method == 'POST':
-        amount = float(request.POST.get('amount')) # this is the amount the user wants to deposit
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        method = request.POST.get('method')
-        purpose = request.POST.get('purpose')
-
-        # get the last deposit and add the amount to it
-        last_deposit = Deposit.objects.order_by('-id').first()
-
-        if last_deposit:
-            balance = last_deposit.balance + amount
-        else:
-            balance = amount
-
-        Deposit.objects.create(
-            amount=amount,
-            name=name,
-            phone=phone,
-            method=method,
-            purpose=purpose,
-            balance=balance
-        )
-
-        print("SAVED SUCCESSFULLY") 
-        return redirect('deposit')
-
-    return render(request, 'deposit.html')
-
-# SUPPLIERS PAGE
-def suppliers(request):
-    return render(request, 'suppliers.html')
-      
-
-
-# SIGNUP PAGE
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
-
-
-#this saves the user data in the database
 def sign(request):
     if request.method == "POST":
         role = request.POST.get("role")
-        print("ROLE:", role)
 
         if role == "admin":
             return redirect("dash")
@@ -168,7 +26,289 @@ def sign(request):
 
     return render(request, "sign.html")
 
-# RECEIPT PAGE
-def receipt(request): # this is the receipt page    
-    receipts = Receipt.objects.all() # this shows all the receipts in the database
-    return render(request, 'reciept.html', {'receipt': receipts})
+
+
+# LOGIN
+
+
+def login_view(request):
+
+    if request.method == "POST":
+
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        user = authenticate(
+            request,
+            username=email,
+            password=password
+        )
+
+        if user:
+            login(request, user)
+            return redirect("dash")
+
+    return render(request, "log.html")
+
+
+
+# DASHBOARD
+
+
+def dash(request):
+    return render(request, "dash.html")
+
+
+# STOCK
+
+
+def stock_view(request):
+
+    if request.method == "POST":
+
+        Stock.objects.create(
+            item_name=request.POST.get("item_name"),
+            quantity=request.POST.get("quantity"),
+            unit_cost=request.POST.get("unit_cost"),
+            unit_price=request.POST.get("unit_price"),
+            specification=request.POST.get("specification"),
+            payment_method=request.POST.get("payment_method"),
+            date=request.POST.get("date")
+        )
+
+        return redirect("stock")
+
+    stocks = Stock.objects.all()
+
+    return render(request, "stock.html", {
+        "stocks": stocks
+    })
+
+
+
+# SALES
+
+
+def sales(request):
+
+    if request.method == "POST":
+
+        quantity = int(request.POST.get("quantity") or 0)
+        unit_price = float(request.POST.get("unit_price") or 0)
+
+        total = quantity * unit_price#calculate total automatically
+
+        Sale.objects.create(
+            item_name=request.POST.get("item_name"),
+            quantity=quantity,
+            unit_price=unit_price,
+            total=total,
+            customer_name=request.POST.get("customer_name"),
+            customer_contact=request.POST.get("customer_contact"),
+            item_type=request.POST.get("item_type"),
+            item_brand=request.POST.get("item_brand"),
+            date=request.POST.get("date")
+        )
+
+        return redirect("sales")
+
+    sales = Sale.objects.all().order_by('-id')
+    return render(request, "sales.html", {"sales": sales})
+
+# DEPOSIT
+
+
+def deposit(request):
+
+    if request.method == "POST":
+
+        Deposit.objects.create(
+            amount=request.POST.get("amount"),
+            name=request.POST.get("name"),
+            phone=request.POST.get("phone"),
+            method=request.POST.get("method"),
+            item_name=request.POST.get("item_name"),
+            nin=request.POST.get("nin") or "N/A",
+            date=request.POST.get("date")
+        )
+
+        return redirect("deposit")
+
+    deposits = Deposit.objects.all()
+
+    return render(request, "deposit.html", {
+        "deposits": deposits
+    })
+
+
+# RECEIPT
+
+def receipt(request, id):
+    sale = get_object_or_404(Sale, id=id)
+    return render(request, "receipt.html", {"sale": sale})
+
+
+# SUPPLIERS
+
+
+def suppliers(request):
+
+    if request.method == "POST":
+
+        Supplier.objects.create(
+            supplier_name=request.POST.get("supplier_name"),
+            date=request.POST.get("date"),
+            company=request.POST.get("company"),
+            contact=request.POST.get("contact"),
+            email=request.POST.get("email"),
+            location=request.POST.get("location"),
+        )
+
+        return redirect("supplier")  
+
+    suppliers = Supplier.objects.all()
+
+    return render(request, "suppliers.html", {
+        "suppliers": suppliers
+    })
+
+
+
+# EDIT STOCK
+
+
+def edit_stock(request, id):
+
+    stock = get_object_or_404(Stock, id=id)
+
+    if request.method == "POST":
+
+        stock.item_name = request.POST.get("item_name")
+        stock.quantity = request.POST.get("quantity")
+        stock.unit_cost = request.POST.get("unit_cost")
+        stock.unit_price = request.POST.get("unit_price")
+        stock.specification = request.POST.get("specification")
+        stock.payment_method = request.POST.get("payment_method")
+        stock.date = request.POST.get("date")
+
+        stock.save()
+
+        return redirect("stock")
+
+    return render(request, "edit_stock.html", {
+        "stock": stock
+    })
+
+
+def delete_stock(request, id):
+
+    Stock.objects.filter(id=id).delete()
+
+    return redirect("stock")
+
+
+# EDIT SALES
+
+
+def edit_sales(request, id):
+
+    sale = get_object_or_404(Sale, id=id)
+
+    if request.method == "POST":
+
+        quantity = int(request.POST.get("quantity") or 0)
+        unit_price = float(request.POST.get("unit_price") or 0)
+
+        sale.item_name = request.POST.get("item_name")
+        sale.quantity = quantity
+        sale.unit_price = unit_price
+        sale.total = quantity * unit_price
+
+        sale.customer_name = request.POST.get("customer_name")
+        sale.customer_contact = request.POST.get("customer_contact")
+        sale.item_type = request.POST.get("item_type")
+        sale.item_brand = request.POST.get("item_brand")
+        sale.date = request.POST.get("date")
+
+        sale.save()
+
+        return redirect("sales")
+
+    return render(request, "edit_sales.html", {
+        "sale": sale
+    })
+
+
+def delete_sale(request, id):
+
+    Sale.objects.filter(id=id).delete()
+
+    return redirect("sales")
+
+
+
+# EDIT DEPOSIT
+
+
+def edit_deposit(request, id):
+
+    deposit = get_object_or_404(Deposit, id=id)
+
+    if request.method == "POST":
+
+        deposit.amount = request.POST.get("amount")
+        deposit.name = request.POST.get("name")
+        deposit.phone = request.POST.get("phone")
+        deposit.method = request.POST.get("method")
+        deposit.item_name = request.POST.get("item_name")
+        deposit.nin = request.POST.get("nin") or "N/A"
+        deposit.date = request.POST.get("date")
+
+        deposit.save()
+
+        return redirect("deposit")
+
+    return render(request, "edit_deposit.html", {
+        "deposit": deposit
+    })
+
+
+def delete_deposit(request, id):
+
+    Deposit.objects.filter(id=id).delete()
+
+    return redirect("deposit")
+
+
+# EDIT SUPPLIER
+
+
+def edit_supplier(request, id):
+
+    supplier = get_object_or_404(Supplier, id=id)
+
+    if request.method == "POST":
+
+        supplier.supplier_name = request.POST.get("supplier_name")
+        supplier.date = request.POST.get("date")
+        supplier.company = request.POST.get("company")
+        supplier.contact = request.POST.get("contact")
+        supplier.email = request.POST.get("email")
+        supplier.location = request.POST.get("location")
+
+        supplier.save()
+
+        return redirect("supplier")
+
+    return render(request, "edit_supplier.html", {
+        "supplier": supplier
+    })
+
+
+def delete_supplier(request, id):
+
+    supplier = get_object_or_404(Supplier, id=id)
+
+    supplier.delete()
+
+    return redirect("supplier")

@@ -52,9 +52,13 @@
         />
 
         <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" placeholder="+256..." required />
-
-        <!-- Role -->
+        <input
+          type="text"
+          name="customer_contact"
+          maxlength="14"
+          required
+          placeholder="Enter phone number"
+        />
         <label for="role">Log in As</label>
         <select name="role" id="role" required>
           <option value="" disabled selected>Select your role</option>

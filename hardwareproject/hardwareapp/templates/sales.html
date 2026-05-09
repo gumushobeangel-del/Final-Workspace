@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sales Form</title>
+
     <style>
       * {
         margin: 0;
@@ -27,14 +28,14 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
       }
 
-      /* FORM */
       .form-box {
         width: 40%;
         background: #ffffff;
         padding: 20px;
         border-radius: 12px;
         border-top: 5px solid #1e2a38;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
       }
 
       .form-box h2 {
@@ -48,25 +49,17 @@
         margin-top: 10px;
         font-weight: 600;
         font-size: 14px;
-        color: #333;
       }
 
-      input {
+      input,
+      select {
         width: 100%;
         padding: 10px;
         margin-top: 5px;
         border: 1px solid #d1d5db;
         border-radius: 8px;
-        font-size: 14px;
       }
 
-      input:focus {
-        border-color: #1e2a38;
-        box-shadow: 0 0 0 3px rgba(30, 42, 56, 0.1);
-        outline: none;
-      }
-
-      /* BUTTONS */
       button,
       .btn {
         width: 100%;
@@ -77,69 +70,76 @@
         border: none;
         border-radius: 10px;
         font-weight: bold;
-        text-align: center;
         text-decoration: none;
         display: block;
-        cursor: pointer;
-        transition: 0.3s;
+        text-align: center;
       }
 
-      button:hover,
-      .btn:hover {
-        background: #0f1720;
-      }
-
-      /* TABLE */
       .table-box {
         width: 60%;
         background: #ffffff;
         padding: 20px;
-        border-radius: 12px;
+        border-radius: 17px;
         border-top: 5px solid #1e2a38;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      }
-
-      .table-box h2 {
-        text-align: center;
-        margin-bottom: 15px;
-        color: #1e2a38;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+        overflow-x: auto;
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
-        overflow: hidden;
-        border-radius: 10px;
+        font-size: 12px;
       }
 
-      table th {
+      th,
+      td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        white-space: nowrap;
+      }
+
+      th {
         background: #1e2a38;
         color: white;
-        padding: 12px;
-        font-size: 10px;
-      }
-
-      table td {
-        padding: 12px;
-        border-bottom: 1px solid #eee;
-        font-size: 12px;
-        color: #333;
       }
 
       tr:hover {
         background: #f3f8ff;
       }
 
-      /* RESPONSIVE */
-      @media (max-width: 768px) {
-        .container {
-          flex-direction: column;
-        }
+      .actions {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+      }
 
-        .form-box,
-        .table-box {
-          width: 100%;
-        }
+      .edit-btn {
+        background: #facc15;
+        color: black;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 11px;
+      }
+
+      .delete-btn {
+        background: #ef4444;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 11px;
+      }
+
+      .receipt-btn {
+        background: #007bff;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 11px;
       }
     </style>
   </head>
@@ -153,8 +153,15 @@
         <form method="POST">
           {% csrf_token %}
 
-          <label>Product Name</label>
-          <input type="text" name="product_name" required />
+          <label>Item Name</label>
+          <select name="item_name" required>
+            <option value="">Select Item</option>
+            <option value="Cement">Cement</option>
+            <option value="Nails">Nails</option>
+            <option value="Paint">Paint</option>
+            <option value="Wood">Wood</option>
+            <option value="Glass">Glass</option>
+          </select>
 
           <label>Quantity</label>
           <input type="number" name="quantity" required />
@@ -169,16 +176,18 @@
           <input type="text" name="customer_name" required />
 
           <label>Customer Contact</label>
-          <input type="tel" name="customer_contact" required />
-
+          <input
+            type="text"
+            name="customer_contact"
+            maxlength="14"
+            required
+            placeholder="Enter phone number"
+          />
           <label>Item Type</label>
           <input type="text" name="item_type" required />
 
           <label>Item Brand</label>
           <input type="text" name="item_brand" required />
-
-          <label>Total</label>
-          <input type="number" name="total" required />
 
           <button type="submit">Add Sale</button>
 
@@ -195,7 +204,7 @@
         <table>
           <thead>
             <tr>
-              <th>Product</th>
+              <th>Item Name</th>
               <th>Quantity</th>
               <th>Date</th>
               <th>Unit Price</th>
@@ -204,13 +213,14 @@
               <th>Item Type</th>
               <th>Item Brand</th>
               <th>Total</th>
+              <th>Actions</th>
             </tr>
           </thead>
 
           <tbody>
             {% for sale in sales %}
             <tr>
-              <td>{{ sale.product_name }}</td>
+              <td>{{ sale.item_name }}</td>
               <td>{{ sale.quantity }}</td>
               <td>{{ sale.date }}</td>
               <td>{{ sale.unit_price }}</td>
@@ -219,10 +229,22 @@
               <td>{{ sale.item_type }}</td>
               <td>{{ sale.item_brand }}</td>
               <td>{{ sale.total }}</td>
+
+              <td class="actions">
+                <a href="{% url 'receipt' sale.id %}" class="receipt-btn"
+                  >Receipt</a
+                >
+                <a href="{% url 'edit_sales' sale.id %}" class="edit-btn"
+                  >Edit</a
+                >
+                <a href="{% url 'delete_sale' sale.id %}" class="delete-btn"
+                  >Delete</a
+                >
+              </td>
             </tr>
             {% empty %}
             <tr>
-              <td colspan="7">No sales recorded yet</td>
+              <td colspan="10">No sales recorded yet</td>
             </tr>
             {% endfor %}
           </tbody>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Edit Stock</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        background: #eef3f8;
+        display: flex;
+        justify-content: center;
+        padding: 40px;
+      }
+
+      .box {
+        width: 450px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 6px 0;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background: #1e2a38;
+        color: white;
+        border: none;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box">
+      <h2>Edit Stock</h2>
+
+      <form method="POST">
+        {% csrf_token %}
+        <label>Item Name</label>
+        <input name="item_name" value="{{ stock.item_name }}" />
+
+        <label>Quantity</label>
+        <input name="quantity" value="{{ stock.quantity }}" />
+
+        <label>Unit Cost</label>
+        <input name="unit_cost" value="{{ stock.unit_cost }}" />
+
+        <label>Unit Price</label>
+        <input name="unit_price" value="{{ stock.unit_price }}" />
+
+        <label>Specification</label>
+        <input name="specification" value="{{ stock.specification }}" />
+
+        <label>Payment Method</label>
+        <input name="payment_method" value="{{ stock.payment_method }}" />
+
+        <label>Date</label>
+        <input type="date" name="date" value="{{ sale.date }}" />
+
+        <button type="submit">Update</button>
+      </form>
+    </div>
+  </body>
+</html>

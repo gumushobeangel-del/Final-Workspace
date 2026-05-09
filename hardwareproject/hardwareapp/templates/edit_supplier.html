@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Edit Supplier</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #eef3f8, #dfe9f3);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+      }
+
+      .box {
+        width: 100%;
+        max-width: 500px;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #1e2a38;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        margin-top: 12px;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.3s;
+      }
+
+      input:focus {
+        border-color: #1e2a38;
+        box-shadow: 0 0 5px rgba(30, 42, 56, 0.3);
+      }
+
+      button {
+        margin-top: 25px;
+        width: 100%;
+        padding: 14px;
+        background: #1e2a38;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background: #2f4358;
+      }
+
+      .back-btn {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        text-decoration: none;
+        color: #1e2a38;
+        font-weight: bold;
+      }
+
+      .back-btn:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 600px) {
+        .box {
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box">
+
+      <h1>Edit Supplier</h1>
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <label>Supplier Name</label>
+        <input
+          type="text"
+          name="supplier_name"
+          value="{{ supplier.supplier_name }}"
+          required
+        />
+
+        <label>Date</label>
+        <input
+          type="date"
+          name="date"
+          value="{{ supplier.date|date:'Y-m-d' }}"
+          required
+        />
+
+        <label>Company</label>
+        <input
+          type="text"
+          name="company"
+          value="{{ supplier.company }}"
+          required
+        />
+
+        <label>Contact</label>
+        <input
+          type="text"
+          name="contact"
+          value="{{ supplier.contact }}"
+          required
+        />
+
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          value="{{ supplier.email }}"
+          required
+        />
+
+        <label>Location</label>
+        <input
+          type="text"
+          name="location"
+          value="{{ supplier.location }}"
+          required
+        />
+
+        <button type="submit">
+          Update Supplier
+        </button>
+
+      </form>
+
+      
+
+    </div>
+  </body>
+</html>

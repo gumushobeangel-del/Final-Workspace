@@ -6,57 +6,261 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Suppliers</title>
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: #f4f6f9;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        display: flex;
+        gap: 20px;
+      }
+
+      /* ================= STOCK STYLE BOXES ================= */
+      .form-box,
+      .table-box {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+
+        border-top: 5px solid #1e2a38;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .form-box {
+        width: 40%;
+      }
+
+      .table-box {
+        width: 60%;
+        overflow-x: auto;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #1e2a38;
+      }
+
+      label {
+        display: block;
+        margin-top: 10px;
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+
+      input:focus {
+        border-color: #1e2a38;
+        outline: none;
+      }
+
+      /* ================= SALES STYLE BUTTONS ================= */
+
+      button,
+      .btn {
+        width: 100%;
+        margin-top: 15px;
+        padding: 12px;
+        background: linear-gradient(135deg, #1e2a38, #2f4f6f);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover,
+      .btn:hover {
+        background: #0f1720;
+      }
+
+      /* TABLE */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      th {
+        background: #1e2a38;
+        color: white;
+        padding: 10px;
+        font-size: 12px;
+      }
+
+      td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        font-size: 12px;
+      }
+
+      tr:hover {
+        background: #f1f5f9;
+      }
+
+      /* ================= ACTION BUTTONS (SALES STYLE) ================= */
+
+      .actions {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .edit-btn {
+        background: #facc15;
+        color: black;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: bold;
+        transition: 0.2s;
+      }
+
+      .edit-btn:hover {
+        background: #eab308;
+        transform: scale(1.05);
+      }
+
+      .delete-btn {
+        background: #ef4444;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: bold;
+        transition: 0.2s;
+      }
+
+      .delete-btn:hover {
+        background: #dc2626;
+        transform: scale(1.05);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+
+        .form-box,
+        .table-box {
+          width: 100%;
+        }
+      }
+    </style>
   </head>
 
   <body>
     <div class="container">
-      <div class="logo">
-        {% load static %}
-        <img
-          src="{% static 'images/logo22.png' %}"
-          alt="Logo"
-          class="logo-img"
-        />
-      </div>
-      <div class="card">
-        <h1>SUPPLIERS MANAGEMENT</h1>
-        <h2>Add Supplier</h2>
+      <!-- FORM -->
+      <div class="form-box">
+        <h2>SUPPLIER FORM</h2>
 
-        <form>
+        <form method="POST">
+          {% csrf_token %}
+
           <label>Supplier Name</label>
-          <input
-            type="text"
-            id="supplierName"
-            placeholder="Enter name"
-            required
-          />
+          <input type="text" name="supplier_name" required />
+
+          <label>Date</label>
+          <input type="date" name="date" required />
 
           <label>Company</label>
-          <input type="text" id="company" placeholder="Company name" required />
+          <input type="text" name="company" required />
 
           <label>Contact</label>
-          <input type="text" id="contact" placeholder="+256..." required />
+          <input type="text" name="contact" required />
 
           <label>Email</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="email@example.com"
-            required
-          />
+          <input type="email" name="email" required />
 
           <label>Location</label>
-          <input
-            type="text"
-            id="location"
-            placeholder="City or address"
-            required
-          />
+          <input type="text" name="location" required />
 
           <button type="submit">Save Supplier</button>
-          <a href="{% url 'receipt' %}" class="btn">Receipt</a>
+          <a href="{% url 'dash' %}" class="btn">Back to Dashboard</a>
         </form>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-box">
+        <h2>SUPPLIERS TABLE</h2>
+
+        <table>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Company</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>Location</th>
+            <th>Actions</th>
+          </tr>
+
+          {% for supplier in suppliers %}
+          <tr>
+            <td>{{ supplier.id }}</td>
+            <td>{{ supplier.supplier_name }}</td>
+            <td>{{ supplier.date }}</td>
+            <td>{{ supplier.company }}</td>
+            <td>{{ supplier.contact }}</td>
+            <td>{{ supplier.email }}</td>
+            <td>{{ supplier.location }}</td>
+
+            <td>
+              <div class="actions">
+                <a
+                  href="{% url 'edit_supplier' supplier.id %}"
+                  class="edit-btn"
+                >
+                  Edit
+                </a>
+
+                <a
+                  href="{% url 'delete_supplier' supplier.id %}"
+                  class="delete-btn"
+                >
+                  Delete
+                </a>
+              </div>
+            </td>
+          </tr>
+
+          {% empty %}
+          <tr>
+            <td colspan="8">No suppliers found</td>
+          </tr>
+          {% endfor %}
+        </table>
       </div>
     </div>
   </body>

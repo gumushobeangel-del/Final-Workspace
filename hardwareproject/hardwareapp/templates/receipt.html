@@ -1,210 +1,203 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Nyondo Hardware - Receipt</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Receipt</title>
 
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-  }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-  body {
-    background: linear-gradient(135deg, #eef3f8, #dfe9f3);
-    padding: 20px;
-  }
+    body {
+      background: linear-gradient(135deg, #eef3f8, #dfe9f3);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-  .receipt {
-    width: 420px;
-    margin: auto;
-    background: white;
-    padding: 25px;
-    border: 2px solid #1e2a38;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  }
+    .receipt-box {
+      width: 420px;
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      border-top: 8px solid #1e2a38;
+    }
 
-  /* HEADER */
-  .header {
-    text-align: center;
-    border-bottom: 2px solid #1e2a38;
-    padding-bottom: 10px;
-  }
+    .receipt-header {
+      background: #1e2a38;
+      color: white;
+      text-align: center;
+      padding: 25px 20px;
+    }
 
-  .header h1 {
-    margin: 0;
-    font-size: 18px;
-    color: #1e2a38;
-  }
+    .receipt-header h2 {
+      font-size: 28px;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+    }
 
-  .header p {
-    margin: 3px;
-    font-size: 13px;
-    color: #555;
-  }
+    .receipt-header p {
+      font-size: 13px;
+      opacity: 0.8;
+    }
 
-  .badge {
-    background: #1e2a38;
-    color: white;
-    padding: 4px 8px;
-    font-size: 12px;
-    border-radius: 4px;
-  }
+    .receipt-body {
+      padding: 25px;
+    }
 
-  /* INFO SECTION */
-  .info {
-    margin-top: 15px;
-    font-size: 14px;
-  }
+    .receipt-info {
+      margin-bottom: 20px;
+    }
 
-  .info input {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-  }
+    .receipt-info .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px dashed #ddd;
+      font-size: 14px;
+    }
 
-  .info input:focus {
-    border-color: #1e2a38;
-    outline: none;
-  }
+    .receipt-info .label {
+      font-weight: bold;
+      color: #1e2a38;
+    }
 
-  /* TABLE */
-  table {
-    width: 100%;
-    margin-top: 15px;
-    border-collapse: collapse;
-  }
+    .receipt-info .value {
+      color: #444;
+    }
 
-  th {
-    background: #1e2a38;
-    color: white;
-    padding: 10px;
-    font-size: 12px;
-  }
+    .total-box {
+      margin-top: 25px;
+      background: #f4f7fb;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      border: 2px dashed #1e2a38;
+    }
 
-  td {
-    border-bottom: 1px solid #e5e7eb;
-    padding: 8px;
-    font-size: 14px;
-  }
+    .total-box h3 {
+      color: #1e2a38;
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
 
-  input.table-input {
-    width: 100%;
-    border: none;
-    outline: none;
-  }
+    .total-box p {
+      font-size: 24px;
+      font-weight: bold;
+      color: green;
+    }
 
-  /* TOTAL */
-  .total {
-    text-align: right;
-    margin-top: 15px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #1e2a38;
-  }
+    .receipt-footer {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+      font-size: 13px;
+    }
 
-  .total input {
-    width: 120px;
-    padding: 6px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-  }
+    .btn-print {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      background: linear-gradient(135deg, #1e2a38, #2f4f6f);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-  /* BUTTON */
-  button {
-    width: 100%;
-    margin-top: 15px;
-    padding: 12px;
-    background: linear-gradient(135deg, #1e2a38, #2f4f6f);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-  }
+    .btn-print:hover {
+      background: #0f1720;
+    }
 
-  button:hover {
-    background: #0f1720;
-  }
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
 
-  /* FOOTER */
-  .footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 12px;
-    color: #6b7280;
-  }
-</style>
+      .btn-print {
+        display: none;
+      }
+
+      .receipt-box {
+        box-shadow: none;
+        border: 1px solid #000;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<form class="receipt">
+  <div class="receipt-box">
 
-  <div class="header">
-    <h1>NYONDO HARDWARE STOCK SYSTEM</h1>
-    <p>Inventory & Sales Receipt</p>
-    <span class="badge">OFFICIAL RECEIPT</span>
+    <div class="receipt-header">
+      <h2>RECEIPT</h2>
+      <p>Sales Receipt</p>
+    </div>
+
+    <div class="receipt-body">
+
+      <div class="receipt-info">
+
+        <div class="row">
+          <span class="label">Item Name</span>
+          <span class="value">{{ sale.item_name }}</span>
+        </div>
+
+        <div class="row">
+          <span class="label">Quantity</span>
+          <span class="value">{{ sale.quantity }}</span>
+        </div>
+
+        <div class="row">
+          <span class="label">Unit Price</span>
+          <span class="value">{{ sale.unit_price }}</span>
+        </div>
+
+        <div class="row">
+          <span class="label">Customer</span>
+          <span class="value">{{ sale.customer_name }}</span>
+        </div>
+
+        <div class="row">
+          <span class="label">Contact</span>
+          <span class="value">{{ sale.customer_contact }}</span>
+        </div>
+
+        <div class="row">
+          <span class="label">Date</span>
+          <span class="value">{{ sale.date }}</span>
+        </div>
+
+      </div>
+
+      <div class="total-box">
+        <h3>TOTAL AMOUNT</h3>
+        <p>UGX {{ sale.total }}</p>
+      </div>
+
+      <div class="receipt-footer">
+        Thank you for your purchase
+      </div>
+
+      <button class="btn-print" onclick="window.print()">
+        Print Receipt
+      </button>
+
+    </div>
   </div>
-
-  <div class="info">
-    <label>Receipt No:</label>
-    <input type="text" name="receipt_no">
-
-    <label>Date:</label>
-    <input type="date" name="date">
-
-    <label>Cashier:</label>
-    <input type="text" name="cashier">
-
-    <label>Customer:</label>
-    <input type="text" name="customer">
-  </div>
-
-  <table>
-    <tr>
-      <th>Item</th>
-      <th>Qty</th>
-      <th>Price (UGX)</th>
-    </tr>
-
-    <tr>
-      <td><input class="table-input" name="item1"></td>
-      <td><input class="table-input" name="qty1" type="number"></td>
-      <td><input class="table-input" name="price1" type="number"></td>
-    </tr>
-
-    <tr>
-      <td><input class="table-input" name="item2"></td>
-      <td><input class="table-input" name="qty2" type="number"></td>
-      <td><input class="table-input" name="price2" type="number"></td>
-    </tr>
-
-    <tr>
-      <td><input class="table-input" name="item3"></td>
-      <td><input class="table-input" name="qty3" type="number"></td>
-      <td><input class="table-input" name="price3" type="number"></td>
-    </tr>
-  </table>
-
-  <div class="total">
-    TOTAL: <input type="number" name="total">
-  </div>
-
-  <button type="submit">Generate Receipt</button>
-
-  <div class="footer">
-    Thank you for shopping at Nyondo Hardware<br>
-    System generated receipt
-  </div>
-
-</form>
 
 </body>
 </html>

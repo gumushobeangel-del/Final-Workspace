@@ -6,102 +6,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nyondo Hardware Dashboard</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <style>
       body {
-        margin: 0; /* removes default browser spacing */
-        font-family: Arial, sans-serif; /* sets font style */
-        background: linear-gradient(
-          135deg,
-          #eef3f8,
-          #dfe9f3
-        ); /* background gradient */
-        padding-top: 80px; /* pushes content below fixed header */
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #eef3f8, #dfe9f3);
+        padding-top: 80px;
       }
 
       .header {
         background: linear-gradient(135deg, #1e2a38, #2f4f6f);
         color: white;
-        padding: 20px; /* space inside header */
+        padding: 20px;
         font-size: 28px;
         text-align: center;
         font-weight: bold;
 
-        position: fixed; /* keeps header fixed on top */
-        top: 0; /* sticks to top */
-        left: 240px; /* leaves space for sidebar */
-        right: 0; /* stretches to right side */
-        z-index: 1000; /* keeps it above other elements */
+        position: fixed;
+        top: 0;
+        left: 240px;
+        right: 0;
+        z-index: 1000;
       }
 
       .sidebar {
-        background: #1e2a38; /* dark sidebar background */
-        color: white; /* white text */
+        background: #1e2a38;
+        color: white;
 
-        position: fixed; /* makes the sidebar static */
-        top: 0; /* starts from top */
-        left: 0; /* sticks to left side */
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 240px;
         height: 100vh;
 
-        overflow-y: auto; /* scroll if content is long */
-        padding-top: 80px; /* space for header */
+        overflow-y: auto;
+        padding-top: 80px;
       }
 
       .sidebar a {
-        display: block; /* makes links full width */
-        padding: 15px; /* space inside links */
+        display: block;
+        padding: 15px;
         color: white;
-        text-decoration: none; /* removes underline */
+        text-decoration: none;
         transition: 0.3s;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* subtle divider */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .sidebar a:hover {
         background: #2f4f6f;
-        padding-left: 20px; /* slide effect */
+        padding-left: 20px;
       }
 
       .logo {
         text-align: center;
-        padding: 15px; /* spacing around logo */
+        padding: 15px;
       }
 
       .logo-img {
-        width: 100px; /* logo size */
+        width: 100px;
       }
 
       .main {
-        margin-left: 240px; /* pushes content away from sidebar */
-        padding: 20px; /* inner spacing */
+        margin-left: 240px;
+        padding: 20px;
       }
 
       .cards {
-        display: grid; /* grid layout */
-        grid-template-columns: repeat(
-          auto-fit,
-          minmax(220px, 1fr)
-        ); /* responsive columns */
-        gap: 20px; /* spacing between cards */
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
       }
 
       .card {
         background: white;
-        padding: 20px; /* inner spacing */
-        border-radius: 14px; /* rounded corners */
+        padding: 20px;
+        border-radius: 14px;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        transition: 0.3s;
-        border-top: 4px solid #1e2a38; /* it gives a color to the top of the card */
+        transition:
+          transform 0.4s ease,
+          box-shadow 0.4s ease;
+        border-top: 4px solid #1e2a38;
+
+        /* floating animation */
+        animation: floatCard 3s ease-in-out infinite;/*make cards hover around*/
       }
 
       .card:hover {
-        transform: translateY(-5px); /* moves card up */
+        transform: translateY(-12px) scale(1.03) rotate(1deg);
         cursor: pointer;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+      }
+
+      /* FLOATING ANIMATION */
+      @keyframes floatCard {
+        0% {
+          transform: translateY(0px);
+        }
+
+        50% {
+          transform: translateY(-6px);
+        }
+
+        100% {
+          transform: translateY(0px);
+        }
       }
 
       .card h3 {
-        margin: 0; /* remove default spacing */
+        margin: 0;
         color: #1e2a38;
         font-size: 18px;
       }
@@ -109,31 +121,31 @@
       .card p {
         font-size: 20px;
         font-weight: bold;
-        margin-top: 10px; /* spacing above */
+        margin-top: 10px;
         color: #2f4f6f;
       }
 
       table {
-        width: 100%; /* full width table */
-        border-collapse: collapse; /* removes spacing between borders */
+        width: 100%;
+        border-collapse: collapse;
         background: white;
-        border-radius: 12px; /* rounded corners */
-        overflow: hidden; /* clips corners */
+        border-radius: 12px;
+        overflow: hidden;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        table-layout: fixed; /* equal column layout */
+        table-layout: fixed;
       }
 
       th {
         background: #1e2a38;
         color: white;
-        padding: 10px; /* spacing */
+        padding: 10px;
         font-size: 14px;
       }
 
       td {
-        padding: 12px; /* cell spacing */
+        padding: 12px;
         border-bottom: 1px solid #eee;
-        font-size: 14px; /* text size */
+        font-size: 14px;
         text-align: center;
       }
 
@@ -149,29 +161,29 @@
 
       .stock {
         color: green;
-        font-weight: bold; /* bold text */
+        font-weight: bold;
       }
 
       footer {
         text-align: center;
-        padding: 15px; /* spacing */
-        font-size: 14px; /* small text */
+        padding: 15px;
+        font-size: 14px;
         color: #444;
       }
 
       @media (max-width: 760px) {
         .sidebar {
-          position: relative; /* stack sidebar */
-          width: 100%; /* full width */
-          height: auto; /* auto height */
+          position: relative;
+          width: 100%;
+          height: auto;
         }
 
         .header {
-          left: 0; /* reset header position */
+          left: 0;
         }
 
         .main {
-          margin-left: 0; /* remove sidebar space */
+          margin-left: 0;
         }
       }
     </style>
@@ -188,7 +200,7 @@
       <a href="{% url 'sales' %}">💰 Add Sale</a>
       <a href="{% url 'deposit' %}">🏦 Customer Deposit</a>
       <a href="{% url 'stock' %}">📦 Add Stock</a>
-      <a href="{% url 'suppliers' %}">🚚 Suppliers</a>
+      <a href="{% url 'supplier' %}">🚚 Suppliers</a>
     </div>
 
     <div class="header">Nyondo General Hardware Dashboard</div>
@@ -217,6 +229,7 @@
       </div>
 
       <h2>Stock Overview</h2>
+
       <table>
         <tr>
           <th>Product</th>
@@ -270,25 +283,5 @@
     <footer>
       &copy; 2026 @Nyondo General Hardware Ltd All rights reserved
     </footer>
-
-    <script>
-      const ctx = document.getElementById("salesChart");
-
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-          datasets: [
-            {
-              label: "Sales (UGX)",
-              data: [1000000, 800000, 600000, 900000, 1000000, 3000000],
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-        },
-      });
-    </script>
   </body>
 </html>

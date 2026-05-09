@@ -7,87 +7,71 @@
 
     <style>
       * {
-        margin: 0; /* Remove default margin */
-        padding: 0; /* Remove default padding */
-        box-sizing: border-box; /* Add border-box sizing to all elements */
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
         font-family: Arial, sans-serif;
       }
 
       body {
-        background: linear-gradient(135deg, #eef3f8, #dfe9f3);
+        background: #f4f6f9;
+        min-height: 100vh;
+        padding: 20px;
       }
 
-      /* HEADER */
-      .top-header {
-        display: flex; /* Display the header in a flex container */
-        align-items: center;
-        gap: 15px;
-        padding: 15px 30px;
-        background: #1e2a38;
-        color: white;
-      }
-
-      .top-header img {
-        width: 60px;
-      }
-
-      h1 {
-        font-size: 18px;
-      }
-
+      /* MAIN CONTAINER */
       .container {
-        padding: 25px; /*adds space between the container and the content*/
-      }
-
-      .layout {
-        display: grid; /* Display the grid in a grid container */
-        grid-template-columns: 1fr 1fr; /* Create two columns */
-        gap: 25px;
-      }
-
-      /* FORM + TABLE CARDS */
-      .form-section,
-      .table-section {
-        background: white;
-        padding: 25px;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        border-top: 5px solid #1e2a38;
-      }
-
-      h2 {
-        text-align: center;
-        margin-bottom: 18px;
-        color: #1e2a38;
+        display: flex;
+        gap: 20px;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
       }
 
       /* FORM */
-      .form-grid {
-        display: grid;
-        gap: 12px;
+      .form-section {
+        width: 40%;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        border-top: 5px solid #1e2a38;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
       }
 
-      .input-groupy {
-        display: flex;
-        flex-direction: column;
+      .form-section h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #1e2a38;
       }
 
       label {
-        font-size: 14px;
+        display: block;
+        margin-top: 10px;
         font-weight: 600;
-        margin-bottom: 5px;
+        font-size: 14px;
         color: #333;
       }
 
       input,
       select {
-        padding: 12px;
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
         border: 1px solid #d1d5db;
-        border-radius: 10px;
-        outline: none;
-        transition: 0.2s;
+        border-radius: 8px;
+        font-size: 14px;
       }
 
+      input:focus,
+      select:focus {
+        border-color: #1e2a38;
+        box-shadow: 0 0 0 3px rgba(30, 42, 56, 0.1);
+        outline: none;
+      }
+
+      /* BUTTONS */
       button,
       .btn {
         width: 100%;
@@ -97,11 +81,11 @@
         color: white;
         border: none;
         border-radius: 10px;
-        cursor: pointer;
         font-weight: bold;
         text-align: center;
         text-decoration: none;
         display: block;
+        cursor: pointer;
         transition: 0.3s;
       }
 
@@ -111,155 +95,190 @@
       }
 
       /* TABLE */
-      .stock-table {
-        width: 100%;
-        border-collapse: collapse;
-        border-radius: 10px; /*adds a curve to the table*/
-        overflow: hidden; /*it puts a curve to a table*/
+      .table-section {
+        width: 60%;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        border-top: 5px solid #1e2a38;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+        overflow-x: auto;
       }
 
-      .stock-table th {
-        background: #1e2a38;
-        color: white;
-        padding: 12px; /*adds space between the table cells*/
+      .table-section h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #1e2a38;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
         font-size: 12px;
       }
 
-      .stock-table td {
-        padding: 12px;
+      th,
+      td {
+        padding: 10px;
         text-align: center;
-        font-size: 13px;
-        border: 1px solid black; /* Add lines to the table */
         border-bottom: 1px solid #eee;
+        white-space: nowrap;
       }
 
-      /* MOBILE VIEW */
+      th {
+        background: #1e2a38;
+        color: white;
+        font-size: 11px;
+      }
+
+      tr:hover {
+        background: #f3f8ff;
+      }
+
+      /* ACTION BUTTONS */
+      .edit-btn {
+        background: #facc15;
+        color: black;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: bold;
+        margin-right: 5px;
+      }
+
+      .edit-btn:hover {
+        background: #eab308;
+      }
+
+      .delete-btn {
+        background: #ef4444;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: bold;
+      }
+
+      .delete-btn:hover {
+        background: #dc2626;
+      }
+
       @media (max-width: 900px) {
-        .layout {
-          grid-template-columns: 1fr; /* Make the columns stack on top of each other on mobile */
+        .container {
+          flex-direction: column;
+        }
+
+        .form-section,
+        .table-section {
+          width: 100%;
         }
       }
     </style>
   </head>
 
   <body>
-    {% load static %}
-
-    <header class="top-header">
-      {% load static %}
-      <img src="{% static 'images/logo22.png' %}" />
-      <h1>NYONDO HARDWARE STOCK SYSTEM</h1>
-    </header>
-
     <div class="container">
-      <div class="layout">
-        <div class="form-section">
-          <h2>Stock Form</h2>
+      <!-- FORM -->
+      <div class="form-section">
+        <h2>Stock Form</h2>
 
-          <form class="form-grid" method="POST">
-            {% csrf_token %}
+        <form method="POST">
+          {% csrf_token %}
 
-            <div class="input-groupy">
-              <label>Item Name</label>
-              <select name="item_name" required>
-                <option value="">Select Item</option>
-                <option value="Cement">Cement</option>
-                <option value="Nails">Nails</option>
-                <option value="Paint">Paint</option>
-                <option value="Wood">Wood</option>
-                <option value="Glass">Glass</option>
-              </select>
-            </div>
+          <label>Item Name</label>
+          <select name="item_name" required>
+            <option value="">Select Item</option>
+            <option value="Cement">Cement</option>
+            <option value="Nails">Nails</option>
+            <option value="Paint">Paint</option>
+            <option value="Wood">Wood</option>
+            <option value="Glass">Glass</option>
+            <option value="ironsheets">Iron Sheets</option>
+            <option value="ironbars">Iron Bars</option>
+            <option value="steel">Steel</option>
+          </select>
 
-            <div class="input-groupy">
-              <label>Item Quantity</label>
-              <input type="number" name="quantity" required />
-            </div>
+          <label>Quantity</label>
+          <input type="number" name="quantity" required />
 
-            <div class="input-groupy">
-              <label>Unit Cost</label>
-              <input type="number" name="unit_cost" required />
-            </div>
+          <label>Unit Cost</label>
+          <input type="number" name="unit_cost" required />
 
-            <div class="input-groupy">
-              <label>Unit Price</label>
-              <input type="number" name="unit_price" required />
-            </div>
+          <label>Unit Price</label>
+          <input type="number" name="unit_price" required />
 
-            <div class="input-groupy">
-              <label>Date</label>
-              <input type="date" name="date" required />
-            </div>
+          <label>Date</label>
+          <input type="date" name="date" required />
 
-            <div class="input-groupy">
-              <label>Supplier</label>
-              <input type="text" name="supplier" required />
-            </div>
+          <label>Specification</label>
+          <select name="specification">
+            <option value="">Select</option>
+            <option value="building_materials">Building Materials</option>
+            <option value="electrical">Electrical</option>
+            <option value="roofings">Roofings</option>
+            <option value="mechanical">Mechanical</option>
+          </select>
 
-            <div class="input-groupy">
-              <label>Specification</label>
-              <select name="specification">
-                <option value="Nails">Nails</option>
-                <option value="Cement">Cement</option>
-                <option value="Iron Sheets">Iron Sheets</option>
-                <option value="Wood">Wood</option>
-                <option value="Glass">Glass</option>
-                <option value="Pipes">Pipes</option>
-                <option value="Iron Bars">Iron Bars</option>
-                <option value="Steel Rods">Steel Rods</option>
-                <option value="Paint">Paint</option>
-              </select>
-            </div>
+          <label>Payment Method</label>
+          <select name="payment_method">
+            <option value="">Select Payment</option>
+            <option value="Mobile Money">Mobile Money</option>
+            <option value="Cash">Cash</option>
+            <option value="Bank">Bank</option>
+            <option value="Transaction">Transaction</option>
+          </select>
 
-            <div class="input-groupy">
-              <label>Payment Method</label>
-              <select name="payment_method">
-                <option value="">Select</option>
-                <option value="Mobile Money">Mobile Money</option>
-                <option value="Cash">Cash</option>
-                <option value="Bank">Bank</option>
-                <option value="Transaction">Transaction</option>
-              </select>
-            </div>
+          <button type="submit">Save Stock</button>
 
-            <button type="submit">Save Stock</button>
-            <a href="{% url 'suppliers' %}" class="btn">Add Supplier</a>
-          </form>
-        </div>
+          <a href="{% url 'supplier' %}" class="btn">Register Supplier</a>
+        </form>
+      </div>
 
-        <div class="table-section">
-          <h2>Stock Table</h2>
+      <!-- TABLE -->
+      <div class="table-section">
+        <h2>Stock Table</h2>
 
-          <table class="stock-table">
-            <tr>
-              <th>Item</th>
-              <th>Supplier</th>
-              <th>Cost</th>
-              <th>Price</th>
-              <th>Date</th>
-              <th>Qty</th>
-              <th>Spec</th>
-              <th>Payment</th>
-            </tr>
+        <table>
+          <tr>
+            <th>Item</th>
+            <th>Cost</th>
+            <th>Price</th>
+            <th>Date</th>
+            <th>Qty</th>
+            <th>Spec</th>
+            <th>Payment</th>
+            <th>Actions</th>
+          </tr>
 
-            {% for stock in stocks %}
-            <tr>
-              <td>{{ stock.item_name }}</td>
-              <td>{{ stock.supplier }}</td>
-              <td>{{ stock.unit_cost }}</td>
-              <td>{{ stock.unit_price }}</td>
-              <td>{{ stock.date }}</td>
-              <td>{{ stock.quantity }}</td>
-              <td>{{ stock.specification }}</td>
-              <td>{{ stock.payment_method }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-              <td colspan="8">No stock data available</td>
-            </tr>
-            {% endfor %}
-          </table>
-        </div>
+          {% for stock in stocks %}
+          <tr>
+            <td>{{ stock.item_name }}</td>
+            <td>{{ stock.unit_cost }}</td>
+            <td>{{ stock.unit_price }}</td>
+            <td>{{ stock.date }}</td>
+            <td>{{ stock.quantity }}</td>
+            <td>{{ stock.specification }}</td>
+            <td>{{ stock.payment_method }}</td>
+
+            <td>
+              <a href="{% url 'edit_stock' stock.id %}" class="edit-btn"
+                >Edit</a
+              >
+              <a href="{% url 'delete_stock' stock.id %}" class="delete-btn"
+                >Delete</a
+              >
+            </td>
+          </tr>
+
+          {% empty %}
+          <tr>
+            <td colspan="8">No stock data available</td>
+          </tr>
+          {% endfor %}
+        </table>
       </div>
     </div>
   </body>

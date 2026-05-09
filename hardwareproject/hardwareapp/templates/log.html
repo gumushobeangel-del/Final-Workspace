@@ -30,6 +30,8 @@
         border-radius: 14px; /*adds a curve to the card*/
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         border-top: 5px solid #1e2a38; /*adds color to the top of the card*/
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
       }
 
       h1 {
@@ -114,7 +116,7 @@
       <form method="POST" action="{% url 'log' %}">
         {% csrf_token %}
 
-        <label>Email</label>
+        <label>Username</label>
         <input
           type="email"
           name="email"
