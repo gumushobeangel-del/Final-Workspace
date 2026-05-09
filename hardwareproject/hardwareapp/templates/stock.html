@@ -200,15 +200,14 @@
             <option value="ironbars">Iron Bars</option>
             <option value="steel">Steel</option>
           </select>
-
           <label>Quantity</label>
-          <input type="number" name="quantity" required />
+          <input type="number" name="quantity" min="1" required />
 
           <label>Unit Cost</label>
-          <input type="number" name="unit_cost" required />
+          <input type="number" name="unit_cost" min="1" required />
 
           <label>Unit Price</label>
-          <input type="number" name="unit_price" required />
+          <input type="number" name="unit_price" min="1" required />
 
           <label>Date</label>
           <input type="date" name="date" required />

@@ -60,29 +60,40 @@ def dash(request):
 
 
 # STOCK
-
-
 def stock_view(request):
-
     if request.method == "POST":
+        item_name = request.POST.get("item_name")
+        quantity = int(request.POST.get("quantity") or 0)
+        unit_cost = float(request.POST.get("unit_cost") or 0)
+        unit_price = float(request.POST.get("unit_price") or 0)
 
+        # Prevent empty values
+        if not item_name:
+            return render(request, "stock.html", {
+                "error": "Item name is required"
+            })
+        
+
+        if quantity <= 0 or unit_cost <= 0 or unit_price <= 0:
+            return render(request, "stock.html", {
+                "error": "All values must be greater than 0"
+            })
+
+        # ONLY runs on POST
         Stock.objects.create(
-            item_name=request.POST.get("item_name"),
-            quantity=request.POST.get("quantity"),
-            unit_cost=request.POST.get("unit_cost"),
-            unit_price=request.POST.get("unit_price"),
+            item_name=item_name,
+            quantity=quantity,
+            unit_cost=unit_cost,
+            unit_price=unit_price,
+            date=request.POST.get("date"),
             specification=request.POST.get("specification"),
             payment_method=request.POST.get("payment_method"),
-            date=request.POST.get("date")
         )
 
-        return redirect("stock")
-
     stocks = Stock.objects.all()
+    return render(request, "stock.html", {"stocks": stocks})
 
-    return render(request, "stock.html", {
-        "stocks": stocks
-    })
+
 
 
 
@@ -97,6 +108,12 @@ def sales(request):
         unit_price = float(request.POST.get("unit_price") or 0)
 
         total = quantity * unit_price#calculate total automatically
+
+         # Prevent negative values
+        if quantity <= 0 or unit_price <= 0:#this will prevent negative values
+            return render(request, "sales.html", {
+                "error": "Quantity and Unit Price must be greater than 0"
+            })
 
         Sale.objects.create(
             item_name=request.POST.get("item_name"),
@@ -121,6 +138,15 @@ def sales(request):
 def deposit(request):
 
     if request.method == "POST":
+
+        amount = float(request.POST.get("amount") or 0)
+
+        # Prevent negative values
+        if amount <= 0:
+            return render(request, "deposit.html", {
+                "error": "Amount must be greater than 0"
+            })
+
 
         Deposit.objects.create(
             amount=request.POST.get("amount"),

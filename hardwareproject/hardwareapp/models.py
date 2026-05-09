@@ -32,6 +32,7 @@ class Sale(models.Model):
     customer_contact = models.CharField(max_length=14)
     item_type = models.CharField(max_length=100)
     item_brand = models.CharField(max_length=100)
+    
 
     date = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
