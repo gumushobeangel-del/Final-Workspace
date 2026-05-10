@@ -53,13 +53,68 @@ def login_view(request):
 
 
 # DASHBOARD
+from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum
+from datetime import datetime, timedelta
+
+from .models import Stock, Sale, Supplier
 
 
 def dash(request):
-    return render(request, "dash.html")
+    # TOTAL PRODUCTS
+    total_products = Stock.objects.count()
+
+    # LOW STOCK
+    low_stock = Stock.objects.filter(quantity__lt=20).count()
+
+    # SUPPLIERS
+    suppliers = Supplier.objects.count()
+
+    # TOTAL SALES
+    total_sales = Sale.objects.aggregate(total=Sum('total'))['total'] or 0
+
+    # DATES
+    today = datetime.today().date()
+    week = today - timedelta(days=7)
+    month = today.replace(day=1)
+
+    # TODAY SALES (FIXED - NO __date!)
+    today_sales = Sale.objects.filter(date=today).aggregate(total=Sum('total'))['total'] or 0
+
+    # WEEK SALES
+    week_sales = Sale.objects.filter(date__gte=week).aggregate(total=Sum('total'))['total'] or 0
+
+    # MONTH SALES
+    month_sales = Sale.objects.filter(date__gte=month).aggregate(total=Sum('total'))['total'] or 0
+
+    # TOP PRODUCT
+    top_product = (
+        Sale.objects.values('item_name')
+        .annotate(total_qty=Sum('quantity'))
+        .order_by('-total_qty')
+        .first()
+    )
+
+    # STOCK LIST
+    stocks = Stock.objects.all()
+
+    context = {
+        "total_products": total_products,
+        "low_stock": low_stock,
+        "suppliers": suppliers,
+        "total_sales": total_sales,
+        "today_sales": today_sales,
+        "week_sales": week_sales,
+        "month_sales": month_sales,
+        "top_product": top_product,
+        "stocks": stocks,
+    }
+
+    return render(request, "dash.html", context)
 
 
-# STOCK
+
+#stock
 def stock_view(request):
     if request.method == "POST":
         item_name = request.POST.get("item_name")
@@ -73,7 +128,7 @@ def stock_view(request):
                 "error": "Item name is required"
             })
         
-
+        #prevents negatives
         if quantity <= 0 or unit_cost <= 0 or unit_price <= 0:
             return render(request, "stock.html", {
                 "error": "All values must be greater than 0"
@@ -100,23 +155,40 @@ def stock_view(request):
 # SALES
 
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from .models import Stock, Sale
+
 def sales(request):
-
     if request.method == "POST":
-
+        item_name = request.POST.get("item_name")
         quantity = int(request.POST.get("quantity") or 0)
         unit_price = float(request.POST.get("unit_price") or 0)
 
-        total = quantity * unit_price#calculate total automatically
+        total = quantity * unit_price#calculates automatically
 
-         # Prevent negative values
-        if quantity <= 0 or unit_price <= 0:#this will prevent negative values
+        #stops users from entering negative values
+        if quantity <= 0 or unit_price <= 0:
             return render(request, "sales.html", {
                 "error": "Quantity and Unit Price must be greater than 0"
             })
 
+        # GET STOCK
+        stock = get_object_or_404(Stock, item_name=item_name)
+
+        # CHECK STOCK
+        if stock.quantity < quantity:#this will unable sales from entering when he enter the stock beyond
+            return render(request, "sales.html", {
+                "error": "Not enough stock available!"
+            })
+
+        # REDUCE STOCK
+        stock.quantity -= quantity#this reduces stock
+        stock.save()
+
+        # SAVE SALE (ONLY ONCE)
         Sale.objects.create(
-            item_name=request.POST.get("item_name"),
+            item_name=item_name,
             quantity=quantity,
             unit_price=unit_price,
             total=total,
@@ -129,12 +201,11 @@ def sales(request):
 
         return redirect("sales")
 
+    # GET REQUEST → SHOW PAGE
     sales = Sale.objects.all().order_by('-id')
     return render(request, "sales.html", {"sales": sales})
 
-# DEPOSIT
-
-
+#Deposit
 def deposit(request):
 
     if request.method == "POST":
@@ -201,10 +272,7 @@ def suppliers(request):
 
 
 # EDIT STOCK
-
-
 def edit_stock(request, id):
-
     stock = get_object_or_404(Stock, id=id)
 
     if request.method == "POST":
@@ -215,16 +283,17 @@ def edit_stock(request, id):
         stock.unit_price = request.POST.get("unit_price")
         stock.specification = request.POST.get("specification")
         stock.payment_method = request.POST.get("payment_method")
-        stock.date = request.POST.get("date")
+
+        # FIX DATE ISSUE
+        date = request.POST.get("date")
+        if date:
+            stock.date = date
 
         stock.save()
 
         return redirect("stock")
 
-    return render(request, "edit_stock.html", {
-        "stock": stock
-    })
-
+    return render(request, "edit_stock.html", {"stock": stock})
 
 def delete_stock(request, id):
 
@@ -234,8 +303,6 @@ def delete_stock(request, id):
 
 
 # EDIT SALES
-
-
 def edit_sales(request, id):
 
     sale = get_object_or_404(Sale, id=id)
@@ -274,8 +341,6 @@ def delete_sale(request, id):
 
 
 # EDIT DEPOSIT
-
-
 def edit_deposit(request, id):
 
     deposit = get_object_or_404(Deposit, id=id)
@@ -307,8 +372,6 @@ def delete_deposit(request, id):
 
 
 # EDIT SUPPLIER
-
-
 def edit_supplier(request, id):
 
     supplier = get_object_or_404(Supplier, id=id)

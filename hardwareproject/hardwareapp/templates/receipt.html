@@ -1,202 +1,63 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Receipt</title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
     body {
-      background: linear-gradient(135deg, #eef3f8, #dfe9f3);
-      min-height: 100vh;
+      font-family: Arial;
+      background: #eef3f8;
       display: flex;
       justify-content: center;
-      align-items: center;
       padding: 20px;
     }
 
-    .receipt-box {
+    .box {
       width: 420px;
-      background: #fff;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      border-top: 8px solid #1e2a38;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
 
-    .receipt-header {
-      background: #1e2a38;
-      color: white;
-      text-align: center;
-      padding: 25px 20px;
-    }
-
-    .receipt-header h2 {
-      font-size: 28px;
-      letter-spacing: 2px;
-      margin-bottom: 5px;
-    }
-
-    .receipt-header p {
-      font-size: 13px;
-      opacity: 0.8;
-    }
-
-    .receipt-body {
-      padding: 25px;
-    }
-
-    .receipt-info {
-      margin-bottom: 20px;
-    }
-
-    .receipt-info .row {
+    .row {
       display: flex;
       justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px dashed #ddd;
-      font-size: 14px;
+      border-bottom: 1px dashed #ccc;
+      padding: 8px 0;
     }
 
-    .receipt-info .label {
-      font-weight: bold;
-      color: #1e2a38;
-    }
-
-    .receipt-info .value {
-      color: #444;
-    }
-
-    .total-box {
-      margin-top: 25px;
-      background: #f4f7fb;
-      padding: 15px;
-      border-radius: 10px;
+    .total {
       text-align: center;
-      border: 2px dashed #1e2a38;
-    }
-
-    .total-box h3 {
-      color: #1e2a38;
-      margin-bottom: 5px;
-      font-size: 16px;
-    }
-
-    .total-box p {
-      font-size: 24px;
-      font-weight: bold;
+      font-size: 22px;
       color: green;
-    }
-
-    .receipt-footer {
-      text-align: center;
-      margin-top: 20px;
-      color: #666;
-      font-size: 13px;
-    }
-
-    .btn-print {
-      width: 100%;
-      margin-top: 20px;
-      padding: 14px;
-      background: linear-gradient(135deg, #1e2a38, #2f4f6f);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 15px;
+      margin-top: 15px;
       font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .btn-print:hover {
-      background: #0f1720;
     }
 
     @media print {
-      body {
-        background: white;
-        padding: 0;
-      }
-
-      .btn-print {
-        display: none;
-      }
-
-      .receipt-box {
-        box-shadow: none;
-        border: 1px solid #000;
-      }
+      button { display: none; }
     }
   </style>
 </head>
 
-<body>
+<body onload="window.print()">
 
-  <div class="receipt-box">
+  <div class="box">
 
-    <div class="receipt-header">
-      <h2>RECEIPT</h2>
-      <p>Sales Receipt</p>
-    </div>
+    <h2 style="text-align:center;">RECEIPT</h2>
 
-    <div class="receipt-body">
+    <div class="row"><span>Item</span><span>{{ sale.item_name }}</span></div>
+    <div class="row"><span>Qty</span><span>{{ sale.quantity }}</span></div>
+    <div class="row"><span>Price</span><span>{{ sale.unit_price }}</span></div>
+    <div class="row"><span>Customer</span><span>{{ sale.customer_name }}</span></div>
+    <div class="row"><span>Contact</span><span>{{ sale.customer_contact }}</span></div>
+    <div class="row"><span>Date</span><span>{{ sale.date }}</span></div>
 
-      <div class="receipt-info">
+    <div class="total">UGX {{ sale.total }}</div>
 
-        <div class="row">
-          <span class="label">Item Name</span>
-          <span class="value">{{ sale.item_name }}</span>
-        </div>
+    <button onclick="window.print()">Print Again</button>
 
-        <div class="row">
-          <span class="label">Quantity</span>
-          <span class="value">{{ sale.quantity }}</span>
-        </div>
-
-        <div class="row">
-          <span class="label">Unit Price</span>
-          <span class="value">{{ sale.unit_price }}</span>
-        </div>
-
-        <div class="row">
-          <span class="label">Customer</span>
-          <span class="value">{{ sale.customer_name }}</span>
-        </div>
-
-        <div class="row">
-          <span class="label">Contact</span>
-          <span class="value">{{ sale.customer_contact }}</span>
-        </div>
-
-        <div class="row">
-          <span class="label">Date</span>
-          <span class="value">{{ sale.date }}</span>
-        </div>
-
-      </div>
-
-      <div class="total-box">
-        <h3>TOTAL AMOUNT</h3>
-        <p>UGX {{ sale.total }}</p>
-      </div>
-
-      <div class="receipt-footer">
-        Thank you for your purchase
-      </div>
-
-      <button class="btn-print" onclick="window.print()">
-        Print Receipt
-      </button>
-
-    </div>
   </div>
 
 </body>

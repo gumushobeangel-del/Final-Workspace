@@ -1,287 +1,287 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nyondo Hardware Dashboard</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nyondo Hardware Dashboard</title>
 
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #eef3f8, #dfe9f3);
-        padding-top: 80px;
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #eef3f8, #dfe9f3);
+      padding-top: 80px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1e2a38, #2f4f6f);
+      color: white;
+      padding: 20px;
+      font-size: 28px;
+      text-align: center;
+      font-weight: bold;
+      position: fixed;
+      top: 0;
+      left: 240px;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .sidebar {
+      background: #1e2a38;
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 240px;
+      height: 100vh;
+      overflow-y: auto;
+      padding-top: 80px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 15px;
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar a:hover {
+      background: #2f4f6f;
+      padding-left: 20px;
+    }
+
+    .logo {
+      text-align: center;
+      padding: 15px;
+    }
+
+    .logo-img {
+      width: 100px;
+    }
+
+    .main {
+      margin-left: 240px;
+      padding: 20px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      border-top: 4px solid #1e2a38;
+      animation: floatCard 3s ease-in-out infinite;/*makes the cards hover around*/
+      transition: transform 0.4s, box-shadow 0.4s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+
+    @keyframes floatCard {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    .card h3 {
+      margin: 0;
+      color: #1e2a38;
+      font-size: 18px;
+    }
+
+    .card p {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #2f4f6f;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-top: 20px;
+    }
+
+    th {
+      background: #1e2a38;
+      color: white;
+      padding: 10px;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+    }
+
+    tr:hover {
+      background: #eaf3ff;
+    }
+
+    .low {
+      color: red;
+      font-weight: bold;
+    }
+
+    .stock {
+      color: green;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      color: #444;
+    }
+
+    @media (max-width: 760px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
       }
 
       .header {
-        background: linear-gradient(135deg, #1e2a38, #2f4f6f);
-        color: white;
-        padding: 20px;
-        font-size: 28px;
-        text-align: center;
-        font-weight: bold;
-
-        position: fixed;
-        top: 0;
-        left: 240px;
-        right: 0;
-        z-index: 1000;
-      }
-
-      .sidebar {
-        background: #1e2a38;
-        color: white;
-
-        position: fixed;
-        top: 0;
         left: 0;
-        width: 240px;
-        height: 100vh;
-
-        overflow-y: auto;
-        padding-top: 80px;
-      }
-
-      .sidebar a {
-        display: block;
-        padding: 15px;
-        color: white;
-        text-decoration: none;
-        transition: 0.3s;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .sidebar a:hover {
-        background: #2f4f6f;
-        padding-left: 20px;
-      }
-
-      .logo {
-        text-align: center;
-        padding: 15px;
-      }
-
-      .logo-img {
-        width: 100px;
       }
 
       .main {
-        margin-left: 240px;
-        padding: 20px;
+        margin-left: 0;
       }
+    }
+  </style>
+</head>
 
-      .cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-      }
+<body>
 
-      .card {
-        background: white;
-        padding: 20px;
-        border-radius: 14px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        transition:
-          transform 0.4s ease,
-          box-shadow 0.4s ease;
-        border-top: 4px solid #1e2a38;
-
-        /* floating animation */
-        animation: floatCard 3s ease-in-out infinite; /*make cards hover around*/
-      }
-
-      .card:hover {
-        transform: translateY(-12px) scale(1.03) rotate(1deg);
-        cursor: pointer;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
-      }
-
-      /* FLOATING ANIMATION */
-      @keyframes floatCard {
-        0% {
-          transform: translateY(0px);
-        }
-
-        50% {
-          transform: translateY(-6px);
-        }
-
-        100% {
-          transform: translateY(0px);
-        }
-      }
-
-      .card h3 {
-        margin: 0;
-        color: #1e2a38;
-        font-size: 18px;
-      }
-
-      .card p {
-        font-size: 20px;
-        font-weight: bold;
-        margin-top: 10px;
-        color: #2f4f6f;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        table-layout: fixed;
-      }
-
-      th {
-        background: #1e2a38;
-        color: white;
-        padding: 10px;
-        font-size: 14px;
-      }
-
-      td {
-        padding: 12px;
-        border-bottom: 1px solid #eee;
-        font-size: 14px;
-        text-align: center;
-      }
-
-      tr:hover {
-        background: #eaf3ff;
-        cursor: pointer;
-      }
-
-      .low {
-        color: red;
-        font-weight: bold;
-      }
-
-      .stock {
-        color: green;
-        font-weight: bold;
-      }
-
-      footer {
-        text-align: center;
-        padding: 15px;
-        font-size: 14px;
-        color: #444;
-      }
-
-      @media (max-width: 760px) {
-        .sidebar {
-          position: relative;
-          width: 100%;
-          height: auto;
-        }
-
-        .header {
-          left: 0;
-        }
-
-        .main {
-          margin-left: 0;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="sidebar">
-      <div class="logo">
-        <img src="{% static 'images/logo22.png' %}" class="logo-img" />
-      </div>
-
-      <a href="{% url 'dash' %}">🏠 Dashboard</a>
-      <a href="{% url 'log' %}">➕ Log in</a>
-      <a href="{% url 'sales' %}">💰 Add Sale</a>
-      <a href="{% url 'deposit' %}">🏦 Customer Deposit</a>
-      <a href="{% url 'stock' %}">📦 Add Stock</a>
-      <a href="{% url 'supplier' %}">🚚 Suppliers</a>
+  <div class="sidebar">
+    <div class="logo">
+      <img src="{% static 'images/logo22.png' %}" class="logo-img">
     </div>
 
-    <div class="header">Nyondo General Hardware Dashboard</div>
+    <a href="{% url 'dash' %}">🏠 Dashboard</a>
+    <a href="{% url 'log' %}">➕ Log in</a>
+    <a href="{% url 'sales' %}">💰 Add Sale</a>
+    <a href="{% url 'deposit' %}">🏦 Customer Deposit</a>
+    <a href="{% url 'stock' %}">📦 Add Stock</a>
+    <a href="{% url 'supplier' %}">🚚 Suppliers</a>
+  </div>
 
-    <div class="main">
-      <div class="cards">
-        <div class="card">
-          <h3>Total Products</h3>
-          <p>670</p>
-        </div>
+  <div class="header">Nyondo General Hardware Dashboard</div>
 
-        <div class="card">
-          <h3>Total Sales</h3>
-          <p>UGX 6,500,000</p>
-        </div>
+  <div class="main">
 
-        <div class="card">
-          <h3>Low Stock Items</h3>
-          <p>63</p>
-        </div>
-
-        <div class="card">
-          <h3>Suppliers</h3>
-          <p>18</p>
-        </div>
+    <!-- CARDS -->
+    <div class="cards">
+      <div class="card">
+        <h3>Total Products</h3>
+        <p>{{ total_products }}</p>
       </div>
 
-      <h2>Stock Overview</h2>
-
-      <table>
-        <tr>
-          <th>Product</th>
-          <th>Quantity</th>
-          <th>Status</th>
-          <th>Price</th>
-        </tr>
-
-        <tr>
-          <td>Cement</td>
-          <td>50</td>
-          <td class="stock">In Stock</td>
-          <td>UGX 55,000</td>
-        </tr>
-
-        <tr>
-          <td>Paint</td>
-          <td>13</td>
-          <td class="low">Low Stock</td>
-          <td>UGX 45,000</td>
-        </tr>
-      </table>
-
-      <h2>Sales Overview</h2>
-
-      <div class="cards">
-        <div class="card">
-          <h3>Today's Sales</h3>
-          <p>UGX 1,000,000</p>
-        </div>
-
-        <div class="card">
-          <h3>This Week</h3>
-          <p>UGX 7,200,000</p>
-        </div>
-
-        <div class="card">
-          <h3>This Month</h3>
-          <p>UGX 15,500,000</p>
-        </div>
-
-        <div class="card">
-          <h3>Top Product</h3>
-          <p>Cement</p>
-        </div>
+      <div class="card">
+        <h3>Total Sales</h3>
+        <p>UGX {{ total_sales|default:0 }}</p>
       </div>
 
-      <canvas id="salesChart"></canvas>
+      <div class="card">
+        <h3>Low Stock Items</h3>
+        <p>{{ low_stock }}</p>
+      </div>
+
+      <div class="card">
+        <h3>Suppliers</h3>
+        <p>{{ suppliers }}</p>
+      </div>
     </div>
 
-    <footer>
-      &copy; 2026 @Nyondo General Hardware Ltd All rights reserved
-    </footer>
-  </body>
+    <!-- STOCK TABLE -->
+    <h2>Stock Overview</h2>
+
+    <table>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Status</th>
+        <th>Price</th>
+      </tr>
+
+      {% for item in stocks %}
+      <tr>
+        <td>{{ item.item_name }}</td>
+        <td>{{ item.quantity }}</td>
+
+        <td class="{% if item.quantity < 20 %}low{% else %}stock{% endif %}">
+          {% if item.quantity < 20 %}
+            Low Stock
+          {% else %}
+            In Stock
+          {% endif %}
+        </td>
+
+        <td>UGX {{ item.unit_price }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4">No stock available</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <!-- SALES -->
+    <h2>Sales Overview</h2>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Today's Sales</h3>
+        <p>UGX {{ today_sales|default:0 }}</p>
+      </div>
+
+      <div class="card">
+        <h3>This Week</h3>
+        <p>UGX {{ week_sales|default:0 }}</p>
+      </div>
+
+      <div class="card">
+        <h3>This Month</h3>
+        <p>UGX {{ month_sales|default:0 }}</p>
+      </div>
+
+      <div class="card">
+        <h3>Top Product</h3>
+        <p>
+          {% if top_product %}
+            {{ top_product.item_name }}
+          {% else %}
+            No sales yet
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <canvas id="salesChart"></canvas>
+
+  </div>
+
+  <footer>
+    &copy; 2026 @Nyondo General Hardware Ltd
+  </footer>
+
+</body>
 </html>
