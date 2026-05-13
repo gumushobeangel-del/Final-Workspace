@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Supplier Credit Scheme</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: #f4f6f9;
+        padding: 20px;
+      }
+
+      /* MAIN CONTAINER */
+      .container {
+        display: flex;
+        gap: 20px;
+      }
+
+      /* FORM BOX */
+      .form-box {
+        width: 35%;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+        border-top: 2px solid #1e2a38;
+      }
+
+      .form-box h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #1e2a38;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 8px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #1e2a38;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background: #1e2a38;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #0f1720;
+      }
+
+      /* TABLE BOX */
+      .table-box {
+        width: 65%;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
+
+        border-top: 2px solid #1e2a38;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      th {
+        background: #1e2a38;
+        color: white;
+        padding: 10px;
+      }
+
+      td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+      }
+
+      tr:hover {
+        background: #f3f8ff;
+      }
+
+      /* BALANCE COLORS */
+      .low {
+        color: red;
+        font-weight: bold;
+      }
+
+      .good {
+        color: green;
+        font-weight: bold;
+      }
+
+      .btn {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        padding: 12px;
+        background: linear-gradient(135deg, #1e2a38, #2f4f6f);
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background: #0f1720;
+      }
+
+      /* ACTION BUTTONS */
+      .actions {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+      }
+
+      .edit-btn {
+        background: #facc15;
+        color: black;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .delete-btn {
+        background: #ef4444;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .edit-btn:hover {
+        background: #eab308;
+      }
+
+      .delete-btn:hover {
+        background: #dc2626;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+
+        .form-box,
+        .table-box {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- FORM -->
+      <div class="form-box">
+        <h2>Supplier Credit</h2>
+
+        <form method="POST">
+          {% csrf_token %}
+
+          <input
+            type="text"
+            name="supplier_name"
+            placeholder="Supplier Name"
+            required
+          />
+
+          <input
+            type="text"
+            name="item_name"
+            placeholder="Item Name"
+            required
+          />
+
+          <input
+            type="number"
+            name="quantity"
+            min="1"
+            placeholder="Quantity"
+            required
+          />
+
+          <input
+            type="number"
+            name="unit_price"
+            min="1"
+            placeholder="Unit Price"
+            required
+          />
+
+          <input
+            type="number"
+            name="amount_paid"
+            min="0"
+            placeholder="Amount Paid"
+          />
+
+          <input type="date" name="date" required />
+
+          <button type="submit">Save Credit</button>
+          <a href="{% url 'dash' %}" class="btn">Back to Dashboard</a>
+        </form>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-box">
+        <h2>Credit Records</h2>
+
+        <table>
+          <tr>
+            <th>Supplier</th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Paid</th>
+            <th>Balance</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+
+          {% for c in credits %}
+          <tr>
+            <td>{{ c.supplier_name }}</td>
+            <td>{{ c.item_name }}</td>
+            <td>{{ c.quantity }}</td>
+            <td>{{ c.total_cost }}</td>
+            <td>{{ c.amount_paid }}</td>
+
+            <!-- FIXED BALANCE (ONLY ONCE) -->
+            <td class="{% if c.balance > 0 %}low{% else %}good{% endif %}">
+              {{ c.balance }}
+            </td>
+
+            <td>{{ c.date }}</td>
+
+            <!-- ACTIONS -->
+            <td class="actions">
+              <a href="{% url 'edit_supplier_credit' c.id %}" class="edit-btn"
+                >Edit</a
+              >
+              <a
+                href="{% url 'delete_supplier_credit' c.id %}"
+                class="delete-btn"
+                >Delete</a
+              >
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

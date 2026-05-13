@@ -21,6 +21,7 @@ urlpatterns = [
     path('stock/', views.stock_view, name='stock'),
     path('supplier/', views.suppliers, name='supplier'),
     path('dash/', views.dash, name='dash'),
+    path('credit/', views.supplier_credit, name='supplier_credit'),
 
     # Transactions
     path('deposit/', views.deposit, name='deposit'),
@@ -41,4 +42,10 @@ urlpatterns = [
     # Supplier actions
     path('edit_supplier/<int:id>/', views.edit_supplier, name='edit_supplier'),
     path('delete_supplier/<int:id>/', views.delete_supplier, name='delete_supplier'),
+
+    # Credit actions
+    path('credit/edit/<int:id>/', views.edit_supplier_credit, name='edit_supplier_credit'),
+    path('credit/delete/<int:id>/', views.delete_supplier_credit, name='delete_supplier_credit'),
 ]
+
+   

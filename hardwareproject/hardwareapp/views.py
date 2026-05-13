@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 
-from .models import Stock, Sale, Deposit, Receipt, Supplier,Register
+from .models import Stock, Sale, Deposit, Receipt, Supplier,Register,Credit
 
 
 # HOME
@@ -184,7 +184,6 @@ def stock_view(request):
                 "error": "All values must be greater than 0"
             })
 
-        # ONLY runs on POST
         Stock.objects.create(
             item_name=item_name,
             quantity=quantity,
@@ -212,8 +211,8 @@ def sales(request):
         quantity = int(request.POST.get("quantity") or 0)
         unit_price = float(request.POST.get("unit_price") or 0)
 
-        # VALIDATION
-        if quantity <= 0 or unit_price <= 0:
+       #validation rule that prevents zeros and negatives
+        if quantity <= 0 or unit_price <= 0: # prevents negatives
             return render(request, "sales.html", {
                 "error": "Quantity and Unit Price must be greater than 0"
             })
@@ -231,7 +230,7 @@ def sales(request):
         stock.quantity -= quantity
         stock.save()
 
-        total = quantity * unit_price
+        total = quantity * unit_price#calculates automatically
 
         # SAVE SALE
         Sale.objects.create(
@@ -258,7 +257,7 @@ def sales(request):
 
 
 #Deposit
-# Put this at the TOP of views.py (outside the function)
+
 ITEM_PRICES = {
     "Cement": 30000,
     "Glass": 15000,
@@ -295,6 +294,7 @@ def deposit(request):
             })
 
         # Calculations
+        #variable that calculates the total cost of the deposit based on the item price and quantity
         total_cost = price * quantity
         balance = amount - total_cost
 
@@ -313,7 +313,6 @@ def deposit(request):
 
         return redirect("deposit")
 
-    # GET request (no calculations here)
     deposits = Deposit.objects.all()
 
     return render(request, "deposit.html", {
@@ -399,9 +398,29 @@ def edit_sales(request, id):
                 "error": "Quantity and Unit Price must be greater than 0"
             })
 
+        # GET STOCK ITEM
+        stock = get_object_or_404(Stock, item_name=sale.item_name)
+
+        # RETURN OLD QUANTITY BACK TO STOCK
+        stock.quantity += sale.quantity
+
+        # CHECK IF NEW QUANTITY IS AVAILABLE
+        if stock.quantity < quantity:
+            return render(request, "edit_sales.html", {
+                "sale": sale,
+                "error": "Not enough stock available!"
+            })
+
+        # DEDUCT NEW QUANTITY
+        stock.quantity -= quantity
+        stock.save()
+
+        # UPDATE SALE
         sale.item_name = request.POST.get("item_name")
         sale.quantity = quantity
         sale.unit_price = unit_price
+
+        # RECALCULATE TOTAL (THIS IS YOUR MAIN GOAL)
         sale.total = quantity * unit_price
 
         sale.customer_name = request.POST.get("customer_name")
@@ -409,7 +428,6 @@ def edit_sales(request, id):
         sale.item_type = request.POST.get("item_type")
         sale.item_brand = request.POST.get("item_brand")
 
-        # SAFE DATE HANDLING 
         date = request.POST.get("date")
         if date:
             sale.date = date
@@ -423,9 +441,8 @@ def edit_sales(request, id):
     })
 
 def delete_sale(request, id):
-
-    Sale.objects.filter(id=id).delete()
-
+    sale = get_object_or_404(Sale, id=id)
+    sale.delete()
     return redirect("sales")
 
 
@@ -491,3 +508,92 @@ def delete_supplier(request, id):
     supplier.delete()
 
     return redirect("supplier")
+
+
+def supplier_credit(request):
+
+    if request.method == "POST":
+
+        supplier_name = request.POST.get("supplier_name")
+        item_name = request.POST.get("item_name")
+
+        quantity = int(request.POST.get("quantity") or 0)
+        unit_price = float(request.POST.get("unit_price") or 0)
+
+        amount_paid = request.POST.get("amount_paid")
+        if not amount_paid:
+            amount_paid = 0
+        amount_paid = float(amount_paid)
+
+        date = request.POST.get("date")
+
+        # VALIDATION
+        if quantity <= 0 or unit_price <= 0:
+            return render(request, "credit.html", {
+                "error": "Quantity and Unit Price must be greater than 0"
+            })
+
+        # CALCULATIONS
+        total_cost = quantity * unit_price
+        balance = total_cost - amount_paid
+
+        # Optional: prevent negative balance
+        if balance < 0:
+            balance = 0
+
+        # SAVE
+        Credit.objects.create(
+            supplier_name=supplier_name,
+            item_name=item_name,
+            quantity=quantity,
+            unit_price=unit_price,
+            amount_paid=amount_paid,
+            total_cost=total_cost,
+            balance=balance,
+            date=date
+        )
+
+        return redirect("supplier_credit")
+
+    credits = Credit.objects.all().order_by("-id")
+
+    return render(request, "credit.html", {
+        "credits": credits
+    })
+
+
+def edit_supplier_credit(request, id):
+    credit = get_object_or_404(Credit, id=id)
+
+    if request.method == "POST":
+
+        credit.supplier_name = request.POST.get("supplier_name")
+        credit.item_name = request.POST.get("item_name")
+
+        quantity = int(request.POST.get("quantity") or 0)
+        unit_price = float(request.POST.get("unit_price") or 0)
+        amount_paid = float(request.POST.get("amount_paid") or 0)
+
+        credit.quantity = quantity
+        credit.unit_price = unit_price
+        credit.amount_paid = amount_paid
+        credit.date = request.POST.get("date")
+
+        # RECALCULATE
+        credit.total_cost = quantity * unit_price
+        credit.balance = credit.total_cost - amount_paid
+
+        if credit.balance < 0:
+            credit.balance = 0
+
+        credit.save()
+
+        return redirect("supplier_credit")
+
+    return render(request, "edit_credit.html", {
+        "credit": credit
+    })
+
+def delete_supplier_credit(request, id):
+    Credit.objects.filter(id=id).delete()
+    return redirect("supplier_credit")
