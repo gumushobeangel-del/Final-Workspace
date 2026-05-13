@@ -62,8 +62,14 @@
         <label>Method</label>
         <input name="method" value="{{ deposit.method }}" />
 
+        <label>Quantity</label>
+        <input name="quantity" value="{{ deposit.quantity }}" />
+
+        <label>Balance</label>
+        <input name="balance" value="{{ deposit.balance }}" />  
+
         <label>Date</label>
-        <input type="date" name="date" value="{{ sale.date }}" />
+        <input type="date" name="date" value="{{ deposit.date|date:'Y-m-d' }}">
 
         <button type="submit">Update</button>
       </form>

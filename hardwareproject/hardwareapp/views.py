@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 
-from .models import Stock, Sale, Deposit, Receipt, Supplier
+from .models import Stock, Sale, Deposit, Receipt, Supplier,Register
 
 
 # HOME
@@ -10,47 +10,99 @@ from .models import Stock, Sale, Deposit, Receipt, Supplier
 def index(request):
     return render(request, "index.html")
 
-
+#sign
 def sign(request):
     if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         role = request.POST.get("role")
 
-        if role == "admin":
-            return redirect("dash")
+        users = {
+            "admin": {"username": "Angellina", "password": "angel266"},
+            "sales": {"username": "kevin", "password": "kevin256"},
+            "stock_manager": {"username": "alvin", "password": "alvie233"},
+        }
 
-        elif role == "sales":
-            return redirect("sales")
+        if role in users:
+            if (
+                username.lower().strip() == users[role]["username"].lower().strip()
+                and password == users[role]["password"]
+            ):
+                request.session["role"] = role
+                request.session["username"] = username
 
-        elif role == "stock_manager":
-            return redirect("stock")
+                redirect_map = {
+                    "admin": "dash",
+                    "sales": "sales",
+                    "stock_manager": "stock",
+                }
+
+                return redirect(redirect_map[role])
+
+        return render(request, "sign.html", {"error": "Wrong login details"})
 
     return render(request, "sign.html")
 
 
-
-# LOGIN
-
-
-def login_view(request):
-
+def register(request):
     if request.method == "POST":
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
 
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-
-        user = authenticate(
-            request,
-            username=email,
-            password=password
+        Register.objects.create(
+            name=name,
+            phone=phone,
+            email=email,
+            address=address
         )
 
-        if user:
-            login(request, user)
+        return redirect('register')
+
+    customers = Register.objects.all().order_by('-id')
+
+    return render(request, 'register.html', {'customers': customers})
+
+def edit_customer(request, id):
+    customer = get_object_or_404(Register, id=id)
+
+    if request.method == "POST":
+        customer.name = request.POST.get("name")
+        customer.phone = request.POST.get("phone")
+        customer.email = request.POST.get("email")
+        customer.address = request.POST.get("address")
+
+        customer.save()
+        return redirect("register")
+
+    return render(request, "edit_customer.html", {"customer": customer})
+
+def delete_customer(request, id):
+    customer = get_object_or_404(Register, id=id)
+    customer.delete()
+    return redirect("register")
+
+
+#login
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        # ONLY ADMIN ALLOWED
+        if username == "Angellina" and password == "angel266":
+
+            request.session["role"] = "admin"
+            request.session["username"] = username
+
             return redirect("dash")
 
+        return render(request, "log.html", {
+            "error": "Only admin can log in here"
+        })
+
     return render(request, "log.html")
-
-
 
 # DASHBOARD
 from django.shortcuts import render, redirect, get_object_or_404
@@ -61,6 +113,12 @@ from .models import Stock, Sale, Supplier
 
 
 def dash(request):
+    role = request.session.get("role")
+
+    # BLOCK NON-ADMINS
+    if role != "admin":
+        return redirect("sign") 
+
     # TOTAL PRODUCTS
     total_products = Stock.objects.count()
 
@@ -73,21 +131,14 @@ def dash(request):
     # TOTAL SALES
     total_sales = Sale.objects.aggregate(total=Sum('total'))['total'] or 0
 
-    # DATES
     today = datetime.today().date()
     week = today - timedelta(days=7)
     month = today.replace(day=1)
 
-    # TODAY SALES (FIXED - NO __date!)
     today_sales = Sale.objects.filter(date=today).aggregate(total=Sum('total'))['total'] or 0
-
-    # WEEK SALES
     week_sales = Sale.objects.filter(date__gte=week).aggregate(total=Sum('total'))['total'] or 0
-
-    # MONTH SALES
     month_sales = Sale.objects.filter(date__gte=month).aggregate(total=Sum('total'))['total'] or 0
 
-    # TOP PRODUCT
     top_product = (
         Sale.objects.values('item_name')
         .annotate(total_qty=Sum('quantity'))
@@ -95,7 +146,6 @@ def dash(request):
         .first()
     )
 
-    # STOCK LIST
     stocks = Stock.objects.all()
 
     context = {
@@ -149,46 +199,43 @@ def stock_view(request):
     return render(request, "stock.html", {"stocks": stocks})
 
 
-
-
-
 # SALES
-
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Stock, Sale
 
 def sales(request):
+
     if request.method == "POST":
-        item_name = request.POST.get("item_name")
+
+        stock_id = request.POST.get("stock_id")
         quantity = int(request.POST.get("quantity") or 0)
         unit_price = float(request.POST.get("unit_price") or 0)
 
-        total = quantity * unit_price#calculates automatically
-
-        #stops users from entering negative values
+        # VALIDATION
         if quantity <= 0 or unit_price <= 0:
             return render(request, "sales.html", {
                 "error": "Quantity and Unit Price must be greater than 0"
             })
 
-        # GET STOCK
-        stock = get_object_or_404(Stock, item_name=item_name)
+        # GET STOCK (SAFE)
+        stock = get_object_or_404(Stock, id=stock_id)
 
         # CHECK STOCK
-        if stock.quantity < quantity:#this will unable sales from entering when he enter the stock beyond
+        if stock.quantity < quantity:
             return render(request, "sales.html", {
                 "error": "Not enough stock available!"
             })
 
         # REDUCE STOCK
-        stock.quantity -= quantity#this reduces stock
+        stock.quantity -= quantity
         stock.save()
 
-        # SAVE SALE (ONLY ONCE)
+        total = quantity * unit_price
+
+        # SAVE SALE
         Sale.objects.create(
-            item_name=item_name,
+            item_name=stock.item_name,
             quantity=quantity,
             unit_price=unit_price,
             total=total,
@@ -201,43 +248,77 @@ def sales(request):
 
         return redirect("sales")
 
-    # GET REQUEST → SHOW PAGE
-    sales = Sale.objects.all().order_by('-id')
-    return render(request, "sales.html", {"sales": sales})
+    stocks = Stock.objects.all().order_by("-id")
+    sales = Sale.objects.all().order_by("-id")
+
+    return render(request, "sales.html", {
+        "stocks": stocks,
+        "sales": sales
+    })
+
 
 #Deposit
+# Put this at the TOP of views.py (outside the function)
+ITEM_PRICES = {
+    "Cement": 30000,
+    "Glass": 15000,
+    "Iron Sheets": 20000,
+    "Iron Bars": 27000,
+}
+
+
 def deposit(request):
 
     if request.method == "POST":
 
         amount = float(request.POST.get("amount") or 0)
+        quantity = int(request.POST.get("quantity") or 0)
+        item_name = request.POST.get("item_name")
 
-        # Prevent negative values
+        # Validation
         if amount <= 0:
             return render(request, "deposit.html", {
                 "error": "Amount must be greater than 0"
             })
 
+        if quantity <= 0:
+            return render(request, "deposit.html", {
+                "error": "Quantity must be greater than 0"
+            })
 
+        # Get price
+        price = ITEM_PRICES.get(item_name, 0)
+
+        if price == 0:
+            return render(request, "deposit.html", {
+                "error": "Invalid item selected"
+            })
+
+        # Calculations
+        total_cost = price * quantity
+        balance = amount - total_cost
+
+        # Save
         Deposit.objects.create(
-            amount=request.POST.get("amount"),
+            amount=amount,
+            quantity=quantity,
+            balance=balance,
             name=request.POST.get("name"),
             phone=request.POST.get("phone"),
             method=request.POST.get("method"),
-            item_name=request.POST.get("item_name"),
+            item_name=item_name,
             nin=request.POST.get("nin") or "N/A",
             date=request.POST.get("date")
         )
 
         return redirect("deposit")
 
+    # GET request (no calculations here)
     deposits = Deposit.objects.all()
 
     return render(request, "deposit.html", {
         "deposits": deposits
     })
-
-
 # RECEIPT
 
 def receipt(request, id):
@@ -284,7 +365,7 @@ def edit_stock(request, id):
         stock.specification = request.POST.get("specification")
         stock.payment_method = request.POST.get("payment_method")
 
-        # FIX DATE ISSUE
+
         date = request.POST.get("date")
         if date:
             stock.date = date
@@ -312,6 +393,12 @@ def edit_sales(request, id):
         quantity = int(request.POST.get("quantity") or 0)
         unit_price = float(request.POST.get("unit_price") or 0)
 
+        if quantity <= 0 or unit_price <= 0:
+            return render(request, "edit_sales.html", {
+                "sale": sale,
+                "error": "Quantity and Unit Price must be greater than 0"
+            })
+
         sale.item_name = request.POST.get("item_name")
         sale.quantity = quantity
         sale.unit_price = unit_price
@@ -321,7 +408,11 @@ def edit_sales(request, id):
         sale.customer_contact = request.POST.get("customer_contact")
         sale.item_type = request.POST.get("item_type")
         sale.item_brand = request.POST.get("item_brand")
-        sale.date = request.POST.get("date")
+
+        # SAFE DATE HANDLING 
+        date = request.POST.get("date")
+        if date:
+            sale.date = date
 
         sale.save()
 
@@ -330,7 +421,6 @@ def edit_sales(request, id):
     return render(request, "edit_sales.html", {
         "sale": sale
     })
-
 
 def delete_sale(request, id):
 

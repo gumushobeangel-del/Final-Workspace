@@ -66,7 +66,7 @@
         <input name="item_brand" value="{{ sale.item_brand }}" />
 
         <label>Date</label>
-        <input type="date" name="date" value="{{ sale.date }}" />
+        <input type="date" name="date" value="{{ sale.date|date:'Y-m-d' }}" />
         <button type="submit">Update</button>
       </form>
     </div>

@@ -150,52 +150,55 @@
       <div class="form-box">
         <h2>REGISTER SALE</h2>
 
-        <form method="POST">
-          {% csrf_token %}
+   <form method="POST">
+  {% csrf_token %}
 
-          <label>Item Name</label>
-          <select name="item_name" required>
-            <option value="">Select Item</option>
-            <option value="Cement">Cement</option>
-            <option value="Nails">Nails</option>
-            <option value="Paint">Paint</option>
-            <option value="Wood">Wood</option>
-            <option value="Glass">Glass</option>
-            <option>Ironsheets</option>
-          </select>
+  {% if error %}
+    <p style="color:red;">{{ error }}</p>
+  {% endif %}
 
-          <label>Quantity</label>
-          <input type="number" name="quantity" min="1" required />
+  <label>Item Name</label>
+  <select name="stock_id" required>
+    <option value="">Select Item</option>
 
-          <label>Date</label>
-          <input type="date" name="date" required />
+    {% for stock in stocks %}
+      <option value="{{ stock.id }}">
+        {{ stock.item_name }} ({{ stock.quantity }} available)
+      </option>
+    {% endfor %}
+  </select>
 
-          <label>Unit Price</label>
-          <input type="number" name="unit_price" min="1" required />
+  <label>Quantity</label>
+  <input type="number" name="quantity" min="1" required />
 
-          <label>Customer Name</label>
-          <input type="text" name="customer_name" required />
+  <label>Date</label>
+  <input type="date" name="date" required />
 
-          <label>Customer Contact</label>
-          <input
-            type="text"
-            name="customer_contact"
-            maxlength="14"
-            required
-            placeholder="Enter phone number"
-          />
-          <label>Item Type</label>
-          <input type="text" name="item_type" required />
+  <label>Unit Price</label>
+  <input type="number" name="unit_price" min="1" required />
 
-          <label>Item Brand</label>
-          <input type="text" name="item_brand" required />
+  <label>Customer Name</label>
+  <input type="text" name="customer_name" required />
 
-          <button type="submit">Add Sale</button>
+  <label>Customer Contact</label>
+  <input
+    type="text"
+    name="customer_contact"
+    placeholder="+256740230081"
+    pattern="^\+256[0-9]{9}$"
+    maxlength="13"
+    required
+  />
 
-          <a href="{% url 'deposit' %}" class="btn">
-            Register Customer Deposit
-          </a>
-        </form>
+  <label>Item Type</label>
+  <input type="text" name="item_type" required />
+
+  <label>Item Brand</label>
+  <input type="text" name="item_brand" required />
+
+  <button type="submit">Add Sale</button>
+  <a href="{% url 'deposit' %}" class="btn">Register Deposit</a>
+</form>
       </div>
 
       <!-- TABLE -->
