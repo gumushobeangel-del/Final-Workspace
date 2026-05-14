@@ -164,6 +164,15 @@
         font-weight: bold;
       }
 
+      .receipt-btn {
+        background: #007bff;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 11px;
+      }
+
       @media (max-width: 768px) {
         .container {
           flex-direction: column;
@@ -276,6 +285,9 @@
             <td>{{ d.balance }}</td>
 
             <td class="actions">
+              <a href="{% url 'deposit_receipt' d.id %}" class="receipt-btn"
+                >Receipt</a
+              >
               <a href="{% url 'edit_deposit' d.id %}" class="edit-btn">Edit</a>
               <a href="{% url 'delete_deposit' d.id %}" class="delete-btn"
                 >Delete</a

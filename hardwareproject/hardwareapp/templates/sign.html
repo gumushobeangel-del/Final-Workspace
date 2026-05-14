@@ -12,7 +12,6 @@
   <body>
     <div class="container">
       <div class="logo">
-        {% load static %}
         <img
           src="{% static 'images/logo22.png' %}"
           alt="Logo"
@@ -22,8 +21,23 @@
 
       <h1>REGISTRATION FORM</h1>
 
+      <!-- ✅ ERROR MESSAGE HERE -->
+      {% if error %}
+        <div style="
+            background: #ffdddd;
+            color: #a94442;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+        ">
+          {{ error }}
+        </div>
+      {% endif %}
+
       <form method="POST">
         {% csrf_token %}
+
         <label for="username">Username</label>
         <input
           type="text"
@@ -43,6 +57,7 @@
           title="NIN must be exactly 14 characters (CM or CF + 12 characters)"
           required
         />
+
         <label for="email">Email Address</label>
         <input
           type="email"
@@ -55,15 +70,16 @@
         <input type="password" name="password" required />
 
         <label for="phone">Phone Number</label>
-           <input
-            type="text"
-            name="phone"
-            placeholder="+256740230081"
-            pattern="^\+256[0-9]{9}$"
-            maxlength="13"
-            title="Phone must be in format +256XXXXXXXXX"
-            required
-          />
+        <input
+          type="text"
+          name="phone"
+          placeholder="+256740230081"
+          pattern="^\+256[0-9]{9}$"
+          maxlength="13"
+          title="Phone must be in format +256XXXXXXXXX"
+          required
+        />
+
         <label for="role">Log in As</label>
         <select name="role" required>
           <option value="">Select your role</option>

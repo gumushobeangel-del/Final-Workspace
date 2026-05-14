@@ -40,7 +40,12 @@ class Sale(models.Model):
     customer_contact = models.CharField(max_length=14, blank=True, null=True)
     item_type = models.CharField(max_length=100, blank=True, null=True)
     item_brand = models.CharField(max_length=100, blank=True, null=True)
+    
+    transport = models.FloatField(default=0)
+    distance = models.FloatField(default=0)
+    grand_total = models.FloatField(default=0)
 
+    
     date = models.DateField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
 

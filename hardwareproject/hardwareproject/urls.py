@@ -46,6 +46,10 @@ urlpatterns = [
     # Credit actions
     path('credit/edit/<int:id>/', views.edit_supplier_credit, name='edit_supplier_credit'),
     path('credit/delete/<int:id>/', views.delete_supplier_credit, name='delete_supplier_credit'),
+
+    path('credit/receipt/<int:id>/', views.supplier_credit_receipt, name='supplier_credit_receipt'),
+
+    path('deposit-receipt/<int:id>/', views.deposit_receipt, name='deposit_receipt'),
 ]
 
    

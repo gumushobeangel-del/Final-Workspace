@@ -168,6 +168,20 @@
         background: #dc2626;
       }
 
+      .print-btn {
+        background: #1e2a38;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .print-btn:hover {
+        background: #0f1720;
+      }
+
       /* RESPONSIVE */
       @media (max-width: 768px) {
         .container {
@@ -276,6 +290,13 @@
                 class="delete-btn"
                 >Delete</a
               >
+
+              <a
+                href="{% url 'supplier_credit_receipt' c.id %}"
+                class="print-btn"
+              >
+                Print
+              </a>
             </td>
           </tr>
           {% endfor %}

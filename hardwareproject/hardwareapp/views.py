@@ -11,6 +11,8 @@ def index(request):
     return render(request, "index.html")
 
 #sign
+from django.shortcuts import render, redirect
+
 def sign(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -24,22 +26,29 @@ def sign(request):
         }
 
         if role in users:
-            if (
-                username.lower().strip() == users[role]["username"].lower().strip()
-                and password == users[role]["password"]
-            ):
-                request.session["role"] = role
-                request.session["username"] = username
+            stored_user = users[role]
 
-                redirect_map = {
-                    "admin": "dash",
-                    "sales": "sales",
-                    "stock_manager": "stock",
-                }
+            # Check username first
+            if username.lower().strip() != stored_user["username"].lower().strip():
+                return render(request, "sign.html", {"error": "Username is incorrect"})
 
-                return redirect(redirect_map[role])
+            # Then check password
+            if password != stored_user["password"]:
+                return render(request, "sign.html", {"error": "Password is incorrect"})
 
-        return render(request, "sign.html", {"error": "Wrong login details"})
+            # If both are correct
+            request.session["role"] = role
+            request.session["username"] = username
+
+            redirect_map = {
+                "admin": "dash",
+                "sales": "sales",
+                "stock_manager": "stock",
+            }
+
+            return redirect(redirect_map[role])
+
+        return render(request, "sign.html", {"error": "Invalid role selected"})
 
     return render(request, "sign.html")
 
@@ -202,7 +211,6 @@ def stock_view(request):
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Stock, Sale
-
 def sales(request):
 
     if request.method == "POST":
@@ -211,13 +219,16 @@ def sales(request):
         quantity = int(request.POST.get("quantity") or 0)
         unit_price = float(request.POST.get("unit_price") or 0)
 
-       #validation rule that prevents zeros and negatives
-        if quantity <= 0 or unit_price <= 0: # prevents negatives
+        # IMPORTANT: match your form name (distance_km, not distance)
+        distance = float(request.POST.get("distance_km") or 0)
+
+        # validation
+        if quantity <= 0 or unit_price <= 0:
             return render(request, "sales.html", {
                 "error": "Quantity and Unit Price must be greater than 0"
             })
 
-        # GET STOCK (SAFE)
+        # GET STOCK
         stock = get_object_or_404(Stock, id=stock_id)
 
         # CHECK STOCK
@@ -230,14 +241,28 @@ def sales(request):
         stock.quantity -= quantity
         stock.save()
 
-        total = quantity * unit_price#calculates automatically
+        # CALCULATIONS
+        subtotal = quantity * unit_price
+
+        # NYONDO TRANSPORT RULE (FIXED LOGIC)
+        if distance <= 10 and subtotal >= 500000:
+            transport = 0
+        else:
+            transport = 30000
+
+        # FINAL TOTAL
+        grand_total = subtotal + transport
 
         # SAVE SALE
         Sale.objects.create(
             item_name=stock.item_name,
             quantity=quantity,
             unit_price=unit_price,
-            total=total,
+
+            total=subtotal,        
+            transport=transport,
+            grand_total=grand_total, 
+
             customer_name=request.POST.get("customer_name"),
             customer_contact=request.POST.get("customer_contact"),
             item_type=request.POST.get("item_type"),
@@ -254,8 +279,6 @@ def sales(request):
         "stocks": stocks,
         "sales": sales
     })
-
-
 #Deposit
 
 ITEM_PRICES = {
@@ -319,7 +342,7 @@ def deposit(request):
         "deposits": deposits
     })
 # RECEIPT
-
+#helps in printing the receipt
 def receipt(request, id):
     sale = get_object_or_404(Sale, id=id)
     return render(request, "receipt.html", {"sale": sale})
@@ -508,8 +531,6 @@ def delete_supplier(request, id):
     supplier.delete()
 
     return redirect("supplier")
-
-
 def supplier_credit(request):
 
     if request.method == "POST":
@@ -519,48 +540,36 @@ def supplier_credit(request):
 
         quantity = int(request.POST.get("quantity") or 0)
         unit_price = float(request.POST.get("unit_price") or 0)
-
-        amount_paid = request.POST.get("amount_paid")
-        if not amount_paid:
-            amount_paid = 0
-        amount_paid = float(amount_paid)
-
+        amount_paid = float(request.POST.get("amount_paid") or 0)
         date = request.POST.get("date")
 
-        # VALIDATION
         if quantity <= 0 or unit_price <= 0:
             return render(request, "credit.html", {
                 "error": "Quantity and Unit Price must be greater than 0"
             })
 
-        # CALCULATIONS
-        total_cost = quantity * unit_price
-        balance = total_cost - amount_paid
-
-        # Optional: prevent negative balance
-        if balance < 0:
-            balance = 0
-
-        # SAVE
         Credit.objects.create(
             supplier_name=supplier_name,
             item_name=item_name,
             quantity=quantity,
             unit_price=unit_price,
             amount_paid=amount_paid,
-            total_cost=total_cost,
-            balance=balance,
             date=date
         )
 
-        return redirect("supplier_credit")
+        credits = Credit.objects.all().order_by("-id")
+
+        # 👇 SAME AS SALES (PRINT TRIGGER)
+        return render(request, "credit.html", {
+            "credits": credits,
+            "print_now": True
+        })
 
     credits = Credit.objects.all().order_by("-id")
 
     return render(request, "credit.html", {
         "credits": credits
     })
-
 
 def edit_supplier_credit(request, id):
     credit = get_object_or_404(Credit, id=id)
@@ -593,7 +602,24 @@ def edit_supplier_credit(request, id):
     return render(request, "edit_credit.html", {
         "credit": credit
     })
-
 def delete_supplier_credit(request, id):
-    Credit.objects.filter(id=id).delete()
-    return redirect("supplier_credit")
+    credit = get_object_or_404(Credit, id=id)
+    credit.delete()
+    return redirect("supplier_credit")  
+
+def supplier_credit_receipt(request, id):
+    credit = get_object_or_404(Credit, id=id)
+
+    return render(request, "credit_receipt.html", {
+        "credit": credit,
+        "print_now": True
+    })
+
+# DEPOSIT RECEIPT
+def deposit_receipt(request, id):
+    deposit = get_object_or_404(Deposit, id=id)
+
+    return render(request, "deposit_receipt.html", {
+        "deposit": deposit,
+        "print_now": True
+    })

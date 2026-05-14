@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+  <title>Deposit Receipt</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+
+    .receipt {
+      width: 350px;
+      margin: auto;
+      border: 1px solid #000;
+      padding: 15px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    p {
+      margin: 6px 0;
+      font-size: 14px;
+    }
+
+    .line {
+      border-top: 1px dashed #000;
+      margin: 10px 0;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="receipt">
+    <h2>NYONDO Hardware</h2>
+
+    <div class="line"></div>
+
+    <p><strong>Name:</strong> {{ deposit.name }}</p>
+    <p><strong>NIN:</strong> {{ deposit.nin }}</p>
+    <p><strong>Phone:</strong> {{ deposit.phone }}</p>
+
+    <div class="line"></div>
+
+    <p><strong>Item:</strong> {{ deposit.item_name }}</p>
+    <p><strong>Quantity:</strong> {{ deposit.quantity }}</p>
+    <p><strong>Amount Paid:</strong> {{ deposit.amount }}</p>
+    <p><strong>Balance:</strong> {{ deposit.balance }}</p>
+
+    <div class="line"></div>
+
+    <p><strong>Date:</strong> {{ deposit.date }}</p>
+
+    <div class="line"></div>
+
+    <p style="text-align:center;">Thank you!</p>
+  </div>
+
+  {% if print_now %}
+  <script>
+    window.onload = function () {
+      window.print();
+    };
+  </script>
+  {% endif %}
+</body>
+</html>
