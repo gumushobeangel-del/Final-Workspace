@@ -1,0 +1,203 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reports Dashboard</title>
+
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: #eef2f7;
+        margin: 0;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2c3e50;
+      }
+
+      /* CARDS GRID */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      /* CARD BASE STYLE + FLOAT ANIMATION */
+      .card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.35s ease;
+        position: relative;
+        overflow: hidden;
+
+        /* FLOAT EFFECT */
+        animation: floatCard 4s ease-in-out infinite;
+      }
+
+     
+      .card:hover {
+        transform: translateY(-12px) scale(1.03);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      /* FLOATING KEYFRAME */
+      @keyframes floatCard {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      .card h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #888;
+      }
+
+      .card h2 {
+        margin: 10px 0;
+        font-size: 26px;
+        color: #2c3e50;
+      }
+
+      .card small {
+        color: #aaa;
+      }
+
+      .icon {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 30px;
+        opacity: 0.2;
+      }
+
+      /* COLORS */
+      .sales {
+        border-left: 5px solid #28a745;
+      }
+      .stock {
+        border-left: 5px solid #007bff;
+      }
+      .customers {
+        border-left: 5px solid #ffc107;
+      }
+      .deposits {
+        border-left: 5px solid #dc3545;
+      }
+      .profit {
+        border-left: 5px solid #6f42c1;
+      }
+      .items {
+        border-left: 5px solid #17a2b8;
+      }
+
+      /* TABLE */
+      table {
+        width: 100%;
+        margin-top: 40px;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      table th,
+      table td {
+        padding: 12px;
+        text-align: left;
+      }
+
+      table th {
+        background: #2c3e50;
+        color: white;
+      }
+
+      table tr:nth-child(even) {
+        background: #f8f9fa;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>📊 Business Reports Dashboard</h1>
+
+    <div class="cards">
+      <div class="card sales">
+        <div class="icon">💰</div>
+        <h3>Total Sales</h3>
+        <h2>{{ total_sales }}</h2>
+        <small>All completed sales</small>
+      </div>
+
+      <div class="card stock">
+        <div class="icon">📦</div>
+        <h3>Stock Items</h3>
+        <h2>{{ total_stock }}</h2>
+        <small>Available inventory</small>
+      </div>
+
+      <div class="card customers">
+        <div class="icon">👥</div>
+        <h3>Customers</h3>
+        <h2>{{ total_customers }}</h2>
+        <small>Registered users</small>
+      </div>
+
+      <div class="card deposits">
+        <div class="icon">💳</div>
+        <h3>Total Deposits</h3>
+        <h2>{{ total_deposits }}</h2>
+        <small>Money received</small>
+      </div>
+
+      <div class="card profit">
+        <div class="icon">📈</div>
+        <h3>Estimated Profit</h3>
+        <h2>{{ profit }}</h2>
+        <small>Sales - cost</small>
+      </div>
+
+      <div class="card items">
+        <div class="icon">🛒</div>
+        <h3>Total Items Sold</h3>
+        <h2>{{ total_items }}</h2>
+        <small>Units sold</small>
+      </div>
+    </div>
+
+  
+    <h2 style="margin-top: 40px">🧾 Recent Sales</h2>
+
+    <table>
+      <tr>
+        <th>Customer</th>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Date</th>
+      </tr>
+
+      {% for sale in recent_sales %}
+      <tr>
+        <td>{{ sale.customer_name }}</td>
+        <td>{{ sale.item_name }}</td>
+        <td>{{ sale.quantity }}</td>
+        <td>{{ sale.grand_total }}</td>
+        <td>{{ sale.date }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

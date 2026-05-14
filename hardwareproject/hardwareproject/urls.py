@@ -21,7 +21,8 @@ urlpatterns = [
     path('stock/', views.stock_view, name='stock'),
     path('supplier/', views.suppliers, name='supplier'),
     path('dash/', views.dash, name='dash'),
-    path('credit/', views.supplier_credit, name='supplier_credit'),
+    path('credit/', views.credit, name='credit'),
+    path('reports/', views.reports, name='reports'),
 
     # Transactions
     path('deposit/', views.deposit, name='deposit'),
@@ -50,6 +51,7 @@ urlpatterns = [
     path('credit/receipt/<int:id>/', views.supplier_credit_receipt, name='supplier_credit_receipt'),
 
     path('deposit-receipt/<int:id>/', views.deposit_receipt, name='deposit_receipt'),
+
 ]
 
    

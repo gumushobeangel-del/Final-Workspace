@@ -94,6 +94,9 @@ def delete_customer(request, id):
 
 
 #login
+from django.contrib import messages
+from django.shortcuts import render, redirect
+
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -107,9 +110,10 @@ def login_view(request):
 
             return redirect("dash")
 
-        return render(request, "log.html", {
-            "error": "Only admin can log in here"
-        })
+        # ❌ WRONG LOGIN
+        messages.error(request, "❌ Incorrect username or password!")
+
+        return redirect("log")
 
     return render(request, "log.html")
 
@@ -219,7 +223,6 @@ def sales(request):
         quantity = int(request.POST.get("quantity") or 0)
         unit_price = float(request.POST.get("unit_price") or 0)
 
-        # IMPORTANT: match your form name (distance_km, not distance)
         distance = float(request.POST.get("distance_km") or 0)
 
         # validation
@@ -244,7 +247,7 @@ def sales(request):
         # CALCULATIONS
         subtotal = quantity * unit_price
 
-        # NYONDO TRANSPORT RULE (FIXED LOGIC)
+        # transport cost logic
         if distance <= 10 and subtotal >= 500000:
             transport = 0
         else:
@@ -259,7 +262,8 @@ def sales(request):
             quantity=quantity,
             unit_price=unit_price,
 
-            total=subtotal,        
+            total=subtotal,   
+            distance=distance,     
             transport=transport,
             grand_total=grand_total, 
 
@@ -531,7 +535,7 @@ def delete_supplier(request, id):
     supplier.delete()
 
     return redirect("supplier")
-def supplier_credit(request):
+def credit(request):
 
     if request.method == "POST":
 
@@ -559,7 +563,7 @@ def supplier_credit(request):
 
         credits = Credit.objects.all().order_by("-id")
 
-        # 👇 SAME AS SALES (PRINT TRIGGER)
+        # SAME AS SALES (PRINT TRIGGER)
         return render(request, "credit.html", {
             "credits": credits,
             "print_now": True
@@ -623,3 +627,39 @@ def deposit_receipt(request, id):
         "deposit": deposit,
         "print_now": True
     })
+
+
+from decimal import Decimal
+from django.db.models import Sum
+
+def reports(request):
+    # GET VALUES
+    total_sales = Sale.objects.aggregate(Sum('grand_total'))['grand_total__sum'] or 0
+    total_stock = Stock.objects.count()
+    total_customers = Register.objects.count()
+    total_deposits = Deposit.objects.aggregate(Sum('amount'))['amount__sum'] or 0
+
+    total_items = Sale.objects.aggregate(Sum('quantity'))['quantity__sum'] or 0
+
+    total_cost = Stock.objects.aggregate(Sum('unit_cost'))['unit_cost__sum'] or 0
+
+    # FORCE SAME TYPE 
+    total_sales = Decimal(str(total_sales))
+    total_cost = Decimal(str(total_cost))
+
+    # CALCULATE PROFIT
+    profit = total_sales - total_cost
+
+    recent_sales = Sale.objects.all().order_by('-id')[:5]
+
+    context = {
+        'total_sales': total_sales,
+        'total_stock': total_stock,
+        'total_customers': total_customers,
+        'total_deposits': total_deposits,
+        'profit': profit,
+        'total_items': total_items,
+        'recent_sales': recent_sales,
+    }
+
+    return render(request, 'reports.html', context)
