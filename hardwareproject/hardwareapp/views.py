@@ -110,8 +110,8 @@ def login_view(request):
 
             return redirect("dash")
 
-        # ❌ WRONG LOGIN
-        messages.error(request, "❌ Incorrect username or password!")
+        # WRONG LOGIN
+        messages.error(request, " Incorrect username or password!")
 
         return redirect("log")
 
@@ -263,7 +263,7 @@ def sales(request):
             unit_price=unit_price,
 
             total=subtotal,   
-            distance=distance,     
+            distance_km=distance,     
             transport=transport,
             grand_total=grand_total, 
 
@@ -292,7 +292,6 @@ ITEM_PRICES = {
     "Iron Bars": 27000,
 }
 
-
 def deposit(request):
 
     if request.method == "POST":
@@ -301,7 +300,7 @@ def deposit(request):
         quantity = int(request.POST.get("quantity") or 0)
         item_name = request.POST.get("item_name")
 
-        # Validation
+        # VALIDATION
         if amount <= 0:
             return render(request, "deposit.html", {
                 "error": "Amount must be greater than 0"
@@ -312,20 +311,17 @@ def deposit(request):
                 "error": "Quantity must be greater than 0"
             })
 
-        # Get price
-        price = ITEM_PRICES.get(item_name, 0)
+        price = ITEM_PRICES.get(item_name)
 
-        if price == 0:
+        if not price:
             return render(request, "deposit.html", {
                 "error": "Invalid item selected"
             })
-
-        # Calculations
-        #variable that calculates the total cost of the deposit based on the item price and quantity
         total_cost = price * quantity
-        balance = amount - total_cost
+        balance = total_cost - amount   
 
-        # Save
+      
+
         Deposit.objects.create(
             amount=amount,
             quantity=quantity,
@@ -340,7 +336,7 @@ def deposit(request):
 
         return redirect("deposit")
 
-    deposits = Deposit.objects.all()
+    deposits = Deposit.objects.all().order_by("-id")
 
     return render(request, "deposit.html", {
         "deposits": deposits
@@ -390,6 +386,7 @@ def edit_stock(request, id):
         stock.unit_price = request.POST.get("unit_price")
         stock.specification = request.POST.get("specification")
         stock.payment_method = request.POST.get("payment_method")
+        
 
 
         date = request.POST.get("date")
@@ -476,26 +473,31 @@ def delete_sale(request, id):
 
 # EDIT DEPOSIT
 def edit_deposit(request, id):
-
     deposit = get_object_or_404(Deposit, id=id)
 
     if request.method == "POST":
 
-        deposit.amount = request.POST.get("amount")
         deposit.name = request.POST.get("name")
         deposit.phone = request.POST.get("phone")
-        deposit.method = request.POST.get("method")
+
+        deposit.amount = float(request.POST.get("amount") or 0)
+        deposit.quantity = int(request.POST.get("quantity") or 0)
+
         deposit.item_name = request.POST.get("item_name")
-        deposit.nin = request.POST.get("nin") or "N/A"
-        deposit.date = request.POST.get("date")
+        deposit.nin = request.POST.get("nin")
+        deposit.method = request.POST.get("method")
+
+        deposit.balance = float(request.POST.get("balance") or 0)
+
+        date = request.POST.get("date")
+        if date:
+            deposit.date = date
 
         deposit.save()
 
         return redirect("deposit")
 
-    return render(request, "edit_deposit.html", {
-        "deposit": deposit
-    })
+    return render(request, "edit_deposit.html", {"deposit": deposit})
 
 
 def delete_deposit(request, id):
@@ -601,7 +603,7 @@ def edit_supplier_credit(request, id):
 
         credit.save()
 
-        return redirect("supplier_credit")
+        return redirect("credit")
 
     return render(request, "edit_credit.html", {
         "credit": credit

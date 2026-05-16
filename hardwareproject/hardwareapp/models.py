@@ -6,8 +6,8 @@ from decimal import Decimal
 class Stock(models.Model):
     item_name = models.CharField(max_length=100)
     quantity = models.IntegerField(default=0)
-    unit_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    unit_cost = models.DecimalField(max_digits=10, decimal_places=1, default=0)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=1, default=0)
     specification = models.CharField(max_length=100, blank=True, null=True)
     payment_method = models.CharField(max_length=100, blank=True, null=True)
 
@@ -31,30 +31,40 @@ class Register(models.Model):
         return self.name
 
 class Sale(models.Model):
-    item_name = models.CharField(max_length=100)#prevents users from entering too much information
-    quantity = models.IntegerField(default=0)#stores only whole numbers
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    item_name = models.CharField(max_length=100)
+    quantity = models.IntegerField(default=0)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=1, default=0)
+
+    total = models.DecimalField(max_digits=10, decimal_places=1, default=0)
 
     customer_name = models.CharField(max_length=100, blank=True, null=True)
     customer_contact = models.CharField(max_length=14, blank=True, null=True)
     item_type = models.CharField(max_length=100, blank=True, null=True)
     item_brand = models.CharField(max_length=100, blank=True, null=True)
-    
+
     transport = models.FloatField(default=0)
-    distance = models.FloatField(default=0)
+    distance_km = models.FloatField(default=0)
+
     grand_total = models.FloatField(default=0)
 
-    
     date = models.DateField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        #  calculate total
+        self.total = self.quantity * self.unit_price
+
+        #  calculate grand total
+        self.grand_total = float(self.total) + float(self.transport)
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.item_name
 
 
 class Deposit(models.Model):
-    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    amount = models.DecimalField(max_digits=10, decimal_places=1, default=0)
     name = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
     method = models.CharField(max_length=100)
@@ -62,7 +72,7 @@ class Deposit(models.Model):
     nin = models.CharField(max_length=100, default="N/A")
     quantity = models.IntegerField()
     glass_type = models.CharField(max_length=100, blank=True, null=True)
-    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    balance = models.DecimalField(max_digits=10, decimal_places=1, default=0)
     date = models.DateField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -75,11 +85,11 @@ class Receipt(models.Model):
     number = models.IntegerField(default=0)
     customer_name = models.CharField(max_length=100)
 
-    subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    tax = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    paid = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=1, default=0)
+    tax = models.DecimalField(max_digits=10, decimal_places=1, default=0)
+    total = models.DecimalField(max_digits=10, decimal_places=1, default=0)
+    paid = models.DecimalField(max_digits=10, decimal_places=1, default=0)
+    balance = models.DecimalField(max_digits=10, decimal_places=1, default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -109,11 +119,11 @@ class Credit(models.Model):
 
     quantity = models.IntegerField()
 
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
-    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=1)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=1)
 
-    total_cost = models.DecimalField(max_digits=10, decimal_places=2)
-    balance = models.DecimalField(max_digits=10, decimal_places=2)
+    total_cost = models.DecimalField(max_digits=10, decimal_places=1)
+    balance = models.DecimalField(max_digits=10, decimal_places=1)
 
     date = models.DateField()
 

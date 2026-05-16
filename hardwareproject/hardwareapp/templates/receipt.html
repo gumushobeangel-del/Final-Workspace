@@ -50,11 +50,41 @@
     <div class="row"><span>Item</span><span>{{ sale.item_name }}</span></div>
     <div class="row"><span>Qty</span><span>{{ sale.quantity }}</span></div>
     <div class="row"><span>Price</span><span>{{ sale.unit_price }}</span></div>
+
     <div class="row"><span>Customer</span><span>{{ sale.customer_name }}</span></div>
     <div class="row"><span>Contact</span><span>{{ sale.customer_contact }}</span></div>
+
     <div class="row"><span>Date</span><span>{{ sale.date }}</span></div>
 
-    <div class="total">UGX {{ sale.total }}</div>
+
+    <div class="row">
+      <span>Distance (KM)</span>
+      <span>{{ sale.distance_km }}</span>
+    </div>
+
+    
+    <div class="row">
+      <span>Transport</span>
+      <span>
+        {% if sale.transport == 0 %}
+          FREE
+        {% else %}
+          UGX {{ sale.transport }}
+        {% endif %}
+      </span>
+    </div>
+
+    <div class="row">
+      <span>Subtotal</span>
+      <span>UGX {{ sale.total }}</span>
+    </div>
+
+    <div class="row">
+      <span>Grand Total</span>
+      <span>UGX {{ sale.grand_total }}</span>
+    </div>
+
+    <div class="total">THANK YOU</div>
 
     <button onclick="window.print()">Print Again</button>
 

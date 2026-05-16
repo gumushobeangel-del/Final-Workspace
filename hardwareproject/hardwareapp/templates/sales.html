@@ -139,6 +139,7 @@
   </head>
 
   <body>
+    <h1>Sales Management</h1>
     <div class="container">
       <!-- FORM -->
       <div class="form-box">
@@ -210,6 +211,7 @@
               <th>Item Type</th>
               <th>Item Brand</th>
               <th>Total</th>
+              <th>Distance (KM)</th>
               <th>Transport</th>
               <th>Grand Total</th>
               <th>Actions</th>
@@ -217,46 +219,47 @@
           </thead>
 
           <tbody>
-            {% for sale in sales %}
-            <tr>
-              <td>{{ sale.item_name }}</td>
-              <td>{{ sale.quantity }}</td>
-              <td>{{ sale.date }}</td>
-              <td>{{ sale.unit_price }}</td>
-              <td>{{ sale.customer_name }}</td>
-              <td>{{ sale.customer_contact }}</td>
-              <td>{{ sale.item_type }}</td>
-              <td>{{ sale.item_brand }}</td>
+  {% for sale in sales %}
+  <tr>
+    <td>{{ sale.item_name }}</td>
+    <td>{{ sale.quantity }}</td>
+    <td>{{ sale.date }}</td>
+    <td>{{ sale.unit_price }}</td>
 
-              <td>{{ sale.total }}</td>
+    <td>{{ sale.customer_name }}</td>
+    <td>{{ sale.customer_contact }}</td>
 
-              <td>
-                {% if sale.transport == 0 %}
-                  FREE
-                {% else %}
-                  {{ sale.transport }}
-                {% endif %}
-              </td>
+    <td>{{ sale.item_type }}</td>
+    <td>{{ sale.item_brand }}</td>
 
-              <!-- GRAND TOTAL FIXED -->
-              <td>
-                {{ sale.total|add:sale.transport }}
-              </td>
+    <td>{{ sale.total }}</td>
 
-              <!-- ACTIONS FIXED -->
-              <td class="actions">
-                <a href="{% url 'receipt' sale.id %}" class="receipt-btn">Receipt</a>
-                <a href="{% url 'edit_sales' sale.id %}" class="edit-btn">Edit</a>
-                <a href="{% url 'delete_sale' sale.id %}" class="delete-btn">Delete</a>
-              </td>
-            </tr>
+   
+    <td>{{ sale.distance_km }}</td>
 
-            {% empty %}
-            <tr>
-              <td colspan="12">No sales recorded yet</td>
-            </tr>
-            {% endfor %}
-          </tbody>
+    <td>
+      {% if sale.transport == 0 %}
+        FREE
+      {% else %}
+        {{ sale.transport }}
+      {% endif %}
+    </td>
+
+    <td>{{ sale.total|add:sale.transport }}</td>
+
+    <td class="actions">
+      <a href="{% url 'receipt' sale.id %}" class="receipt-btn">Receipt</a>
+      <a href="{% url 'edit_sales' sale.id %}" class="edit-btn">Edit</a>
+      <a href="{% url 'delete_sale' sale.id %}" class="delete-btn">Delete</a>
+    </td>
+  </tr>
+
+  {% empty %}
+  <tr>
+    <td colspan="13">No sales recorded yet</td>
+  </tr>
+  {% endfor %}
+</tbody>
         </table>
       </div>
     </div>
