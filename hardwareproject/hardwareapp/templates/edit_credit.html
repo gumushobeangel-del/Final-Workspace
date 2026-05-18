@@ -1,108 +1,136 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Edit Supplier Credit</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Edit Supplier Credit</title>
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
 
-body {
-  background: #f4f6f9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
+      body {
+        background: #f4f6f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
 
-/* FORM BOX */
-.form-box {
-  width: 400px;
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
+      /* FORM BOX */
+      .form-box {
+        width: 400px;
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
 
-h2 {
-  text-align: center;
-  margin-bottom: 15px;
-  color: #1e2a38;
-}
+      h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #1e2a38;
+      }
 
-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
+      label {
+        font-size: 13px;
+        font-weight: bold;
+        margin-top: 10px;
+        display: block;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+      }
 
-input:focus {
-  outline: none;
-  border-color: #1e2a38;
-}
+      input {
+        width: 80%;
+        padding: 10px;
+        margin: 8px auto;
+        display: block;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
 
-button {
-  width: 100%;
-  margin-top: 15px;
-  padding: 12px;
-  background: #1e2a38;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
+      input:focus {
+        outline: none;
+        border-color: #1e2a38;
+      }
 
-button:hover {
-  background: #0f1720;
-}
+      button {
+        width: 80%;
+        margin: 15px auto;
+        display: block;
+        padding: 12px;
+        background: #1e2a38;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
 
-label {
-  font-size: 13px;
-  font-weight: bold;
-  margin-top: 10px;
-  display: block;
-}
-</style>
-</head>
+      button:hover {
+        background: #0f1720;
+      }
+    </style>
+  </head>
 
-<body>
+  <body>
+    <div class="form-box">
+      <h2>Edit Supplier Credit</h2>
 
-<div class="form-box">
+      <form method="POST">
+        {% csrf_token %}
 
-<h2>Edit Supplier Credit</h2>
+        <label>Supplier Name</label>
+        <input
+          type="text"
+          name="supplier_name"
+          value="{{ credit.supplier_name }}"
+          required
+        />
 
-<form method="POST">
-  {% csrf_token %}
+        <label>Item Name</label>
+        <input
+          type="text"
+          name="item_name"
+          value="{{ credit.item_name }}"
+          required
+        />
 
-  <label>Supplier Name</label>
-  <input type="text" name="supplier_name" value="{{ credit.supplier_name }}" required>
+        <label>Quantity</label>
+        <input
+          type="number"
+          name="quantity"
+          value="{{ credit.quantity }}"
+          min="1"
+          required
+        />
 
-  <label>Item Name</label>
-  <input type="text" name="item_name" value="{{ credit.item_name }}" required>
+        <label>Unit Price</label>
+        <input
+          type="number"
+          name="unit_price"
+          value="{{ credit.unit_price }}"
+          min="1"
+          required
+        />
 
-  <label>Quantity</label>
-  <input type="number" name="quantity" value="{{ credit.quantity }}" min="1" required>
+        <label>Amount Paid</label>
+        <input
+          type="number"
+          name="amount_paid"
+          value="{{ credit.amount_paid }}"
+          min="0"
+        />
 
-  <label>Unit Price</label>
-  <input type="number" name="unit_price" value="{{ credit.unit_price }}" min="1" required>
+        <label>Date</label>
+        <input type="date" name="date" value="{{ credit.date }}" required />
 
-  <label>Amount Paid</label>
-  <input type="number" name="amount_paid" value="{{ credit.amount_paid }}" min="0">
-
-  <label>Date</label>
-  <input type="date" name="date" value="{{ credit.date }}" required>
-
-  <button type="submit">Update Credit</button>
-</form>
-
-</div>
-
-</body>
+        <button type="submit">Update Credit</button>
+      </form>
+    </div>
+  </body>
 </html>

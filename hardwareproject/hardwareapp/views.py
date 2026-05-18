@@ -135,7 +135,7 @@ def dash(request):
     total_products = Stock.objects.count()#count the records
 
     # LOW STOCK
-    low_stock = Stock.objects.filter(quantity__lt=20).count()#select specific records if less than 20 low stock
+    low_stock = Stock.objects.filter(quantity__lt=20).count()#select specific records if less tha 20 low stock
 
     # SUPPLIERS
     suppliers = Supplier.objects.count()
@@ -348,6 +348,8 @@ def receipt(request, id):
 
 
 # SUPPLIERS
+
+
 def suppliers(request):
 
     if request.method == "POST":
@@ -562,7 +564,7 @@ def credit(request):
 
         credits = Credit.objects.all().order_by("-id")
 
-        # SAME AS SALES 
+        # SAME AS SALES (PRINT TRIGGER)
         return render(request, "credit.html", {
             "credits": credits,
             "print_now": True
@@ -662,5 +664,3 @@ def reports(request):
     }
 
     return render(request, 'reports.html', context)
-
-

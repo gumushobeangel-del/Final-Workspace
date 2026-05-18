@@ -3,270 +3,939 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sales Form</title>
+    <title>Sales Management</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
+      :root {
+        --navy: #0d1b2a;
+        --navy-mid: #1a2e45;
+        --navy-light: #243b55;
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --cream: #f9f6f0;
+        --cream-dark: #ede8df;
+        --text-dark: #1a1a2e;
+        --text-mid: #4a5568;
+        --text-light: #718096;
+        --white: #ffffff;
+        --success: #2d7a5e;
+        --success-bg: rgba(45, 122, 94, 0.09);
+        --danger: #c0392b;
+        --warn: #b7791f;
+        --shadow-sm: 0 2px 8px rgba(13, 27, 42, 0.08);
+        --shadow-md: 0 8px 30px rgba(13, 27, 42, 0.12);
+        --shadow-lg: 0 20px 60px rgba(13, 27, 42, 0.18);
+        --radius: 14px;
+        --radius-sm: 8px;
+      }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: Arial, sans-serif;
       }
 
       body {
-        background: #f4f6f9;
+        font-family: "DM Sans", sans-serif;
+        background: var(--cream);
+        background-image:
+          radial-gradient(
+            ellipse at 10% 20%,
+            rgba(201, 168, 76, 0.08) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 90% 80%,
+            rgba(13, 27, 42, 0.06) 0%,
+            transparent 50%
+          );
         min-height: 100vh;
-        padding: 20px;
+        padding: 32px 24px;
+        color: var(--text-dark);
       }
 
-      .container {
+      /* ─── PAGE HEADER ─── */
+      .page-header {
         display: flex;
-        gap: 20px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 32px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--cream-dark);
+        flex-wrap: wrap;
+        gap: 12px;
       }
 
-      .form-box {
-        width: 40%;
-        background: #fff;
-        padding: 20px;
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .brand-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--navy), var(--navy-light));
         border-radius: 12px;
-        border-top: 5px solid #1e2a38;
-        border-right: 2px solid black;
-        border-bottom: 2px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-sm);
       }
 
-      .form-box h2 {
-        text-align: center;
-        margin-bottom: 15px;
-        color: #1e2a38;
+      .brand-icon svg {
+        width: 26px;
+        height: 26px;
+        fill: var(--gold);
       }
 
-      label {
-        display: block;
-        margin-top: 10px;
-        font-weight: 600;
+      .brand-text h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        color: var(--navy);
+        letter-spacing: -0.3px;
+        line-height: 1;
       }
 
-      input,
-      select {
-        width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
+      .brand-text p {
+        font-size: 12px;
+        color: var(--text-light);
+        font-weight: 400;
+        margin-top: 3px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
       }
 
-      button,
-      .btn {
-        width: 100%;
-        margin-top: 15px;
-        padding: 12px;
-        background: #1e2a38;
-        color: white;
-        border: none;
+      .layout {
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .card {
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        animation: fadeSlideUp 0.4s ease both;
+      }
+
+      .card:nth-child(2) {
+        animation-delay: 0.08s;
+      }
+
+      .card-header {
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-light) 100%
+        );
+        padding: 22px 28px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .card-header-icon {
+        width: 36px;
+        height: 36px;
+        background: rgba(201, 168, 76, 0.2);
         border-radius: 10px;
-        text-decoration: none;
-        display: block;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
       }
 
-      .table-box {
-        width: 60%;
-        background: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        border-top: 5px solid #1e2a38;
-        border-right: 2px solid black;
-        border-bottom: 2px solid black;
+      .card-header-icon svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--gold);
+      }
+
+      .card-header h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 17px;
+        color: var(--white);
+      }
+
+      .card-header p {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.55);
+        margin-top: 2px;
+        font-weight: 400;
+      }
+
+      .form-body {
+        padding: 28px;
+      }
+
+      .field-group {
+        margin-bottom: 14px;
+      }
+
+      .field-group label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-light);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+
+      .field-group label .req {
+        color: var(--gold);
+        font-size: 13px;
+      }
+
+      .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .input-wrap {
+        position: relative;
+      }
+
+      .input-wrap svg {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 15px;
+        height: 15px;
+        fill: var(--text-light);
+        pointer-events: none;
+      }
+
+      .input-wrap input,
+      .input-wrap select {
+        width: 100%;
+        padding: 11px 14px 11px 38px;
+        border: 1.5px solid var(--cream-dark);
+        border-radius: var(--radius-sm);
+        font-size: 13.5px;
+        font-family: "DM Sans", sans-serif;
+        color: var(--text-dark);
+        background: var(--cream);
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          background 0.2s;
+        appearance: none;
+      }
+
+      .input-wrap input::placeholder {
+        color: var(--text-light);
+      }
+
+      .input-wrap input:focus,
+      .input-wrap select:focus {
+        outline: none;
+        border-color: var(--gold);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+      }
+
+      .form-divider {
+        height: 1px;
+        background: var(--cream-dark);
+        margin: 18px 0;
+        position: relative;
+      }
+
+      .form-divider::after {
+        content: attr(data-label);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--white);
+        padding: 0 10px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: var(--text-light);
+        white-space: nowrap;
+      }
+
+      .btn-submit {
+        width: 100%;
+        margin-top: 6px;
+        padding: 13px;
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-light) 100%
+        );
+        color: var(--white);
+        border: none;
+        border-radius: var(--radius-sm);
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+      }
+
+      .btn-submit::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(201, 168, 76, 0.15),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+
+      .btn-submit:hover::before {
+        left: 100%;
+      }
+
+      .btn-submit:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(13, 27, 42, 0.3);
+      }
+
+      .btn-submit svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--gold);
+        flex-shrink: 0;
+      }
+
+      .btn-outline {
+        width: 100%;
+        margin-top: 10px;
+        padding: 12px;
+        background: transparent;
+        color: var(--navy);
+        border: 1.5px solid var(--cream-dark);
+        border-radius: var(--radius-sm);
+        font-family: "DM Sans", sans-serif;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+      }
+
+      .btn-outline:hover {
+        border-color: var(--navy);
+        background: var(--cream);
+      }
+
+      .btn-outline svg {
+        width: 15px;
+        height: 15px;
+        fill: var(--navy);
+      }
+
+      .table-controls {
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--cream-dark);
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .search-box {
+        position: relative;
+        flex: 1;
+        max-width: 260px;
+      }
+
+      .search-box svg {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 14px;
+        height: 14px;
+        fill: var(--text-light);
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 9px 14px 9px 36px;
+        border: 1.5px solid var(--cream-dark);
+        border-radius: 50px;
+        font-size: 13px;
+        font-family: "DM Sans", sans-serif;
+        color: var(--text-dark);
+        background: var(--cream);
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .search-box input:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+      }
+
+      .table-wrapper {
         overflow-x: auto;
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 12px;
+        font-size: 12.5px;
       }
 
-      th,
-      td {
-        padding: 10px;
-        text-align: center;
-        border-bottom: 1px solid #eee;
-        white-space: nowrap;
+      thead tr {
+        background: var(--cream);
+        border-bottom: 2px solid var(--cream-dark);
       }
 
       th {
-        background: #1e2a38;
-        color: white;
+        padding: 11px 14px;
+        text-align: left;
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--text-light);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        white-space: nowrap;
       }
 
-      tr:hover {
-        background: #f3f8ff;
+      th:last-child {
+        text-align: center;
       }
 
+      tbody tr {
+        border-bottom: 1px solid var(--cream-dark);
+        transition: background 0.15s ease;
+      }
+
+      tbody tr:last-child {
+        border-bottom: none;
+      }
+      tbody tr:hover {
+        background: rgba(201, 168, 76, 0.04);
+      }
+
+      td {
+        padding: 12px 14px;
+        color: var(--text-dark);
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+
+      /* Cells */
+      .cell-name {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+
+      .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--navy), var(--navy-light));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--gold);
+        flex-shrink: 0;
+        letter-spacing: 0.5px;
+      }
+
+      .cell-name span {
+        font-weight: 500;
+      }
+
+      .item-badge {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(13, 27, 42, 0.07);
+        color: var(--navy-mid);
+        border-radius: 50px;
+        padding: 3px 9px;
+        font-size: 11px;
+        font-weight: 500;
+      }
+
+      .amount-cell {
+        font-weight: 600;
+        color: var(--navy);
+      }
+
+      .grand-total-cell {
+        font-weight: 700;
+        color: var(--navy);
+        font-size: 13px;
+      }
+
+      .free-badge {
+        display: inline-flex;
+        align-items: center;
+        background: var(--success-bg);
+        color: var(--success);
+        border-radius: 50px;
+        padding: 3px 9px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .distance-cell {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--text-mid);
+      }
+
+      .distance-cell svg {
+        width: 12px;
+        height: 12px;
+        fill: var(--text-light);
+      }
+
+      /* Action buttons */
       .actions {
         display: flex;
-        gap: 6px;
+        gap: 5px;
         justify-content: center;
+        align-items: center;
       }
 
-      .edit-btn {
-        background: #facc15;
-        color: black;
-        padding: 6px 10px;
+      .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px 10px;
         border-radius: 6px;
-        text-decoration: none;
         font-size: 11px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+        font-family: "DM Sans", sans-serif;
       }
 
-      .delete-btn {
-        background: #ef4444;
-        color: white;
-        padding: 6px 10px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 11px;
+      .action-btn svg {
+        width: 11px;
+        height: 11px;
+        flex-shrink: 0;
       }
 
-      .receipt-btn {
-        background: #007bff;
-        color: white;
-        padding: 6px 10px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 11px;
+      .btn-receipt {
+        background: rgba(13, 27, 42, 0.08);
+        color: var(--navy);
+        border: 1px solid rgba(13, 27, 42, 0.12);
+      }
+      .btn-receipt:hover {
+        background: var(--navy);
+        color: var(--white);
+      }
+
+      .btn-edit {
+        background: rgba(183, 121, 31, 0.1);
+        color: var(--warn);
+        border: 1px solid rgba(183, 121, 31, 0.2);
+      }
+      .btn-edit:hover {
+        background: var(--warn);
+        color: var(--white);
+      }
+
+      .btn-delete {
+        background: rgba(192, 57, 43, 0.08);
+        color: var(--danger);
+        border: 1px solid rgba(192, 57, 43, 0.15);
+      }
+      .btn-delete:hover {
+        background: var(--danger);
+        color: var(--white);
+      }
+
+      /* Empty state */
+      .empty-state {
+        padding: 56px 24px;
+        text-align: center;
+      }
+      .empty-state svg {
+        width: 44px;
+        height: 44px;
+        fill: var(--cream-dark);
+        margin-bottom: 14px;
+      }
+      .empty-state p {
+        color: var(--text-light);
+        font-size: 14px;
+      }
+
+      /* ─── ANIMATION ─── */
+      @keyframes fadeSlideUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 12px;
+        }
+
+        .layout {
+          grid-template-columns: 1fr !important;
+        }
+
+        /* NAV STACK */
+        .admin-nav {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+
+        .nav-links {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .nav-links a {
+          font-size: 12px;
+        }
+
+        /* TABLE FIX */
+        table {
+          font-size: 11px;
+        }
+
+        th,
+        td {
+          padding: 8px 10px;
+        }
+
+        .card-header h2 {
+          font-size: 15px;
+        }
+
+        .form-body {
+          padding: 18px;
+        }
+
+        /* MAKE TABLE SCROLL NICER */
+        .table-wrapper {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        /* STACK ACTION BUTTONS */
+        .actions {
+          flex-direction: column;
+          gap: 4px;
+        }
       }
     </style>
   </head>
 
   <body>
-    <h1>Sales Management</h1>
-    <div class="container">
-      <div class="form-box">
-        <h2>REGISTER SALE</h2>
+    <div class="page-header">
+      <div class="brand">
+        <div class="brand-icon"></div>
+        <div class="brand-text">
+          <h1>Sales Management</h1>
+          <p>Track &middot; Manage &middot; Receipt</p>
+        </div>
+      </div>
+    </div>
 
-        <form method="POST">
-          {% csrf_token %}
+    <div class="layout">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-icon"></div>
+          <div>
+            <h2>Register Sale</h2>
+            <p>Complete all fields to record a sale</p>
+          </div>
+        </div>
 
-          <label>Item Name</label>
-          <select name="stock_id" required>
-            <option value="">Select Item</option>
-            {% for stock in stocks %}
-            <option value="{{ stock.id }}">
-              {{ stock.item_name }} ({{ stock.quantity }} available)
-            </option>
-            {% endfor %}
-          </select>
+        <div class="form-body">
+          <form method="POST">
+            {% csrf_token %}
 
-          <label>Quantity</label>
-          <input type="number" name="quantity" min="1" required />
+            <!-- Item & Quantity -->
+            <div class="field-group">
+              <label>Item Name <span class="req">*</span></label>
+              <div class="input-wrap">
+                <select name="stock_id" required>
+                  <option value="">Select Item</option>
+                  {% for stock in stocks %}
+                  <option value="{{ stock.id }}">
+                    {{ stock.item_name }} ({{ stock.quantity }} available)
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
 
-          <label>Date</label>
-          <input type="date" name="date" required />
+            <div class="field-row">
+              <div class="field-group">
+                <label>Quantity <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input
+                    type="number"
+                    name="quantity"
+                    min="1"
+                    placeholder="0"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="field-group">
+                <label>Date <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input type="date" name="date" required />
+                </div>
+              </div>
+            </div>
 
-          <label>Unit Price</label>
-          <input type="number" name="unit_price" min="1" required />
+            <div class="field-group">
+              <label>Unit Price (UGX) <span class="req">*</span></label>
+              <div class="input-wrap">
+                <input
+                  type="number"
+                  name="unit_price"
+                  min="1"
+                  placeholder="0"
+                  required
+                />
+              </div>
+            </div>
 
-          <label>Customer Name</label>
-          <input type="text" name="customer_name" required />
+            <div class="form-divider" data-label="CUSTOMER INFO"></div>
 
-          <label>Customer Contact</label>
-          <input
-            type="text"
-            name="customer_contact"
-            placeholder="+256740230081"
-            pattern="^\+256[0-9]{9}$"
-            maxlength="13"
-            title="Phone must be in format +256XXXXXXXXX"
-            required
-          />
+            <div class="field-group">
+              <label>Customer Name <span class="req">*</span></label>
+              <div class="input-wrap">
+                <input
+                  type="text"
+                  name="customer_name"
+                  placeholder="Full name"
+                  required
+                />
+              </div>
+            </div>
 
-          <label>Distance (KM)</label>
-          <input
-            type="number"
-            name="distance_km"
-            min="0"
-            step="0.01"
-            required
-          />
+            <div class="field-group">
+              <label>Customer Contact <span class="req">*</span></label>
+              <div class="input-wrap">
+                <input
+                  type="text"
+                  name="customer_contact"
+                  placeholder="+256740230081"
+                  pattern="^\+256[0-9]{9}$"
+                  maxlength="13"
+                  title="Format: +256XXXXXXXXX"
+                  required
+                />
+              </div>
+            </div>
 
-          <label>Item Type</label>
-          <input type="text" name="item_type" required />
+            <div class="form-divider" data-label="ITEM DETAILS"></div>
 
-          <label>Item Brand</label>
-          <input type="text" name="item_brand" required />
+            <div class="field-row">
+              <div class="field-group">
+                <label>Item Type <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input
+                    type="text"
+                    name="item_type"
+                    placeholder="e.g. Building"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="field-group">
+                <label>Item Brand <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input
+                    type="text"
+                    name="item_brand"
+                    placeholder="e.g. Simba"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
 
-          <button type="submit">Add Sale</button>
-          <a href="{% url 'register' %}" class="btn">Register Customer</a>
-        </form>
+            <div class="form-divider" data-label="DELIVERY"></div>
+
+            <div class="field-group">
+              <label>Distance (KM) <span class="req">*</span></label>
+              <div class="input-wrap">
+                <input
+                  type="number"
+                  name="distance_km"
+                  min="0"
+                  step="0.01"
+                  placeholder="00.0"
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Add Sale</button>
+
+            <a href="{% url 'register' %}" class="btn-outline">
+              Register Customer
+            </a>
+          </form>
+        </div>
       </div>
 
-      <div class="table-box">
-        <h2>Sales Table</h2>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-icon"></div>
+          <div>
+            <h2>Sales Records</h2>
+            <p>All registered sales transactions</p>
+          </div>
+        </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Item Name</th>
-              <th>Quantity</th>
-              <th>Date</th>
-              <th>Unit Price</th>
-              <th>Customer Name</th>
-              <th>Customer Contact</th>
-              <th>Item Type</th>
-              <th>Item Brand</th>
-              <th>Total</th>
-              <th>Distance (KM)</th>
-              <th>Transport</th>
-              <th>Grand Total</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+        <div class="table-controls">
+          <div class="search-box">
+            <input
+              type="text"
+              placeholder="Search sales…"
+              id="searchInput"
+              onkeyup="filterTable()"
+            />
+          </div>
+        </div>
 
-          <tbody>
-            {% for sale in sales %}
-            <tr>
-              <td>{{ sale.item_name }}</td>
-              <td>{{ sale.quantity }}</td>
-              <td>{{ sale.date }}</td>
-              <td>{{ sale.unit_price }}</td>
-
-              <td>{{ sale.customer_name }}</td>
-              <td>{{ sale.customer_contact }}</td>
-
-              <td>{{ sale.item_type }}</td>
-              <td>{{ sale.item_brand }}</td>
-
-              <td>{{ sale.total }}</td>
-
-              <td>{{ sale.distance_km }}</td>
-
-              <td>
-                {% if sale.transport == 0 %} FREE {% else %} {{ sale.transport
-                }} {% endif %}
-              </td>
-
-              <td>{{ sale.total|add:sale.transport }}</td>
-
-              <td class="actions">
-                <a href="{% url 'receipt' sale.id %}" class="receipt-btn"
-                  >Receipt</a
-                >
-                <a href="{% url 'edit_sales' sale.id %}" class="edit-btn"
-                  >Edit</a
-                >
-                <a href="{% url 'delete_sale' sale.id %}" class="delete-btn"
-                  >Delete</a
-                >
-              </td>
-            </tr>
-
-            {% empty %}
-            <tr>
-              <td colspan="13">No sales recorded yet</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        <div class="table-wrapper">
+          <table id="salesTable">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Date</th>
+                <th>Unit Price</th>
+                <th>Customer</th>
+                <th>Contact</th>
+                <th>Type</th>
+                <th>Brand</th>
+                <th>Total</th>
+                <th>Dist.</th>
+                <th>Transport</th>
+                <th>Grand Total</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for sale in sales %}
+              <tr>
+                <td><span class="item-badge">{{ sale.item_name }}</span></td>
+                <td>{{ sale.quantity }}</td>
+                <td>{{ sale.date }}</td>
+                <td class="amount-cell">{{ sale.unit_price }}</td>
+                <td>
+                  <div class="cell-name">
+                    <div class="avatar">
+                      {{ sale.customer_name|slice:":2"|upper }}
+                    </div>
+                    <span>{{ sale.customer_name }}</span>
+                  </div>
+                </td>
+                <td>{{ sale.customer_contact }}</td>
+                <td>{{ sale.item_type }}</td>
+                <td>{{ sale.item_brand }}</td>
+                <td class="amount-cell">{{ sale.total }}</td>
+                <td>
+                  <div class="distance-cell">{{ sale.distance_km }} km</div>
+                </td>
+                <td>
+                  {% if sale.transport == 0 %}
+                  <span class="free-badge">FREE</span>
+                  {% else %}
+                  <span class="amount-cell">{{ sale.transport }}</span>
+                  {% endif %}
+                </td>
+                <td class="grand-total-cell">
+                  {{ sale.total|add:sale.transport }}
+                </td>
+                <td>
+                  <div class="actions">
+                    <a
+                      href="{% url 'receipt' sale.id %}"
+                      class="action-btn btn-receipt"
+                    >
+                      Receipt
+                    </a>
+                    <a
+                      href="{% url 'edit_sales' sale.id %}"
+                      class="action-btn btn-edit"
+                    >
+                      Edit
+                    </a>
+                    <a
+                      href="{% url 'delete_sale' sale.id %}"
+                      class="action-btn btn-delete"
+                      onclick="
+                        return confirm(
+                          'Are you sure you want to delete this sale? This action cannot be undone!',
+                        );
+                      "
+                    >
+                      Delete
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="13">
+                  <div class="empty-state">
+                    <p>No sales recorded yet. Add your first sale!</p>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </body>

@@ -4,184 +4,631 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Deposit Scheme</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
+      :root {
+        --navy: #0d1b2a;
+        --navy-mid: #1a2e45;
+        --navy-light: #243b55;
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --cream: #f9f6f0;
+        --cream-dark: #ede8df;
+        --text-dark: #1a1a2e;
+        --text-mid: #4a5568;
+        --text-light: #718096;
+        --white: #ffffff;
+        --success: #2d7a5e;
+        --danger: #c0392b;
+        --warn: #b7791f;
+        --shadow-sm: 0 2px 8px rgba(13, 27, 42, 0.08);
+        --shadow-md: 0 8px 30px rgba(13, 27, 42, 0.12);
+        --shadow-lg: 0 20px 60px rgba(13, 27, 42, 0.18);
+        --radius: 14px;
+        --radius-sm: 8px;
+      }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: Arial, sans-serif;
       }
 
       body {
-        background: #f4f6f9;
+        font-family: "DM Sans", sans-serif;
+        background: var(--cream);
+        background-image:
+          radial-gradient(
+            ellipse at 10% 20%,
+            rgba(201, 168, 76, 0.08) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 90% 80%,
+            rgba(13, 27, 42, 0.06) 0%,
+            transparent 50%
+          );
         min-height: 100vh;
-        padding: 20px;
+        padding: 32px 24px;
+        color: var(--text-dark);
       }
 
-      .container {
+      /* ─── PAGE HEADER ─── */
+      .page-header {
         display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 32px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--cream-dark);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .brand-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--navy), var(--navy-light));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .brand-icon svg {
+        width: 26px;
+        height: 26px;
+        fill: var(--gold);
+      }
+
+      .brand-text h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        color: var(--navy);
+        letter-spacing: -0.3px;
+        line-height: 1;
+      }
+
+      .brand-text p {
+        font-size: 12px;
+        color: var(--text-light);
+        font-weight: 400;
+        margin-top: 3px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+
+      .header-meta {
+        display: flex;
+        align-items: center;
         gap: 20px;
-        background: #ffffff;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
       }
 
-      /* FORM */
-      .form-box {
-        width: 40%;
-        background: #ffffff;
-        padding: 20px;
-        border-radius: 12px;
-        border-top: 5px solid #1e2a38;
-        border-right: 2px solid black;
-        border-bottom: 2px solid black;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      .layout {
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 24px;
+        align-items: start;
       }
 
-      .form-box h2 {
-        text-align: center;
-        margin-bottom: 15px;
-        color: #1e2a38;
+      .card {
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        transition: box-shadow 0.3s ease;
       }
 
-      label {
-        display: block;
-        margin-top: 10px;
+      .card:hover {
+        box-shadow: var(--shadow-lg);
+      }
+
+      .card-header {
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-light) 100%
+        );
+        padding: 22px 28px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .card-header-icon {
+        width: 36px;
+        height: 36px;
+        background: rgba(201, 168, 76, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .card-header-icon svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--gold);
+      }
+
+      .card-header h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 17px;
+        color: var(--white);
+        letter-spacing: 0.2px;
+      }
+
+      .card-header p {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.55);
+        margin-top: 2px;
+        font-weight: 400;
+      }
+
+      /* ─── FORM ─── */
+      .form-body {
+        padding: 28px;
+      }
+
+      .field-group {
+        margin-bottom: 16px;
+      }
+
+      .field-group label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
         font-weight: 600;
-        font-size: 14px;
-        color: #333;
+        color: var(--text-light);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin-bottom: 6px;
       }
 
-      input,
+      .field-group label span.req {
+        color: var(--gold);
+        font-size: 13px;
+        line-height: 1;
+      }
+
+      .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .input-wrap {
+        position: relative;
+      }
+
+      .input-wrap svg {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 15px;
+        height: 15px;
+        fill: var(--text-light);
+        pointer-events: none;
+      }
+
+      .input-wrap input,
+      .input-wrap select,
+      input[type="text"],
+      input[type="number"],
+      input[type="date"],
       select {
         width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        border: 1px solid #d1d5db;
-        border-radius: 8px;
-        font-size: 14px;
+        padding: 11px 14px 11px 38px;
+        border: 1.5px solid var(--cream-dark);
+        border-radius: var(--radius-sm);
+        font-size: 13.5px;
+        font-family: "DM Sans", sans-serif;
+        color: var(--text-dark);
+        background: var(--cream);
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          background 0.2s;
+        appearance: none;
       }
 
-      input:focus,
-      select:focus {
-        border-color: #1e2a38;
-        box-shadow: 0 0 0 3px rgba(30, 42, 56, 0.1);
+      .input-wrap input::placeholder,
+      .input-wrap select::placeholder {
+        color: var(--text-light);
+      }
+
+      .input-wrap input:focus,
+      .input-wrap select:focus {
         outline: none;
+        border-color: var(--gold);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
       }
 
-      /* BUTTONS */
-      button,
-      .btn {
-        width: 100%;
-        margin-top: 15px;
-        padding: 12px;
-        background: linear-gradient(135deg, #1e2a38, #2f4f6f);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-weight: bold;
-        text-align: center;
-        text-decoration: none;
-        display: block;
+      .input-wrap select {
         cursor: pointer;
-        transition: 0.3s;
       }
 
-      button:hover,
-      .btn:hover {
-        background: #0f1720;
+      /* Divider */
+      .form-divider {
+        height: 1px;
+        background: var(--cream-dark);
+        margin: 18px 0;
+        position: relative;
       }
 
-      /* TABLE */
-      .table-box {
-        width: 60%;
-        background: #ffffff;
-        padding: 20px;
-        border-radius: 17px;
-        border-top: 5px solid #1e2a38;
-        border-right: 2px solid black;
-        border-bottom: 2px solid black;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      .form-divider::after {
+        content: "PAYMENT DETAILS";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--white);
+        padding: 0 10px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: var(--text-light);
+      }
+
+      /* Submit button */
+      .btn-submit {
+        width: 100%;
+        margin-top: 20px;
+        padding: 14px;
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-light) 100%
+        );
+        color: var(--white);
+        border: none;
+        border-radius: var(--radius-sm);
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-submit::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(201, 168, 76, 0.15),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+
+      .btn-submit:hover::before {
+        left: 100%;
+      }
+
+      .btn-submit:hover {
+        background: linear-gradient(135deg, var(--navy-mid), var(--navy));
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(13, 27, 42, 0.3);
+      }
+
+      .btn-submit svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--gold);
+        flex-shrink: 0;
+      }
+
+      /* ─── TABLE ─── */
+      .table-wrapper {
         overflow-x: auto;
       }
 
-      .table-box h2 {
-        text-align: center;
-        margin-bottom: 15px;
-        color: #1e2a38;
+      .table-controls {
+        padding: 18px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--cream-dark);
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .search-box {
+        position: relative;
+        flex: 1;
+        max-width: 260px;
+      }
+
+      .search-box svg {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 14px;
+        height: 14px;
+        fill: var(--text-light);
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 9px 14px 9px 36px;
+        border: 1.5px solid var(--cream-dark);
+        border-radius: 50px;
+        font-size: 13px;
+        font-family: "DM Sans", sans-serif;
+        color: var(--text-dark);
+        background: var(--cream);
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .search-box input:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 12px;
+        font-size: 13px;
       }
 
-      th,
-      td {
-        padding: 10px;
-        text-align: center;
-        border-bottom: 1px solid #eee;
-        white-space: nowrap;
+      thead tr {
+        background: var(--cream);
+        border-bottom: 2px solid var(--cream-dark);
       }
 
       th {
-        background: #1e2a38;
-        color: white;
+        padding: 12px 16px;
+        text-align: left;
+        font-size: 10.5px;
+        font-weight: 700;
+        color: var(--text-light);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      th:last-child {
+        text-align: center;
+      }
+
+      tbody tr {
+        border-bottom: 1px solid var(--cream-dark);
+        transition: background 0.15s ease;
+      }
+
+      tbody tr:last-child {
+        border-bottom: none;
+      }
+
+      tbody tr:hover {
+        background: rgba(201, 168, 76, 0.04);
+      }
+
+      td {
+        padding: 13px 16px;
+        color: var(--text-dark);
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+
+      .cell-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--navy), var(--navy-light));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--gold);
+        flex-shrink: 0;
+        letter-spacing: 0.5px;
+      }
+
+      .cell-name span {
+        font-weight: 500;
+      }
+
+      /* NIN badge */
+      .nin-badge {
+        font-family: "Courier New", monospace;
         font-size: 11px;
+        background: var(--cream);
+        border: 1px solid var(--cream-dark);
+        border-radius: 4px;
+        padding: 3px 7px;
+        color: var(--text-mid);
+        letter-spacing: 0.5px;
       }
 
-      tr:hover {
-        background: #f3f8ff;
+      /* Amount */
+      .amount-cell {
+        font-weight: 600;
+        color: var(--navy);
       }
 
-      /* ACTION BUTTONS */
+      /* Item badge */
+      .item-badge {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(13, 27, 42, 0.07);
+        color: var(--navy-mid);
+        border-radius: 50px;
+        padding: 3px 10px;
+        font-size: 11.5px;
+        font-weight: 500;
+      }
+
+      /* Balance indicator */
+      .balance-cell {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .balance-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--success);
+        flex-shrink: 0;
+      }
+
+      .balance-dot.warn {
+        background: #e9a23b;
+      }
+
+      .balance-dot.danger {
+        background: var(--danger);
+      }
+
+      /* Action buttons */
       .actions {
         display: flex;
         gap: 6px;
         justify-content: center;
+        align-items: center;
       }
 
-      .edit-btn {
-        background: #facc15;
-        color: black;
-        padding: 6px 10px;
+      .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 11px;
         border-radius: 6px;
-        text-decoration: none;
         font-size: 11px;
-        font-weight: bold;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+        font-family: "DM Sans", sans-serif;
       }
 
-      .delete-btn {
-        background: #ef4444;
-        color: white;
-        padding: 6px 10px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 11px;
-        font-weight: bold;
+      .action-btn svg {
+        width: 11px;
+        height: 11px;
+        flex-shrink: 0;
       }
 
-      .receipt-btn {
-        background: #007bff;
-        color: white;
-        padding: 6px 10px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 11px;
+      .btn-receipt {
+        background: rgba(13, 27, 42, 0.08);
+        color: var(--navy);
+        border: 1px solid rgba(13, 27, 42, 0.12);
       }
 
-      @media (max-width: 768px) {
-        .container {
+      .btn-receipt:hover {
+        background: var(--navy);
+        color: var(--white);
+      }
+
+      .btn-edit {
+        background: rgba(183, 121, 31, 0.1);
+        color: var(--warn);
+        border: 1px solid rgba(183, 121, 31, 0.2);
+      }
+
+      .btn-edit:hover {
+        background: var(--warn);
+        color: var(--white);
+      }
+
+      .btn-delete {
+        background: rgba(192, 57, 43, 0.08);
+        color: var(--danger);
+        border: 1px solid rgba(192, 57, 43, 0.15);
+      }
+
+      .btn-delete:hover {
+        background: var(--danger);
+        color: var(--white);
+      }
+
+      /* Empty state */
+      .empty-state {
+        padding: 60px 24px;
+        text-align: center;
+      }
+
+      .empty-state svg {
+        width: 48px;
+        height: 48px;
+        fill: var(--cream-dark);
+        margin-bottom: 16px;
+      }
+
+      .empty-state p {
+        color: var(--text-light);
+        font-size: 14px;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .page-header {
           flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
         }
+      }
 
-        .form-box,
-        .table-box {
-          width: 100%;
+      /* ─── ANIMATIONS ─── */
+      @keyframes fadeSlideUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .card {
+        animation: fadeSlideUp 0.4s ease both;
+      }
+
+      .layout > .card:nth-child(2) {
+        animation-delay: 0.08s;
       }
     </style>
   </head>
@@ -189,114 +636,252 @@
   <body>
     {% load static %}
 
-    <div class="container">
-      <!-- FORM -->
-      <div class="form-box">
-        <h2>DEPOSIT FORM</h2>
+    <div class="page-header">
+      <div class="brand">
+        <div class="brand-icon"></div>
+        <div class="brand-text">
+          <h1>Deposit Scheme</h1>
+          <p>Secure &middot; Reliable &middot; Transparent</p>
+        </div>
+      </div>
+      <div class="header-meta"></div>
+    </div>
 
-        <form method="POST">
-          {% csrf_token %}
+    <div class="layout">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-icon"></div>
+          <div>
+            <h2>New Deposit</h2>
+            <p>Fill in all required fields below</p>
+          </div>
+        </div>
 
-          <label>Full Name</label>
-          <input type="text" name="name" required />
+        <div class="form-body">
+          <form method="POST">
+            {% csrf_token %}
 
-          <label>NIN</label>
-          <input
-            type="text"
-            name="nin"
-            maxlength="14"
-            minlength="14"
-            placeholder="e.g CM123456789AB"
-            pattern="^(CM|CF)[A-Z0-9]{12}$"
-            title="NIN must be exactly 14 characters (CM or CF + 12 characters)"
-            required
-          />
+            <!-- Personal Info -->
+            <div class="field-group">
+              <label>Full Name <span class="req">*</span></label>
+              <div class="input-wrap">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="e.g. Alvin"
+                  required
+                />
+              </div>
+            </div>
 
-          <label>Phone</label>
-          <input
-            type="text"
-            name="phone"
-            placeholder="+256740230081"
-            pattern="^\+256[0-9]{9}$"
-            maxlength="13"
-            title="Phone must be in format +256XXXXXXXXX"
-            required
-          />
+            <div class="field-row">
+              <div class="field-group">
+                <label>NIN <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input
+                    type="text"
+                    name="nin"
+                    maxlength="14"
+                    minlength="14"
+                    placeholder="CM123456789AB"
+                    pattern="^(CM|CF)[A-Z0-9]{12}$"
+                    title="NIN must be 14 chars (CM or CF + 12)"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="field-group">
+                <label>Phone <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input
+                    type="text"
+                    name="phone"
+                    placeholder="+256740230081"
+                    pattern="^\+256[0-9]{9}$"
+                    maxlength="13"
+                    title="Format: +256XXXXXXXXX"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
 
-          <label>Item Name</label>
-          <select name="item_name" required>
-            <option value="">Select Item</option>
-            <option value="Cement">Cement</option>
-            <option value="Glass">Glass</option>
-            <option value="Iron Sheets">Iron Sheets</option>
-            <option value="Iron Bars">Iron Bars</option>
-          </select>
+            <!-- Divider -->
+            <div class="form-divider"></div>
 
-          <label>Date</label>
-          <input type="date" name="date" required />
+            <!-- Item & Date -->
+            <div class="field-row">
+              <div class="field-group">
+                <label>Item <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <select name="item_name" required>
+                    <option value="">Select Item</option>
+                    <option value="Cement">Cement</option>
+                    <option value="Glass">Glass</option>
+                    <option value="Iron Sheets">Iron Sheets</option>
+                    <option value="Iron Bars">Iron Bars</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-group">
+                <label>Date <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input type="date" name="date" required />
+                </div>
+              </div>
+            </div>
 
-          <label>Payment Method</label>
-          <select name="method" required>
-            <option>Mobile Money</option>
-            <option>Bank Transfer</option>
-            <option>Cash</option>
-          </select>
+            <!-- Payment -->
+            <div class="field-group">
+              <label>Payment Method <span class="req">*</span></label>
+              <div class="input-wrap">
+                <select name="method" required>
+                  <option>Mobile Money</option>
+                  <option>Bank Transfer</option>
+                  <option>Cash</option>
+                </select>
+              </div>
+            </div>
 
-          <label>Amount</label>
-          <input type="number" name="amount" min="1" required />
+            <!-- Amounts -->
+            <div class="field-row">
+              <div class="field-group">
+                <label>Amount (UGX) <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input
+                    type="number"
+                    name="amount"
+                    min="1"
+                    placeholder="0"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="field-group">
+                <label>Quantity <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input
+                    type="number"
+                    name="quantity"
+                    min="1"
+                    placeholder="0"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
 
-          <label>Quantity</label>
-          <input type="number" name="quantity" min="1" required />
+            <div class="field-group">
+              <label>Balance (UGX)</label>
+              <div class="input-wrap">
+                <input type="number" name="balance" min="0" placeholder="0" />
+              </div>
+            </div>
 
-          <label>Balance</label>
-          <input type="number" name="balance" min="0" />
-
-          <button type="submit">Submit Deposit</button>
-          
-        </form>
+            <button type="submit" class="btn-submit">Submit Deposit</button>
+          </form>
+        </div>
       </div>
 
-  
-      <div class="table-box">
-        <h2>Deposits Table</h2>
+      <!-- ─── TABLE CARD ─── -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-icon"></div>
+          <div>
+            <h2>Deposit Records</h2>
+            <p>All registered deposits</p>
+          </div>
+        </div>
 
-        <table>
-          <tr>
-            <th>Name</th>
-            <th>NIN</th>
-            <th>Phone</th>
-            <th>Item</th>
-            <th>Date</th>
-            <th>Amount</th>
+        <div class="table-controls">
+          <div class="search-box">
+            <input
+              type="text"
+              placeholder="Search deposits…"
+              id="searchInput"
+              onkeyup="filterTable()"
+            />
+          </div>
+        </div>
 
-            <th>Quantity</th>
-            <th>Balance</th>
-            <th>Actions</th>
-          </tr>
-
-          {% for d in deposits %}
-          <tr>
-            <td>{{ d.name }}</td>
-            <td>{{ d.nin }}</td>
-            <td>{{ d.phone }}</td>
-            <td>{{ d.item_name }}</td>
-            <td>{{ d.date }}</td>
-            <td>{{ d.amount }}</td>
-            <td>{{ d.quantity }}</td>
-            <td>{{ d.balance }}</td>
-
-            <td class="actions">
-              <a href="{% url 'deposit_receipt' d.id %}" class="receipt-btn"
-                >Receipt</a
-              >
-              <a href="{% url 'edit_deposit' d.id %}" class="edit-btn">Edit</a>
-              <a href="{% url 'delete_deposit' d.id %}" class="delete-btn"
-                >Delete</a
-              >
-            </td>
-          </tr>
-          {% endfor %}
-        </table>
+        <div class="table-wrapper">
+          <table id="depositTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>NIN</th>
+                <th>Phone</th>
+                <th>Item</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Qty</th>
+                <th>Balance</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for d in deposits %}
+              <tr>
+                <td>
+                  <div class="cell-name">
+                    <div class="avatar">{{ d.name|slice:":2"|upper }}</div>
+                    <span>{{ d.name }}</span>
+                  </div>
+                </td>
+                <td><span class="nin-badge">{{ d.nin }}</span></td>
+                <td>{{ d.phone }}</td>
+                <td><span class="item-badge">{{ d.item_name }}</span></td>
+                <td>{{ d.date }}</td>
+                <td class="amount-cell">{{ d.amount|floatformat:0 }}</td>
+                <td>{{ d.quantity }}</td>
+                <td>
+                  <div class="balance-cell">
+                    <div
+                      class="balance-dot {% if d.balance > 0 %}warn{% endif %}"
+                    ></div>
+                    {{ d.balance|floatformat:0 }}
+                  </div>
+                </td>
+                <td>
+                  <div class="actions">
+                    <a
+                      href="{% url 'deposit_receipt' d.id %}"
+                      class="action-btn btn-receipt"
+                    >
+                      Receipt
+                    </a>
+                    <a
+                      href="{% url 'edit_deposit' d.id %}"
+                      class="action-btn btn-edit"
+                    >
+                      Edit
+                    </a>
+                    <a
+                      href="{% url 'delete_deposit' d.id %}"
+                      class="action-btn btn-delete"
+                      onclick="
+                        return confirm(
+                          'Are you sure you want to delete this sale? This action cannot be undone!',
+                        );
+                      "
+                    >
+                      Delete
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="9">
+                  <div class="empty-state">
+                    <p>No deposit records found. Submit the first one!</p>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </body>

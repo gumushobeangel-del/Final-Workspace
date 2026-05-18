@@ -1,94 +1,378 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Receipt</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
+    :root {
+      --navy: #0d1b2a;
+      --navy-light: #243b55;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --cream: #f9f6f0;
+      --cream-dark: #ede8df;
+      --text-dark: #1a1a2e;
+      --text-mid: #4a5568;
+      --text-light: #718096;
+      --success: #2d7a5e;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: Arial;
-      background: #eef3f8;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      background-image:
+        radial-gradient(ellipse at 10% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(13,27,42,0.06) 0%, transparent 50%);
+      min-height: 100vh;
       display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 32px 16px;
+      gap: 20px;
     }
 
-    .box {
-      width: 420px;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    /* ─── RECEIPT CARD ─── */
+    .receipt {
+      width: 100%;
+      max-width: 440px;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(13,27,42,0.15);
+      overflow: hidden;
+      animation: fadeSlideUp 0.4s ease both;
     }
 
+    /* Header */
+    .receipt-header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      padding: 28px 28px 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .receipt-header .logo-ring {
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      background: rgba(201,168,76,0.18);
+      border: 2px solid rgba(201,168,76,0.35);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+    }
+
+    .receipt-header .logo-ring svg {
+      width: 26px; height: 26px; fill: var(--gold);
+    }
+
+    .receipt-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; color: var(--white);
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    .receipt-header p {
+      font-size: 11px; color: rgba(255,255,255,0.5);
+      margin-top: 4px; letter-spacing: 0.5px;
+    }
+
+    /* Zigzag edge */
+    .zigzag {
+      height: 14px;
+      background: linear-gradient(-45deg, var(--cream) 25%, transparent 25%) 0 0,
+                  linear-gradient( 45deg, var(--cream) 25%, transparent 25%) 0 0,
+                  linear-gradient(-45deg, transparent 75%, var(--cream) 75%) 0 -14px,
+                  linear-gradient( 45deg, transparent 75%, var(--cream) 75%) 0 -14px;
+      background-color: var(--white);
+      background-size: 28px 28px;
+    }
+
+    /* Body */
+    .receipt-body { padding: 4px 28px 24px; }
+
+    /* Section label */
+    .section-label {
+      font-size: 9.5px; font-weight: 700;
+      color: var(--text-light); letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin: 18px 0 8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: var(--cream-dark);
+    }
+
+    /* Row */
     .row {
       display: flex;
       justify-content: space-between;
-      border-bottom: 1px dashed #ccc;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px dashed var(--cream-dark);
+    }
+
+    .row:last-of-type { border-bottom: none; }
+
+    .row .label {
+      font-size: 12px; color: var(--text-light);
+      font-weight: 500; display: flex; align-items: center; gap: 7px;
+    }
+
+    .row .label svg {
+      width: 13px; height: 13px; fill: var(--text-light); flex-shrink: 0;
+    }
+
+    .row .value {
+      font-size: 13px; font-weight: 600; color: var(--text-dark);
+      text-align: right;
+    }
+
+    /* Free badge */
+    .free-badge {
+      display: inline-block;
+      background: rgba(45,122,94,0.1);
+      color: var(--success);
+      border-radius: 50px;
+      padding: 2px 9px;
+      font-size: 11px; font-weight: 700;
+    }
+
+    /* Totals block */
+    .totals-block {
+      background: var(--cream);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 18px;
+      border: 1px solid var(--cream-dark);
+    }
+
+    .totals-block .row {
+      border-bottom: 1px dashed var(--cream-dark);
       padding: 8px 0;
     }
 
-    .total {
-      text-align: center;
-      font-size: 22px;
-      color: green;
-      margin-top: 15px;
-      font-weight: bold;
+    .totals-block .row:last-child {
+      border-bottom: none;
+      padding-top: 12px;
+      margin-top: 4px;
     }
 
+    .totals-block .row .label { font-size: 12px; }
+    .totals-block .row .value { font-size: 13px; }
+
+    .grand-row .label {
+      font-size: 13px !important; font-weight: 700 !important;
+      color: var(--navy) !important;
+    }
+
+    .grand-row .value {
+      font-size: 17px !important; font-weight: 700 !important;
+      color: var(--navy) !important;
+    }
+
+    /* Thank you */
+    .thank-you {
+      text-align: center;
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--cream-dark);
+    }
+
+    .thank-you .gold-bar {
+      width: 40px; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 2px;
+      margin: 0 auto 12px;
+    }
+
+    .thank-you h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; color: var(--navy);
+      letter-spacing: 1px;
+    }
+
+    .thank-you p {
+      font-size: 11.5px; color: var(--text-light);
+      margin-top: 5px; line-height: 1.5;
+    }
+
+    /* Print button */
+    .btn-print {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; max-width: 440px;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-light));
+      color: var(--white); border: none;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 6px 20px rgba(13,27,42,0.2);
+    }
+
+    .btn-print:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 28px rgba(13,27,42,0.3);
+    }
+
+    .btn-print svg { width: 16px; height: 16px; fill: var(--gold); }
+
+    /* ─── PRINT STYLES ─── */
     @media print {
-      button { display: none; }
+      body {
+        background: none !important;
+        padding: 0 !important;
+        justify-content: flex-start;
+      }
+
+      .receipt {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        max-width: 100% !important;
+        animation: none !important;
+      }
+
+      .btn-print { display: none !important; }
+
+      .zigzag { display: none; }
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 
 <body onload="window.print()">
 
-  <div class="box">
+  <div class="receipt">
 
-    <h2 style="text-align:center;">RECEIPT</h2>
-
-    <div class="row"><span>Item</span><span>{{ sale.item_name }}</span></div>
-    <div class="row"><span>Qty</span><span>{{ sale.quantity }}</span></div>
-    <div class="row"><span>Price</span><span>{{ sale.unit_price }}</span></div>
-
-    <div class="row"><span>Customer</span><span>{{ sale.customer_name }}</span></div>
-    <div class="row"><span>Contact</span><span>{{ sale.customer_contact }}</span></div>
-
-    <div class="row"><span>Date</span><span>{{ sale.date }}</span></div>
-
-
-    <div class="row">
-      <span>Distance (KM)</span>
-      <span>{{ sale.distance_km }}</span>
+    <!-- HEADER -->
+    <div class="receipt-header">
+      <div class="logo-ring">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 14H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+      </div>
+      <h1>Receipt</h1>
+      <p>Official Sales Receipt &mdash; {{ sale.date }}</p>
     </div>
 
-    
-    <div class="row">
-      <span>Transport</span>
-      <span>
-        {% if sale.transport == 0 %}
-          FREE
-        {% else %}
-          UGX {{ sale.transport }}
-        {% endif %}
-      </span>
+    <!-- ZIGZAG TEAR -->
+    <div class="zigzag"></div>
+
+    <!-- BODY -->
+    <div class="receipt-body">
+
+      <!-- Item Info -->
+      <div class="section-label">Item Details</div>
+
+      <div class="row">
+        <span class="label">
+          <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.07-.44.18-.88.18-1.34C18 2.54 15.46 0 12.34 0h-.68C8.54 0 6 2.54 6 5.66c0 .46.11.9.18 1.34H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
+          Item
+        </span>
+        <span class="value">{{ sale.item_name }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">
+          <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+          Quantity
+        </span>
+        <span class="value">{{ sale.quantity }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">
+          <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+          Unit Price
+        </span>
+        <span class="value">UGX {{ sale.unit_price }}</span>
+      </div>
+
+      <!-- Customer Info -->
+      <div class="section-label">Customer</div>
+
+      <div class="row">
+        <span class="label">
+          <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          Name
+        </span>
+        <span class="value">{{ sale.customer_name }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">
+          <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          Contact
+        </span>
+        <span class="value">{{ sale.customer_contact }}</span>
+      </div>
+
+      <!-- Delivery -->
+      <div class="section-label">Delivery</div>
+
+      <div class="row">
+        <span class="label">
+          <svg viewBox="0 0 24 24"><path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z"/></svg>
+          Distance
+        </span>
+        <span class="value">{{ sale.distance_km }} km</span>
+      </div>
+
+      <div class="row">
+        <span class="label">
+          <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5S5.17 15.5 6 15.5s1.5.67 1.5 1.5S6.83 18.5 6 18.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          Transport
+        </span>
+        <span class="value">
+          {% if sale.transport == 0 %}
+            <span class="free-badge">FREE</span>
+          {% else %}
+            UGX {{ sale.transport }}
+          {% endif %}
+        </span>
+      </div>
+
+      <!-- Totals -->
+      <div class="totals-block">
+        <div class="row">
+          <span class="label">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+            Subtotal
+          </span>
+          <span class="value">UGX {{ sale.total }}</span>
+        </div>
+        <div class="row grand-row">
+          <span class="label">Grand Total</span>
+          <span class="value">UGX {{ sale.grand_total }}</span>
+        </div>
+      </div>
+
+      <!-- Thank You -->
+      <div class="thank-you">
+        <div class="gold-bar"></div>
+        <h2>Thank You!</h2>
+        <p>We appreciate your business.<br>Please keep this receipt for your records.</p>
+      </div>
+
     </div>
-
-    <div class="row">
-      <span>Subtotal</span>
-      <span>UGX {{ sale.total }}</span>
-    </div>
-
-    <div class="row">
-      <span>Grand Total</span>
-      <span>UGX {{ sale.grand_total }}</span>
-    </div>
-
-    <div class="total">THANK YOU</div>
-
-    <button onclick="window.print()">Print Again</button>
-
   </div>
+
+  <!-- PRINT BUTTON -->
+  <button class="btn-print" onclick="window.print()">
+   
+    Print Receipt
+  </button>
 
 </body>
 </html>

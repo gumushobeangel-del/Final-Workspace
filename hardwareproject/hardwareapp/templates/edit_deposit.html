@@ -19,31 +19,52 @@
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
       }
 
+      label {
+        display: block;
+        width: 80%;
+        margin: 10px auto 5px auto;
+      }
+
       input {
-        width: 100%;
+        width: 80%;
         padding: 10px;
-        margin: 6px 0;
+        margin: 6px auto;
+        display: block;
         border: 1px solid #ccc;
         border-radius: 8px;
       }
 
       button {
-        width: 100%;
+        width: 80%;
         padding: 12px;
+        margin: 15px auto;
+        display: block;
         background: #1e2a38;
         color: white;
         border: none;
         border-radius: 8px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #2c3e50;
+      }
+
+      /* optional: show balance nicely */
+      .readonly {
+        background: #f1f1f1;
+        color: #333;
       }
     </style>
   </head>
 
   <body>
     <div class="box">
-      <h2>Edit Deposit</h2>
+      <h2 style="text-align: center">Edit Deposit</h2>
 
       <form method="POST">
         {% csrf_token %}
+
         <label>Name</label>
         <input name="name" value="{{ deposit.name }}" />
 
@@ -66,10 +87,10 @@
         <input name="quantity" value="{{ deposit.quantity }}" />
 
         <label>Balance</label>
-        <input name="balance" value="{{ deposit.balance }}" />  
+        <input value="{{ deposit.balance }}" class="readonly" readonly />
 
         <label>Date</label>
-        <input type="date" name="date" value="{{ deposit.date|date:'Y-m-d' }}">
+        <input type="date" name="date" value="{{ deposit.date|date:'Y-m-d' }}" />
 
         <button type="submit">Update</button>
       </form>

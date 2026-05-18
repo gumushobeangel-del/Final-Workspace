@@ -184,7 +184,7 @@
 
   <body>
     <div class="container">
-  
+      <!-- FORM -->
       <div class="form-box">
         <h2>Supplier Credit</h2>
 
@@ -235,6 +235,7 @@
         </form>
       </div>
 
+      <!-- TABLE -->
       <div class="table-box">
         <h2>Credit Records</h2>
 
@@ -258,14 +259,14 @@
             <td>{{ c.total_cost }}</td>
             <td>{{ c.amount_paid }}</td>
 
-           
+            <!-- FIXED BALANCE (ONLY ONCE) -->
             <td class="{% if c.balance > 0 %}low{% else %}good{% endif %}">
               {{ c.balance }}
             </td>
 
             <td>{{ c.date }}</td>
 
-      
+            <!-- ACTIONS -->
             <td class="actions">
               <a href="{% url 'edit_supplier_credit' c.id %}" class="edit-btn"
                 >Edit</a
@@ -273,8 +274,14 @@
               <a
                 href="{% url 'delete_supplier_credit' c.id %}"
                 class="delete-btn"
-                >Delete</a
+                onclick="
+                  return confirm(
+                    ' Are you sure you want to delete this credit record? This action cannot be undone!',
+                  );
+                "
               >
+                Delete
+              </a>
             </td>
           </tr>
           {% endfor %}
