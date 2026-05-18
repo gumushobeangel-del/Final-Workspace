@@ -19,20 +19,21 @@
         />
       </div>
 
-      <h1>REGISTRATION FORM</h1>
+      <h1>LOG IN AS YOUR ROLE</h1>
 
-      <!-- ✅ ERROR MESSAGE HERE -->
       {% if error %}
-        <div style="
-            background: #ffdddd;
-            color: #a94442;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            text-align: center;
-        ">
-          {{ error }}
-        </div>
+      <div
+        style="
+          background: #ffdddd;
+          color: #a94442;
+          padding: 10px;
+          border-radius: 5px;
+          margin-bottom: 15px;
+          text-align: center;
+        "
+      >
+        {{ error }}
+      </div>
       {% endif %}
 
       <form method="POST">
@@ -94,7 +95,6 @@
         </div>
 
         <button type="submit">Log in</button>
-        <a href="{% url 'register'%}" class="btn">Register Customer</a>
       </form>
     </div>
   </body>

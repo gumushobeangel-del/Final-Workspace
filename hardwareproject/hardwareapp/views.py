@@ -112,7 +112,6 @@ def login_view(request):
 
         # WRONG LOGIN
         messages.error(request, " Incorrect username or password!")
-
         return redirect("log")
 
     return render(request, "log.html")
@@ -129,14 +128,14 @@ def dash(request):
     role = request.session.get("role")
 
     # BLOCK NON-ADMINS
-    if role != "admin":
+    if role != "admin":#if user not admin send them away
         return redirect("sign") 
 
     # TOTAL PRODUCTS
-    total_products = Stock.objects.count()
+    total_products = Stock.objects.count()#count the records
 
     # LOW STOCK
-    low_stock = Stock.objects.filter(quantity__lt=20).count()
+    low_stock = Stock.objects.filter(quantity__lt=20).count()#select specific records if less than 20 low stock
 
     # SUPPLIERS
     suppliers = Supplier.objects.count()
@@ -225,7 +224,7 @@ def sales(request):
 
         distance = float(request.POST.get("distance_km") or 0)
 
-        # validation
+        # validation to prevent negatives
         if quantity <= 0 or unit_price <= 0:
             return render(request, "sales.html", {
                 "error": "Quantity and Unit Price must be greater than 0"
@@ -247,7 +246,7 @@ def sales(request):
         # CALCULATIONS
         subtotal = quantity * unit_price
 
-        # transport cost logic
+        # transport 
         if distance <= 10 and subtotal >= 500000:
             transport = 0
         else:
@@ -349,8 +348,6 @@ def receipt(request, id):
 
 
 # SUPPLIERS
-
-
 def suppliers(request):
 
     if request.method == "POST":
@@ -444,7 +441,7 @@ def edit_sales(request, id):
         sale.quantity = quantity
         sale.unit_price = unit_price
 
-        # RECALCULATE TOTAL (THIS IS YOUR MAIN GOAL)
+        # RECALCULATE TOTAL 
         sale.total = quantity * unit_price
 
         sale.customer_name = request.POST.get("customer_name")
@@ -565,7 +562,7 @@ def credit(request):
 
         credits = Credit.objects.all().order_by("-id")
 
-        # SAME AS SALES (PRINT TRIGGER)
+        # SAME AS SALES 
         return render(request, "credit.html", {
             "credits": credits,
             "print_now": True
@@ -665,3 +662,5 @@ def reports(request):
     }
 
     return render(request, 'reports.html', context)
+
+

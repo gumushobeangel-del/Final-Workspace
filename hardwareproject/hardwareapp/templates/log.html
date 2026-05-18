@@ -126,14 +126,9 @@
     <div class="container">
       <h1>Welcome Back!</h1>
 
-      <!-- 🔥 ERROR MESSAGE -->
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert">
-            {{ message }}
-          </div>
-        {% endfor %}
-      {% endif %}
+      {% if messages %} {% for message in messages %}
+      <div class="alert">{{ message }}</div>
+      {% endfor %} {% endif %}
 
       <form method="POST" action="{% url 'log' %}">
         {% csrf_token %}
@@ -159,7 +154,7 @@
 
         <p>
           Don't have an account?
-          <a href="{% url 'sign' %}">Sign Up</a>
+          <a href="{% url 'sign' %}">Log in</a>
         </p>
       </form>
     </div>

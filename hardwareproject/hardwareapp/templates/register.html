@@ -93,6 +93,18 @@
         border-collapse: collapse;
         font-size: 12px;
       }
+      .btn {
+        width: 100%;
+        margin-top: 15px;
+        padding: 12px;
+        background: #1e2a38;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+      }
 
       th,
       td {
@@ -156,7 +168,7 @@
 
   <body>
     <div class="container">
-      <!-- FORM -->
+  
       <div class="form-section">
         <h2>Customer Form</h2>
 
@@ -184,6 +196,7 @@
           <input type="text" name="address" />
 
           <button type="submit">Register Customer</button>
+           <a href="{% url 'deposit' %}" class="btn">Register Deposit</a>
         </form>
       </div>
 

@@ -168,20 +168,6 @@
         background: #dc2626;
       }
 
-      .print-btn {
-        background: #1e2a38;
-        color: white;
-        padding: 6px 10px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 12px;
-        font-weight: bold;
-      }
-
-      .print-btn:hover {
-        background: #0f1720;
-      }
-
       /* RESPONSIVE */
       @media (max-width: 768px) {
         .container {
@@ -198,7 +184,7 @@
 
   <body>
     <div class="container">
-      <!-- FORM -->
+  
       <div class="form-box">
         <h2>Supplier Credit</h2>
 
@@ -249,7 +235,6 @@
         </form>
       </div>
 
-      <!-- TABLE -->
       <div class="table-box">
         <h2>Credit Records</h2>
 
@@ -273,14 +258,14 @@
             <td>{{ c.total_cost }}</td>
             <td>{{ c.amount_paid }}</td>
 
-            <!-- FIXED BALANCE (ONLY ONCE) -->
+           
             <td class="{% if c.balance > 0 %}low{% else %}good{% endif %}">
               {{ c.balance }}
             </td>
 
             <td>{{ c.date }}</td>
 
-            <!-- ACTIONS -->
+      
             <td class="actions">
               <a href="{% url 'edit_supplier_credit' c.id %}" class="edit-btn"
                 >Edit</a
@@ -290,13 +275,6 @@
                 class="delete-btn"
                 >Delete</a
               >
-
-              <a
-                href="{% url 'supplier_credit_receipt' c.id %}"
-                class="print-btn"
-              >
-                Print
-              </a>
             </td>
           </tr>
           {% endfor %}

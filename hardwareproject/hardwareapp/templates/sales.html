@@ -141,7 +141,6 @@
   <body>
     <h1>Sales Management</h1>
     <div class="container">
-      <!-- FORM -->
       <div class="form-box">
         <h2>REGISTER SALE</h2>
 
@@ -171,18 +170,24 @@
           <input type="text" name="customer_name" required />
 
           <label>Customer Contact</label>
-           <input
-          type="text"
-          name="customer_contact"
-          placeholder="+256740230081"
-          pattern="^\+256[0-9]{9}$"
-          maxlength="13"
-          title="Phone must be in format +256XXXXXXXXX"
-          required
-        />
+          <input
+            type="text"
+            name="customer_contact"
+            placeholder="+256740230081"
+            pattern="^\+256[0-9]{9}$"
+            maxlength="13"
+            title="Phone must be in format +256XXXXXXXXX"
+            required
+          />
 
           <label>Distance (KM)</label>
-          <input type="number" name="distance_km" min="0" step="0.01" required />
+          <input
+            type="number"
+            name="distance_km"
+            min="0"
+            step="0.01"
+            required
+          />
 
           <label>Item Type</label>
           <input type="text" name="item_type" required />
@@ -191,11 +196,10 @@
           <input type="text" name="item_brand" required />
 
           <button type="submit">Add Sale</button>
-          <a href="{% url 'deposit' %}" class="btn">Make Deposit</a>
+          <a href="{% url 'register' %}" class="btn">Register Customer</a>
         </form>
       </div>
 
-      <!-- TABLE -->
       <div class="table-box">
         <h2>Sales Table</h2>
 
@@ -219,47 +223,49 @@
           </thead>
 
           <tbody>
-  {% for sale in sales %}
-  <tr>
-    <td>{{ sale.item_name }}</td>
-    <td>{{ sale.quantity }}</td>
-    <td>{{ sale.date }}</td>
-    <td>{{ sale.unit_price }}</td>
+            {% for sale in sales %}
+            <tr>
+              <td>{{ sale.item_name }}</td>
+              <td>{{ sale.quantity }}</td>
+              <td>{{ sale.date }}</td>
+              <td>{{ sale.unit_price }}</td>
 
-    <td>{{ sale.customer_name }}</td>
-    <td>{{ sale.customer_contact }}</td>
+              <td>{{ sale.customer_name }}</td>
+              <td>{{ sale.customer_contact }}</td>
 
-    <td>{{ sale.item_type }}</td>
-    <td>{{ sale.item_brand }}</td>
+              <td>{{ sale.item_type }}</td>
+              <td>{{ sale.item_brand }}</td>
 
-    <td>{{ sale.total }}</td>
+              <td>{{ sale.total }}</td>
 
-   
-    <td>{{ sale.distance_km }}</td>
+              <td>{{ sale.distance_km }}</td>
 
-    <td>
-      {% if sale.transport == 0 %}
-        FREE
-      {% else %}
-        {{ sale.transport }}
-      {% endif %}
-    </td>
+              <td>
+                {% if sale.transport == 0 %} FREE {% else %} {{ sale.transport
+                }} {% endif %}
+              </td>
 
-    <td>{{ sale.total|add:sale.transport }}</td>
+              <td>{{ sale.total|add:sale.transport }}</td>
 
-    <td class="actions">
-      <a href="{% url 'receipt' sale.id %}" class="receipt-btn">Receipt</a>
-      <a href="{% url 'edit_sales' sale.id %}" class="edit-btn">Edit</a>
-      <a href="{% url 'delete_sale' sale.id %}" class="delete-btn">Delete</a>
-    </td>
-  </tr>
+              <td class="actions">
+                <a href="{% url 'receipt' sale.id %}" class="receipt-btn"
+                  >Receipt</a
+                >
+                <a href="{% url 'edit_sales' sale.id %}" class="edit-btn"
+                  >Edit</a
+                >
+                <a href="{% url 'delete_sale' sale.id %}" class="delete-btn"
+                  >Delete</a
+                >
+              </td>
+            </tr>
 
-  {% empty %}
-  <tr>
-    <td colspan="13">No sales recorded yet</td>
-  </tr>
-  {% endfor %}
-</tbody>
+            {% empty %}
+            <tr>
+              <td colspan="13">No sales recorded yet</td>
+            </tr>
+            {% endfor %}
+          </tbody>
         </table>
       </div>
     </div>
