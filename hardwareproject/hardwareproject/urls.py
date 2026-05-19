@@ -52,6 +52,8 @@ urlpatterns = [
 
     path('deposit-receipt/<int:id>/', views.deposit_receipt, name='deposit_receipt'),
 
+    
+
 ]
 
    

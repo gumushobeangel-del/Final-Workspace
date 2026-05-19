@@ -275,6 +275,7 @@ def sales(request):
         )
 
         return redirect("sales")
+    
 
     stocks = Stock.objects.all().order_by("-id")
     sales = Sale.objects.all().order_by("-id")
@@ -283,6 +284,7 @@ def sales(request):
         "stocks": stocks,
         "sales": sales
     })
+    
 #Deposit
 
 ITEM_PRICES = {
@@ -480,14 +482,27 @@ def edit_deposit(request, id):
         deposit.name = request.POST.get("name")
         deposit.phone = request.POST.get("phone")
 
-        deposit.amount = float(request.POST.get("amount") or 0)
-        deposit.quantity = int(request.POST.get("quantity") or 0)
+        new_amount = float(request.POST.get("amount") or 0)
+        new_quantity = int(request.POST.get("quantity") or 0)
+        item_name = request.POST.get("item_name")
 
-        deposit.item_name = request.POST.get("item_name")
-        deposit.nin = request.POST.get("nin")
         deposit.method = request.POST.get("method")
+        deposit.nin = request.POST.get("nin")
+        deposit.item_name = item_name
 
-        deposit.balance = float(request.POST.get("balance") or 0)
+        #GET PRICE AGAIN
+        price = ITEM_PRICES.get(item_name, 0)
+
+        #RECALCULATE TOTAL
+        total_cost = price * new_quantity
+
+        #NEW BALANCE
+        deposit.amount = new_amount
+        deposit.quantity = new_quantity
+        deposit.balance = total_cost - new_amount   
+
+        if deposit.balance < 0:
+            deposit.balance = 0
 
         date = request.POST.get("date")
         if date:
@@ -498,7 +513,6 @@ def edit_deposit(request, id):
         return redirect("deposit")
 
     return render(request, "edit_deposit.html", {"deposit": deposit})
-
 
 def delete_deposit(request, id):
 
@@ -611,7 +625,8 @@ def edit_supplier_credit(request, id):
 def delete_supplier_credit(request, id):
     credit = get_object_or_404(Credit, id=id)
     credit.delete()
-    return redirect("supplier_credit")  
+
+    return redirect("credit")  
 
 def supplier_credit_receipt(request, id):
     credit = get_object_or_404(Credit, id=id)

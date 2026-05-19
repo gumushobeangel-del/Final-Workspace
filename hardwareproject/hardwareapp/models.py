@@ -76,8 +76,27 @@ class Deposit(models.Model):
     date = models.DateField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.name
+
+def save(self, *args, **kwargs):  
+        price = {
+            "Cement": 30000,
+            "Glass": 15000,
+            "Iron Sheets": 20000,
+            "Iron Bars": 27000,
+        }.get(self.item_name, 0)
+        
+
+        total_cost = price * self.quantity
+        self.balance = total_cost - self.amount
+
+        if self.balance < 0:
+            self.balance = 0
+
+        super().save(*args, **kwargs)
+   
+
+        def __str__(self):
+          return self.name
 
 
 
@@ -142,3 +161,5 @@ class Credit(models.Model):
 
     def __str__(self):
         return f"{self.supplier_name} - {self.item_name}"
+    
+    
