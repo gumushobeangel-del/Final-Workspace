@@ -205,6 +205,7 @@ def stock_view(request):
             specification=request.POST.get("specification"),
             payment_method=request.POST.get("payment_method"),
         )
+     
 
     stocks = Stock.objects.all()
     return render(request, "stock.html", {"stocks": stocks})

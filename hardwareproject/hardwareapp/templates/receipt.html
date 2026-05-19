@@ -257,7 +257,7 @@
 
   <div class="receipt">
 
-    <!-- HEADER -->
+  
     <div class="receipt-header">
       <div class="logo-ring">
         <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 14H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
@@ -266,13 +266,11 @@
       <p>Official Sales Receipt &mdash; {{ sale.date }}</p>
     </div>
 
-    <!-- ZIGZAG TEAR -->
     <div class="zigzag"></div>
 
-    <!-- BODY -->
+ 
     <div class="receipt-body">
 
-      <!-- Item Info -->
       <div class="section-label">Item Details</div>
 
       <div class="row">
@@ -299,7 +297,7 @@
         <span class="value">UGX {{ sale.unit_price }}</span>
       </div>
 
-      <!-- Customer Info -->
+    
       <div class="section-label">Customer</div>
 
       <div class="row">
@@ -318,7 +316,7 @@
         <span class="value">{{ sale.customer_contact }}</span>
       </div>
 
-      <!-- Delivery -->
+     
       <div class="section-label">Delivery</div>
 
       <div class="row">
@@ -343,7 +341,7 @@
         </span>
       </div>
 
-      <!-- Totals -->
+  
       <div class="totals-block">
         <div class="row">
           <span class="label">
@@ -358,7 +356,6 @@
         </div>
       </div>
 
-      <!-- Thank You -->
       <div class="thank-you">
         <div class="gold-bar"></div>
         <h2>Thank You!</h2>
@@ -368,7 +365,6 @@
     </div>
   </div>
 
-  <!-- PRINT BUTTON -->
   <button class="btn-print" onclick="window.print()">
    
     Print Receipt

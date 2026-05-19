@@ -358,42 +358,6 @@
         flex-wrap: wrap;
       }
 
-      .search-box {
-        position: relative;
-        flex: 1;
-        max-width: 260px;
-      }
-
-      .search-box svg {
-        position: absolute;
-        left: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 14px;
-        height: 14px;
-        fill: var(--text-light);
-      }
-
-      .search-box input {
-        width: 100%;
-        padding: 9px 14px 9px 36px;
-        border: 1.5px solid var(--cream-dark);
-        border-radius: 50px;
-        font-size: 13px;
-        font-family: "DM Sans", sans-serif;
-        color: var(--text-dark);
-        background: var(--cream);
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s;
-      }
-
-      .search-box input:focus {
-        outline: none;
-        border-color: var(--gold);
-        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
-      }
-
       table {
         width: 100%;
         border-collapse: collapse;
@@ -465,34 +429,10 @@
         font-weight: 500;
       }
 
-      /* NIN badge */
-      .nin-badge {
-        font-family: "Courier New", monospace;
-        font-size: 11px;
-        background: var(--cream);
-        border: 1px solid var(--cream-dark);
-        border-radius: 4px;
-        padding: 3px 7px;
-        color: var(--text-mid);
-        letter-spacing: 0.5px;
-      }
-
       /* Amount */
       .amount-cell {
         font-weight: 600;
         color: var(--navy);
-      }
-
-      /* Item badge */
-      .item-badge {
-        display: inline-flex;
-        align-items: center;
-        background: rgba(13, 27, 42, 0.07);
-        color: var(--navy-mid);
-        border-radius: 50px;
-        padding: 3px 10px;
-        font-size: 11.5px;
-        font-weight: 500;
       }
 
       /* Balance indicator */
@@ -661,7 +601,6 @@
           <form method="POST">
             {% csrf_token %}
 
-            <!-- Personal Info -->
             <div class="field-group">
               <label>Full Name <span class="req">*</span></label>
               <div class="input-wrap">
@@ -706,10 +645,8 @@
               </div>
             </div>
 
-            <!-- Divider -->
             <div class="form-divider"></div>
 
-            <!-- Item & Date -->
             <div class="field-row">
               <div class="field-group">
                 <label>Item <span class="req">*</span></label>
@@ -731,7 +668,6 @@
               </div>
             </div>
 
-            <!-- Payment -->
             <div class="field-group">
               <label>Payment Method <span class="req">*</span></label>
               <div class="input-wrap">
@@ -783,24 +719,12 @@
         </div>
       </div>
 
-      <!-- ─── TABLE CARD ─── -->
       <div class="card">
         <div class="card-header">
           <div class="card-header-icon"></div>
           <div>
             <h2>Deposit Records</h2>
             <p>All registered deposits</p>
-          </div>
-        </div>
-
-        <div class="table-controls">
-          <div class="search-box">
-            <input
-              type="text"
-              placeholder="Search deposits…"
-              id="searchInput"
-              onkeyup="filterTable()"
-            />
           </div>
         </div>
 
