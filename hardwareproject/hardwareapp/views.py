@@ -177,37 +177,72 @@ def dash(request):
 
 
 #stock
+from datetime import datetime, date, timedelta
+from django.shortcuts import render
+from django.contrib import messages
+
+
 def stock_view(request):
+    stocks = Stock.objects.all()
+
     if request.method == "POST":
         item_name = request.POST.get("item_name")
         quantity = int(request.POST.get("quantity") or 0)
         unit_cost = float(request.POST.get("unit_cost") or 0)
         unit_price = float(request.POST.get("unit_price") or 0)
+        stock_date_str = request.POST.get("date")
 
-        # Prevent empty values
+
         if not item_name:
-            return render(request, "stock.html", {
-                "error": "Item name is required"
-            })
-        
-        #prevents negatives
+            messages.error(request, "Item name is required")
+            return redirect("stock")
+
         if quantity <= 0 or unit_cost <= 0 or unit_price <= 0:
-            return render(request, "stock.html", {
-                "error": "All values must be greater than 0"
-            })
+            messages.error(request, "All values must be greater than 0")
+            return redirect("stock")
 
-        Stock.objects.create(
+        # DATE CHECK
+        try:
+            stock_date = datetime.strptime(stock_date_str, "%Y-%m-%d").date()
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid date format")
+            return redirect("stock")
+
+        today = date.today()
+        one_week_ago = today - timedelta(days=7)
+
+        # FUTURE DATE CHECK (tomorrow included)
+        if stock_date > today:
+            messages.error(request, "You cannot select tomorrow or future dates")
+            return redirect("stock")
+
+        # TOO OLD DATE CHECK
+        if stock_date < one_week_ago:
+            messages.error(request, "Date cannot be older than 1 week")
+            return redirect("stock")
+
+       
+
+        stock_item, created = Stock.objects.get_or_create(
             item_name=item_name,
-            quantity=quantity,
-            unit_cost=unit_cost,
-            unit_price=unit_price,
-            date=request.POST.get("date"),
-            specification=request.POST.get("specification"),
-            payment_method=request.POST.get("payment_method"),
+            defaults={
+                "quantity": quantity,
+                "unit_cost": unit_cost,
+                "unit_price": unit_price,
+                "date": stock_date
+            }
         )
-     
 
-    stocks = Stock.objects.all()
+        if not created:
+            stock_item.quantity += quantity
+            stock_item.unit_cost = unit_cost
+            stock_item.unit_price = unit_price
+            stock_item.date = stock_date
+            stock_item.save()
+
+        messages.success(request, "Stock saved successfully")
+        return redirect("stock")
+
     return render(request, "stock.html", {"stocks": stocks})
 
 
@@ -222,60 +257,71 @@ def sales(request):
         stock_id = request.POST.get("stock_id")
         quantity = int(request.POST.get("quantity") or 0)
         unit_price = float(request.POST.get("unit_price") or 0)
-
         distance = float(request.POST.get("distance_km") or 0)
 
-        # validation to prevent negatives
-        if quantity <= 0 or unit_price <= 0:
-            return render(request, "sales.html", {
-                "error": "Quantity and Unit Price must be greater than 0"
-            })
+        sale_date_str = request.POST.get("date")
 
-        # GET STOCK
+       #prevents negatives
+
+        if quantity <= 0 or unit_price <= 0:
+            messages.error(request, "Quantity and Unit Price must be greater than 0")
+            return redirect("sales")
+
+        # DATE VALIDATION
+        try:
+            sale_date = datetime.strptime(sale_date_str, "%Y-%m-%d").date()
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid date format")
+            return redirect("sales")
+
+        today = date.today()
+
+        # BLOCK FUTURE DATE (tomorrow included)
+        if sale_date > today:
+            messages.error(request, "You cannot select tomorrow or future dates")
+            return redirect("sales")
+
+      
+
         stock = get_object_or_404(Stock, id=stock_id)
 
-        # CHECK STOCK
         if stock.quantity < quantity:
-            return render(request, "sales.html", {
-                "error": "Not enough stock available!"
-            })
+            messages.error(request, "Not enough stock available!")
+            return redirect("sales")
 
-        # REDUCE STOCK
+        # reduce stock
         stock.quantity -= quantity
         stock.save()
 
-        # CALCULATIONS
+
         subtotal = quantity * unit_price
 
-        # transport 
         if distance <= 10 and subtotal >= 500000:
             transport = 0
         else:
             transport = 30000
 
-        # FINAL TOTAL
         grand_total = subtotal + transport
 
-        # SAVE SALE
+  
+
         Sale.objects.create(
             item_name=stock.item_name,
             quantity=quantity,
             unit_price=unit_price,
-
-            total=subtotal,   
-            distance_km=distance,     
+            total=subtotal,
+            distance_km=distance,
             transport=transport,
-            grand_total=grand_total, 
-
+            grand_total=grand_total,
             customer_name=request.POST.get("customer_name"),
             customer_contact=request.POST.get("customer_contact"),
             item_type=request.POST.get("item_type"),
             item_brand=request.POST.get("item_brand"),
-            date=request.POST.get("date")
+            date=sale_date   
         )
 
+        messages.success(request, "Sale recorded successfully")
         return redirect("sales")
-    
 
     stocks = Stock.objects.all().order_by("-id")
     sales = Sale.objects.all().order_by("-id")
@@ -293,6 +339,16 @@ ITEM_PRICES = {
     "Iron Sheets": 20000,
     "Iron Bars": 27000,
 }
+# DEPOSIT
+from datetime import datetime, date, timedelta
+from django.contrib import messages
+
+ITEM_PRICES = {
+    "Cement": 30000,
+    "Glass": 15000,
+    "Iron Sheets": 20000,
+    "Iron Bars": 27000,
+}
 
 def deposit(request):
 
@@ -301,29 +357,63 @@ def deposit(request):
         amount = float(request.POST.get("amount") or 0)
         quantity = int(request.POST.get("quantity") or 0)
         item_name = request.POST.get("item_name")
+        deposit_date_str = request.POST.get("date")
 
-        # VALIDATION
+        # VALIDATION FOR NEGATIVE VALUES
         if amount <= 0:
-            return render(request, "deposit.html", {
-                "error": "Amount must be greater than 0"
-            })
+            messages.error(request, "Amount must be greater than 0")
+            return redirect("deposit")
 
         if quantity <= 0:
-            return render(request, "deposit.html", {
-                "error": "Quantity must be greater than 0"
-            })
+            messages.error(request, "Quantity must be greater than 0")
+            return redirect("deposit")
 
+        # VALIDATE ITEM
         price = ITEM_PRICES.get(item_name)
 
         if not price:
-            return render(request, "deposit.html", {
-                "error": "Invalid item selected"
-            })
+            messages.error(request, "Invalid item selected")
+            return redirect("deposit")
+
+        # DATE VALIDATION
+        try:
+            deposit_date = datetime.strptime(
+                deposit_date_str,
+                "%Y-%m-%d"
+            ).date()
+
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid date format")
+            return redirect("deposit")
+
+        today = date.today()
+        one_week_ago = today - timedelta(days=7)
+
+        # BLOCK FUTURE DATES
+        if deposit_date > today:
+            messages.error(
+                request,
+                "You cannot select tomorrow or future dates"
+            )
+            return redirect("deposit")
+
+        # BLOCK VERY OLD DATES
+        if deposit_date < one_week_ago:
+            messages.error(
+                request,
+                "Date cannot be older than 1 week"
+            )
+            return redirect("deposit")
+
+        # CALCULATIONS
         total_cost = price * quantity
-        balance = total_cost - amount   
+        balance = total_cost - amount
 
-      
+        # PREVENT NEGATIVE BALANCE
+        if balance < 0:
+            balance = 0
 
+        # SAVE DEPOSIT
         Deposit.objects.create(
             amount=amount,
             quantity=quantity,
@@ -333,9 +423,10 @@ def deposit(request):
             method=request.POST.get("method"),
             item_name=item_name,
             nin=request.POST.get("nin") or "N/A",
-            date=request.POST.get("date")
+            date=deposit_date
         )
 
+        messages.success(request, "Deposit saved successfully")
         return redirect("deposit")
 
     deposits = Deposit.objects.all().order_by("-id")
@@ -343,6 +434,8 @@ def deposit(request):
     return render(request, "deposit.html", {
         "deposits": deposits
     })
+
+
 # RECEIPT
 #helps in printing the receipt
 def receipt(request, id):

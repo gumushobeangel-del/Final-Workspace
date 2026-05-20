@@ -1,3 +1,5 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -33,12 +35,22 @@
         font-size: 28px;
       }
 
-    
-
       /* HERO SECTION */
       .her {
-        height: 80vh;
-        background: linear-gradient(135deg, #2f6fed, #1f2a40);
+        height: 100vh;
+
+        /* BACKGROUND IMAGE */
+        background:
+          linear-gradient(
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.6)
+          ),
+          url("{% static 'images/nyondo cover.png' %}");
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -46,20 +58,11 @@
         text-align: center;
         color: white;
         padding: 20px;
-      }
-
-      .her h2 {
-        font-size: 42px;
         margin-bottom: 15px;
+        gap: 20px;
       }
 
-      .her p {
-        font-size: 18px;
-        margin-bottom: 25px;
-        opacity: 0.9;
-      }
-
-      /* BUTTON */
+      /*BUTTON */
       .btn {
         padding: 12px 25px;
         background: white;
@@ -69,6 +72,7 @@
         font-size: 16px;
         font-weight: bold;
         transition: 0.3s;
+        margin-top: 120px;
       }
 
       .btn:hover {
@@ -155,21 +159,6 @@
 
       /* RESPONSIVE */
       @media (max-width: 768px) {
-        nav {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 10px;
-        }
-
-        nav a {
-          margin-left: 0;
-        }
-
-        .her h2 {
-          font-size: 28px;
-        }
-
         .box {
           width: 90%;
         }
@@ -180,19 +169,15 @@
   <body>
     <header>
       <h1>Nyondo Hardware</h1>
-     
     </header>
 
     <section class="her">
-      <h2>Welcome to Your Trusted Hardware Partner!</h2>
-      <p>
-        Quality building materials and tools for all your construction needs.
-      </p>
-      <a href="{% url 'log'%}" class="btn">Get Started</a>
+      <a href="{% url 'log' %}" class="btn">Get Started</a>
     </section>
 
     <section class="services">
       <h2>Our Services</h2>
+
       <div class="service-boxes">
         <div class="box">
           <h3>Building Materials</h3>
@@ -213,6 +198,7 @@
 
     <section class="about">
       <h2>About Us</h2>
+
       <p>
         Nyondo Hardware is committed to providing quality construction materials
         and reliable service. We support builders, contractors, and homeowners
@@ -222,6 +208,7 @@
 
     <section class="contact">
       <h2>Contact Us</h2>
+
       <p>Nansana, Wakiso</p>
       <p>📞 +256 740230081</p>
       <p>info@nyondohardware.com</p>

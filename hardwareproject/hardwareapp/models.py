@@ -4,7 +4,7 @@ from decimal import Decimal
 
 
 class Stock(models.Model):
-    item_name = models.CharField(max_length=100)
+    item_name = models.CharField(max_length=100, unique=True)
     quantity = models.IntegerField(default=0)
     unit_cost = models.DecimalField(max_digits=10, decimal_places=1, default=0)
     unit_price = models.DecimalField(max_digits=10, decimal_places=1, default=0)
