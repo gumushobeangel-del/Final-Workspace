@@ -212,14 +212,11 @@
 
       <div class="nav-links">
         <a href="{% url 'index' %}">Home</a>
-        <a href="{% url 'stock' %}">Stock</a>
 
         <a href="{% url 'supplier' %}">Supplier</a>
-        <a href="{% url 'credit' %}">Credit</a>
       </div>
     </div>
     <div class="container">
-      
       <div class="form-box">
         <h2>SUPPLIER FORM</h2>
 
@@ -228,9 +225,6 @@
 
           <label>Supplier Name</label>
           <input type="text" name="supplier_name" required />
-
-          <label>Date</label>
-          <input type="date" name="date" required />
 
           <label>Company</label>
           <input type="text" name="company" required />
@@ -263,7 +257,7 @@
           <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Date</th>
+
             <th>Company</th>
             <th>Contact</th>
             <th>Email</th>
@@ -275,7 +269,7 @@
           <tr>
             <td>{{ supplier.id }}</td>
             <td>{{ supplier.supplier_name }}</td>
-            <td>{{ supplier.date }}</td>
+
             <td>{{ supplier.company }}</td>
             <td>{{ supplier.contact }}</td>
             <td>{{ supplier.email }}</td>

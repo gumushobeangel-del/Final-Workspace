@@ -447,7 +447,7 @@ def suppliers(request):
 
         Supplier.objects.create(
             supplier_name=request.POST.get("supplier_name"),
-            date=request.POST.get("date"),
+          
             company=request.POST.get("company"),
             contact=request.POST.get("contact"),
             email=request.POST.get("email"),
@@ -554,11 +554,17 @@ def edit_sales(request, id):
         "sale": sale
     })
 
+
 def delete_sale(request, id):
+
+    # BLOCK NON-ADMIN USERS
+    if request.session.get("role") != "admin":
+        return redirect("sales")  # or show error page
+
     sale = get_object_or_404(Sale, id=id)
     sale.delete()
-    return redirect("sales")
 
+    return redirect("sales")
 
 
 # EDIT DEPOSIT

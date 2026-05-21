@@ -124,7 +124,7 @@ class Supplier(models.Model):
     email = models.EmailField()
     location = models.CharField(max_length=100)
 
-    date = models.DateField(default=timezone.now)
+   
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
