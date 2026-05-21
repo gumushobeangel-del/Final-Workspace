@@ -705,7 +705,10 @@
         <a href="{% url 'index' %}">Home</a>
 
         <a href="{% url 'sales' %}" class="active">Sales</a>
-        
+        {% if is_admin %}
+        <a href="{% url 'register' %}">Register</a>
+        <a href="{% url 'deposit' %}">Deposits</a>
+        {% endif %}
       </div>
     </nav>
     <div class="page-header">
@@ -863,8 +866,6 @@
             </div>
 
             <button type="submit" class="btn-submit">Add Sale</button>
-
-           
           </form>
         </div>
       </div>

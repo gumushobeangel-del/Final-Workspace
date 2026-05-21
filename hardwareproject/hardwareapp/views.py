@@ -776,7 +776,6 @@ def reports(request):
     return render(request, 'reports.html', context)
 
 
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
@@ -795,10 +794,10 @@ def stock(request):
     return render(request, "stock.html")
 
 
-# @login_required(login_url='sign')
-# @never_cache
-# def sales(request):
-#     return render(request, "sales.html")
+@login_required(login_url='sign')
+@never_cache
+def sales(request):
+    return render(request, "sales.html")
 
 
 @login_required(login_url='sign')
@@ -823,3 +822,4 @@ def logout_view(request):
     logout(request)
     request.session.flush()
     return redirect("sign")
+
