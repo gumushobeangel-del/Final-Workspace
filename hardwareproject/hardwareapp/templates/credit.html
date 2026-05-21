@@ -168,6 +168,39 @@
         background: #dc2626;
       }
 
+      /* NAVIGATION */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: #1e2a38;
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        padding: 8px 12px;
+        background: #2f4f6f;
+        color: white;
+        border-radius: 6px;
+        font-size: 12px;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        background: #0f1720;
+      }
+
       /* RESPONSIVE */
       @media (max-width: 768px) {
         .container {
@@ -183,109 +216,121 @@
   </head>
 
   <body>
-    <div class="container">
-      <!-- FORM -->
-      <div class="form-box">
-        <h2>Supplier Credit</h2>
+    <div class="navbar">
+      <h3>NYONDO SYSTEM</h3>
 
-        <form method="POST">
-          {% csrf_token %}
+      <div class="nav-links">
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'stock' %}">Stock</a>
 
-          <input
-            type="text"
-            name="supplier_name"
-            placeholder="Supplier Name"
-            required
-          />
-
-          <input
-            type="text"
-            name="item_name"
-            placeholder="Item Name"
-            required
-          />
-
-          <input
-            type="number"
-            name="quantity"
-            min="1"
-            placeholder="Quantity"
-            required
-          />
-
-          <input
-            type="number"
-            name="unit_price"
-            min="1"
-            placeholder="Unit Price"
-            required
-          />
-
-          <input
-            type="number"
-            name="amount_paid"
-            min="0"
-            placeholder="Amount Paid"
-          />
-
-          <input type="date" name="date" required />
-
-          <button type="submit">Save Credit</button>
-          <a href="{% url 'dash' %}" class="btn">Back to Dashboard</a>
-        </form>
+        <a href="{% url 'supplier' %}">Supplier</a>
+        <a href="{% url 'credit' %}">Credit</a>
       </div>
+    </div>
 
-      <!-- TABLE -->
-      <div class="table-box">
-        <h2>Credit Records</h2>
+    <div class="container">
+      <div class="container">
+        <!-- FORM -->
+        <div class="form-box">
+          <h2>Supplier Credit</h2>
 
-        <table>
-          <tr>
-            <th>Supplier</th>
-            <th>Item</th>
-            <th>Qty</th>
-            <th>Total</th>
-            <th>Paid</th>
-            <th>Balance</th>
-            <th>Date</th>
-            <th>Actions</th>
-          </tr>
+          <form method="POST">
+            {% csrf_token %}
 
-          {% for c in credits %}
-          <tr>
-            <td>{{ c.supplier_name }}</td>
-            <td>{{ c.item_name }}</td>
-            <td>{{ c.quantity }}</td>
-            <td>{{ c.total_cost }}</td>
-            <td>{{ c.amount_paid }}</td>
+            <input
+              type="text"
+              name="supplier_name"
+              placeholder="Supplier Name"
+              required
+            />
 
-            <!-- FIXED BALANCE (ONLY ONCE) -->
-            <td class="{% if c.balance > 0 %}low{% else %}good{% endif %}">
-              {{ c.balance }}
-            </td>
+            <input
+              type="text"
+              name="item_name"
+              placeholder="Item Name"
+              required
+            />
 
-            <td>{{ c.date }}</td>
+            <input
+              type="number"
+              name="quantity"
+              min="1"
+              placeholder="Quantity"
+              required
+            />
 
-            <!-- ACTIONS -->
-            <td class="actions">
-              <a href="{% url 'edit_supplier_credit' c.id %}" class="edit-btn"
-                >Edit</a
-              >
-              <a
-                href="{% url 'delete_supplier_credit' c.id %}"
-                class="delete-btn"
-                onclick="
-                  return confirm(
-                    ' Are you sure you want to delete this credit record? This action cannot be undone!',
-                  );
-                "
-              >
-                Delete
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </table>
+            <input
+              type="number"
+              name="unit_price"
+              min="1"
+              placeholder="Unit Price"
+              required
+            />
+
+            <input
+              type="number"
+              name="amount_paid"
+              min="0"
+              placeholder="Amount Paid"
+            />
+
+            <input type="date" name="date" required />
+
+            <button type="submit">Save Credit</button>
+          </form>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-box">
+          <h2>Credit Records</h2>
+
+          <table>
+            <tr>
+              <th>Supplier</th>
+              <th>Item</th>
+              <th>Qty</th>
+              <th>Total</th>
+              <th>Paid</th>
+              <th>Balance</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+
+            {% for c in credits %}
+            <tr>
+              <td>{{ c.supplier_name }}</td>
+              <td>{{ c.item_name }}</td>
+              <td>{{ c.quantity }}</td>
+              <td>{{ c.total_cost }}</td>
+              <td>{{ c.amount_paid }}</td>
+
+              <td class="{% if c.balance > 0 %}low{% else %}good{% endif %}">
+                {{ c.balance }}
+              </td>
+
+              <td>{{ c.date }}</td>
+
+              <!-- ACTIONS -->
+              <td class="actions">
+                <a href="{% url 'edit_supplier_credit' c.id %}" class="edit-btn"
+                  >Edit</a
+                >
+                <a
+                  href="{% url 'delete_supplier_credit' c.id %}"
+                  class="delete-btn"
+                  onclick="
+                    return confirm(
+                      ' Are you sure you want to delete this credit record? This action cannot be undone!',
+                    );
+                  "
+                >
+                  Delete
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
       </div>
     </div>
   </body>

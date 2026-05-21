@@ -19,6 +19,39 @@
         padding: 20px;
       }
 
+      /* NAVIGATION BAR */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: #1e2a38;
+        color: white;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        padding: 8px 12px;
+        background: #2f4f6f;
+        color: white;
+        border-radius: 8px;
+        font-size: 12px;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        background: #0f1720;
+      }
+
       /* MAIN CONTAINER */
       .container {
         display: flex;
@@ -71,7 +104,6 @@
         outline: none;
       }
 
-      /* BUTTONS */
       button,
       .btn {
         width: 100%;
@@ -136,7 +168,6 @@
         background: #f3f8ff;
       }
 
-      /* ACTION BUTTONS */
       .edit-btn {
         background: #facc15;
         color: black;
@@ -148,10 +179,6 @@
         margin-right: 5px;
       }
 
-      .edit-btn:hover {
-        background: #eab308;
-      }
-
       .delete-btn {
         background: #ef4444;
         color: white;
@@ -160,10 +187,6 @@
         text-decoration: none;
         font-size: 11px;
         font-weight: bold;
-      }
-
-      .delete-btn:hover {
-        background: #dc2626;
       }
 
       @media (max-width: 900px) {
@@ -180,22 +203,31 @@
   </head>
 
   <body>
+    <!-- NAVIGATION -->
+    <div class="navbar">
+      <h3>NYONDO SYSTEM</h3>
+
+      <div class="nav-links">
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'stock' %}">Stock</a>
+        <a href="{% url 'supplier' %}">Supplier</a>
+        <a href="{% url 'credit' %}">Credit</a>
+      </div>
+    </div>
+
     <div class="container">
-    
       <div class="form-section">
         <h2>Stock Form</h2>
 
-        
         {% if messages %} {% for message in messages %}
         <div
           style="
             padding: 10px;
             margin: 10px 0;
-            border-radius: 5px;
-            font-weight: bold;
-            text-align: center;
-            background-color: #f8d7da;
+            background: #f8d7da;
             color: #721c24;
+            border-radius: 5px;
+            text-align: center;
           "
         >
           {{ message }}
@@ -217,6 +249,7 @@
             <option value="ironbars">Iron Bars</option>
             <option value="steel">Steel</option>
           </select>
+
           <label>Quantity</label>
           <input type="number" name="quantity" min="1" required />
 
@@ -248,8 +281,6 @@
           </select>
 
           <button type="submit">Save Stock</button>
-
-          <a href="{% url 'supplier' %}" class="btn">Register Supplier</a>
         </form>
       </div>
 
@@ -287,7 +318,7 @@
                 class="delete-btn"
                 onclick="
                   return confirm(
-                    'Are you sure you want to delete this stock item? This action cannot be undone!',
+                    'Are you sure you want to delete this stock item?',
                   );
                 "
               >

@@ -569,6 +569,78 @@
         font-size: 14px;
       }
 
+      /* ─── NAVIGATION BAR ─── */
+      .top-nav {
+        width: 100%;
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-light) 100%
+        );
+
+        padding: 18px 28px;
+        border-radius: var(--radius);
+        margin-bottom: 26px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+
+        box-shadow: var(--shadow-md);
+      }
+
+      .nav-logo {
+        font-family: "Playfair Display", serif;
+        font-size: 24px;
+        color: var(--gold);
+        letter-spacing: 0.5px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--white);
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.25s ease;
+      }
+
+      .nav-links a:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: var(--gold-light);
+      }
+
+      .nav-links a.active {
+        background: var(--gold);
+        color: var(--navy);
+      }
+
+      @media (max-width: 768px) {
+        .top-nav {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 14px;
+        }
+
+        .nav-links {
+          width: 100%;
+        }
+
+        .nav-links a {
+          flex: 1;
+          text-align: center;
+        }
+      }
+
       /* Responsive */
       @media (max-width: 900px) {
         .layout {
@@ -606,6 +678,18 @@
 
   <body>
     {% load static %}
+    <nav class="top-nav">
+      <div class="nav-logo">Nyondo Hardware</div>
+
+      <div class="nav-links">
+        <a href="{% url 'index' %}">Home</a>
+
+        <a href="{% url 'sales' %}">Sales</a>
+        <a href="{% url 'register' %}">Register</a>
+
+        <a href="{% url 'deposit' %}" class="active">Deposits</a>
+      </div>
+    </nav>
 
     <div class="page-header">
       <div class="brand">
@@ -621,7 +705,9 @@
     {% if messages %}
     <div class="messages-wrap">
       {% for message in messages %}
-      <div class="message-alert {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}warning{% endif %}">
+      <div
+        class="message-alert {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}warning{% endif %}"
+      >
         {{ message }}
       </div>
       {% endfor %}

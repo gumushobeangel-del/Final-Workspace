@@ -541,7 +541,6 @@
         font-size: 14px;
       }
 
-      /* ─── MESSAGES ─── */
       .messages-wrap {
         margin-bottom: 20px;
       }
@@ -575,7 +574,7 @@
         border: 1px solid #ffeeba;
       }
 
-      /* ─── ANIMATION ─── */
+      /* ANIMATION */
       @keyframes fadeSlideUp {
         from {
           opacity: 0;
@@ -585,6 +584,60 @@
           opacity: 1;
           transform: translateY(0);
         }
+      }
+      /* ─── NAVIGATION BAR ─── */
+      .top-nav {
+        width: 100%;
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-light) 100%
+        );
+
+        padding: 18px 28px;
+        border-radius: var(--radius);
+        margin-bottom: 26px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+
+        box-shadow: var(--shadow-md);
+      }
+
+      .nav-logo {
+        font-family: "Playfair Display", serif;
+        font-size: 24px;
+        color: var(--gold);
+        letter-spacing: 0.5px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--white);
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.25s ease;
+      }
+
+      .nav-links a:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: var(--gold-light);
+      }
+
+      .nav-links a.active {
+        background: var(--gold);
+        color: var(--navy);
       }
 
       @media (max-width: 768px) {
@@ -642,6 +695,21 @@
   </head>
 
   <body>
+    {% load static %}
+
+    <!-- ─── NAVIGATION ─── -->
+    <nav class="top-nav">
+      <div class="nav-logo">Nyondo Hardware</div>
+
+      <div class="nav-links">
+        <a href="{% url 'index' %}">Home</a>
+
+        <a href="{% url 'sales' %}" class="active">Sales</a>
+        <a href="{% url 'register' %}">Register</a>
+
+        <a href="{% url 'deposit' %}">Deposits</a>
+      </div>
+    </nav>
     <div class="page-header">
       <div class="brand">
         <div class="brand-icon"></div>
@@ -655,7 +723,9 @@
     {% if messages %}
     <div class="messages-wrap">
       {% for message in messages %}
-      <div class="message-alert {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}warning{% endif %}">
+      <div
+        class="message-alert {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}warning{% endif %}"
+      >
         {{ message }}
       </div>
       {% endfor %}
@@ -796,9 +866,7 @@
 
             <button type="submit" class="btn-submit">Add Sale</button>
 
-            <a href="{% url 'register' %}" class="btn-outline">
-              Register Customer
-            </a>
+           
           </form>
         </div>
       </div>

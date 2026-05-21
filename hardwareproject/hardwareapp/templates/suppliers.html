@@ -160,6 +160,39 @@
         transform: scale(1.05);
       }
 
+      /* NAVIGATION BAR */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: #1e2a38;
+        color: white;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        padding: 8px 12px;
+        background: #2f4f6f;
+        color: white;
+        border-radius: 8px;
+        font-size: 12px;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        background: #0f1720;
+      }
+
       @media (max-width: 768px) {
         .container {
           flex-direction: column;
@@ -174,8 +207,19 @@
   </head>
 
   <body>
+    <div class="navbar">
+      <h3>NYONDO SYSTEM</h3>
+
+      <div class="nav-links">
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'stock' %}">Stock</a>
+
+        <a href="{% url 'supplier' %}">Supplier</a>
+        <a href="{% url 'credit' %}">Credit</a>
+      </div>
+    </div>
     <div class="container">
-      <!-- FORM -->
+      
       <div class="form-box">
         <h2>SUPPLIER FORM</h2>
 
@@ -209,7 +253,6 @@
           <input type="text" name="location" required />
 
           <button type="submit">Save Supplier</button>
-          <a href="{% url 'credit' %}" class="btn">Credit Scheme</a>
         </form>
       </div>
 

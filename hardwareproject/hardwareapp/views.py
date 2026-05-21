@@ -330,18 +330,15 @@ def sales(request):
         "stocks": stocks,
         "sales": sales
     })
+
+
+def deposit(request):
+
+    if request.method == "POST":
+
+        amount = float(request.POST.get("amount") or 0)
     
 #Deposit
-
-ITEM_PRICES = {
-    "Cement": 30000,
-    "Glass": 15000,
-    "Iron Sheets": 20000,
-    "Iron Bars": 27000,
-}
-# DEPOSIT
-from datetime import datetime, date, timedelta
-from django.contrib import messages
 
 ITEM_PRICES = {
     "Cement": 30000,
@@ -434,8 +431,6 @@ def deposit(request):
     return render(request, "deposit.html", {
         "deposits": deposits
     })
-
-
 # RECEIPT
 #helps in printing the receipt
 def receipt(request, id):
