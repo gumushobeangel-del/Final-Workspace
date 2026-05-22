@@ -702,13 +702,38 @@
       <div class="nav-logo">Nyondo Hardware</div>
 
       <div class="nav-links">
+        <!-- HOME FOR EVERYONE -->
         <a href="{% url 'index' %}">Home</a>
 
-        <a href="{% url 'sales' %}" class="active">Sales</a>
-        {% if is_admin %}
-        <a href="{% url 'register' %}">Register</a>
+        <!-- ADMIN -->
+        {% if request.session.role == "admin" %}
+
+        <a href="{% url 'sales' %}">Sales</a>
+        <a href="{% url 'stock' %}">Add Stock</a>
+        <a href="{% url 'supplier' %}">Suppliers</a>
+        <a href="{% url 'register' %}">Register Customer</a>
+        <a href="{% url 'credit' %}">Supplier Credit</a>
+        <a href="{% url 'reports' %}">Reports</a>
         <a href="{% url 'deposit' %}">Deposits</a>
+
         {% endif %}
+
+        <!-- SALES PERSON -->
+        {% if request.session.role == "sales" %}
+
+        <a href="{% url 'sales' %}">Sales</a>
+
+        {% endif %}
+
+        <!-- STOCK MANAGER -->
+        {% if request.session.role == "stock_manager" %}
+
+        <a href="{% url 'stock' %}">Add Stock</a>
+
+        {% endif %}
+
+        <!-- LOGOUT FOR EVERYONE -->
+        <a href="{% url 'log' %}">Logout</a>
       </div>
     </nav>
     <div class="page-header">

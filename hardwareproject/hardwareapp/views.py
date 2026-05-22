@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from .models import Stock, Sale, Deposit, Receipt, Supplier,Register,Credit
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
 
 # HOME
@@ -10,33 +13,85 @@ from .models import Stock, Sale, Deposit, Receipt, Supplier,Register,Credit
 def index(request):
     return render(request, "index.html")
 
-#sign
-from django.shortcuts import render, redirect
+
+def login_view(request):
+
+    if request.method == "POST":
+
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        
+        user = authenticate(request, username=username, password=password)
+
+        
+        if user is not None:
+
+            login(request, user)
+
+            request.session["role"] = "admin"
+            request.session["username"] = username
+
+            return redirect("dash")
+
+        # Wrong credentials
+        messages.error(request, "Incorrect username or password!")
+        return redirect("log")
+
+    return render(request, "log.html")
+
+
 
 def sign(request):
+
     if request.method == "POST":
+
         username = request.POST.get("username")
         password = request.POST.get("password")
         role = request.POST.get("role")
 
+        # Users dictionary
         users = {
-            "admin": {"username": "Angellina", "password": "angel266"},
-            "sales": {"username": "kevin", "password": "kevin256"},
-            "stock_manager": {"username": "alvin", "password": "alvie233"},
+            "admin": {
+                "username": "Angellina",
+                "password": "angel266"
+            },
+
+            "sales": {
+                "username": "kevin",
+                "password": "kevin256"
+            },
+
+            "stock_manager": {
+                "username": "alvin",
+                "password": "alvie233"
+            },
         }
 
+        # Check role exists
         if role in users:
+
             stored_user = users[role]
 
-            # Check username first
+            # Username validation
             if username.lower().strip() != stored_user["username"].lower().strip():
-                return render(request, "sign.html", {"error": "Username is incorrect"})
 
-            # Then check password
+                return render(
+                    request,
+                    "sign.html",
+                    {"error": "Username is incorrect"}
+                )
+
+            # Password validation
             if password != stored_user["password"]:
-                return render(request, "sign.html", {"error": "Password is incorrect"})
 
-            # If both are correct
+                return render(
+                    request,
+                    "sign.html",
+                    {"error": "Password is incorrect"}
+                )
+
+            # Successful login
             request.session["role"] = role
             request.session["username"] = username
 
@@ -48,11 +103,20 @@ def sign(request):
 
             return redirect(redirect_map[role])
 
-        return render(request, "sign.html", {"error": "Invalid role selected"})
+        return render(
+            request,
+            "sign.html",
+            {"error": "Invalid role selected"}
+        )
 
     return render(request, "sign.html")
 
+def logout_view(request):
+    logout(request)
+    request.session.flush()
+    return redirect("sign")
 
+@login_required
 def register(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -73,6 +137,7 @@ def register(request):
 
     return render(request, 'register.html', {'customers': customers})
 
+@login_required
 def edit_customer(request, id):
     customer = get_object_or_404(Register, id=id)
 
@@ -87,6 +152,7 @@ def edit_customer(request, id):
 
     return render(request, "edit_customer.html", {"customer": customer})
 
+@login_required
 def delete_customer(request, id):
     customer = get_object_or_404(Register, id=id)
     customer.delete()
@@ -97,24 +163,6 @@ def delete_customer(request, id):
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-def login_view(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        # ONLY ADMIN ALLOWED
-        if username == "Angellina" and password == "angel266":
-
-            request.session["role"] = "admin"
-            request.session["username"] = username
-
-            return redirect("dash")
-
-        # WRONG LOGIN
-        messages.error(request, " Incorrect username or password!")
-        return redirect("log")
-
-    return render(request, "log.html")
 
 # DASHBOARD
 from django.shortcuts import render, redirect, get_object_or_404
@@ -123,7 +171,7 @@ from datetime import datetime, timedelta
 
 from .models import Stock, Sale, Supplier
 
-
+@login_required
 def dash(request):
     role = request.session.get("role")
 
@@ -181,18 +229,25 @@ from datetime import datetime, date, timedelta
 from django.shortcuts import render
 from django.contrib import messages
 
-
+@login_required
 def stock_view(request):
+
+    role = request.session.get("role")
+
+    if role not in ["admin", "stock_manager"]:
+        return redirect("sign")
+
     stocks = Stock.objects.all()
 
     if request.method == "POST":
+
         item_name = request.POST.get("item_name")
         quantity = int(request.POST.get("quantity") or 0)
         unit_cost = float(request.POST.get("unit_cost") or 0)
         unit_price = float(request.POST.get("unit_price") or 0)
         stock_date_str = request.POST.get("date")
 
-
+        # validation
         if not item_name:
             messages.error(request, "Item name is required")
             return redirect("stock")
@@ -201,27 +256,22 @@ def stock_view(request):
             messages.error(request, "All values must be greater than 0")
             return redirect("stock")
 
-        # DATE CHECK
         try:
             stock_date = datetime.strptime(stock_date_str, "%Y-%m-%d").date()
-        except (ValueError, TypeError):
-            messages.error(request, "Invalid date format")
+        except:
+            messages.error(request, "Invalid date")
             return redirect("stock")
 
         today = date.today()
         one_week_ago = today - timedelta(days=7)
 
-        # FUTURE DATE CHECK (tomorrow included)
         if stock_date > today:
-            messages.error(request, "You cannot select tomorrow or future dates")
+            messages.error(request, "Future dates not allowed")
             return redirect("stock")
 
-        # TOO OLD DATE CHECK
         if stock_date < one_week_ago:
-            messages.error(request, "Date cannot be older than 1 week")
+            messages.error(request, "Date too old")
             return redirect("stock")
-
-       
 
         stock_item, created = Stock.objects.get_or_create(
             item_name=item_name,
@@ -243,13 +293,14 @@ def stock_view(request):
         messages.success(request, "Stock saved successfully")
         return redirect("stock")
 
+    # GET request only
     return render(request, "stock.html", {"stocks": stocks})
-
-
 # SALES
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Stock, Sale
+
+@login_required
 def sales(request):
 
     if request.method == "POST":
@@ -347,6 +398,7 @@ ITEM_PRICES = {
     "Iron Bars": 27000,
 }
 
+@login_required
 def deposit(request):
 
     if request.method == "POST":
@@ -433,6 +485,8 @@ def deposit(request):
     })
 # RECEIPT
 #helps in printing the receipt
+
+@login_required
 def receipt(request, id):
     sale = get_object_or_404(Sale, id=id)
     return render(request, "receipt.html", {"sale": sale})
@@ -440,7 +494,7 @@ def receipt(request, id):
 
 # SUPPLIERS
 
-
+@login_required
 def suppliers(request):
 
     if request.method == "POST":
@@ -465,6 +519,9 @@ def suppliers(request):
 
 
 # EDIT STOCK
+
+
+@login_required
 def edit_stock(request, id):
     stock = get_object_or_404(Stock, id=id)
 
@@ -497,6 +554,7 @@ def delete_stock(request, id):
 
 
 # EDIT SALES
+@login_required
 def edit_sales(request, id):
 
     sale = get_object_or_404(Sale, id=id)
@@ -554,7 +612,7 @@ def edit_sales(request, id):
         "sale": sale
     })
 
-
+@login_required
 def delete_sale(request, id):
 
     # BLOCK NON-ADMIN USERS
@@ -568,6 +626,7 @@ def delete_sale(request, id):
 
 
 # EDIT DEPOSIT
+@login_required
 def edit_deposit(request, id):
     deposit = get_object_or_404(Deposit, id=id)
 
@@ -608,6 +667,7 @@ def edit_deposit(request, id):
 
     return render(request, "edit_deposit.html", {"deposit": deposit})
 
+@login_required
 def delete_deposit(request, id):
 
     Deposit.objects.filter(id=id).delete()
@@ -616,6 +676,7 @@ def delete_deposit(request, id):
 
 
 # EDIT SUPPLIER
+@login_required
 def edit_supplier(request, id):
 
     supplier = get_object_or_404(Supplier, id=id)
@@ -637,7 +698,7 @@ def edit_supplier(request, id):
         "supplier": supplier
     })
 
-
+@login_required
 def delete_supplier(request, id):
 
     supplier = get_object_or_404(Supplier, id=id)
@@ -645,6 +706,8 @@ def delete_supplier(request, id):
     supplier.delete()
 
     return redirect("supplier")
+
+@login_required
 def credit(request):
 
     if request.method == "POST":
@@ -685,6 +748,8 @@ def credit(request):
         "credits": credits
     })
 
+
+@login_required
 def edit_supplier_credit(request, id):
     credit = get_object_or_404(Credit, id=id)
 
@@ -716,12 +781,16 @@ def edit_supplier_credit(request, id):
     return render(request, "edit_credit.html", {
         "credit": credit
     })
+
+@login_required
 def delete_supplier_credit(request, id):
     credit = get_object_or_404(Credit, id=id)
     credit.delete()
 
     return redirect("credit")  
 
+
+@login_required
 def supplier_credit_receipt(request, id):
     credit = get_object_or_404(Credit, id=id)
 
@@ -731,6 +800,7 @@ def supplier_credit_receipt(request, id):
     })
 
 # DEPOSIT RECEIPT
+@login_required
 def deposit_receipt(request, id):
     deposit = get_object_or_404(Deposit, id=id)
 
@@ -742,7 +812,7 @@ def deposit_receipt(request, id):
 
 from decimal import Decimal
 from django.db.models import Sum
-
+@login_required
 def reports(request):
     # GET VALUES
     total_sales = Sale.objects.aggregate(Sum('grand_total'))['grand_total__sum'] or 0
@@ -776,50 +846,12 @@ def reports(request):
     return render(request, 'reports.html', context)
 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import never_cache
-from django.contrib.auth import logout
 
 
-@login_required(login_url='sign')
-@never_cache
-def dashboard(request):
-    return render(request, "dashboard.html")
 
 
-@login_required(login_url='sign')
-@never_cache
-def stock(request):
-    return render(request, "stock.html")
 
 
-@login_required(login_url='sign')
-@never_cache
-def sales(request):
-    return render(request, "sales.html")
 
 
-@login_required(login_url='sign')
-@never_cache
-def deposit(request):
-    return render(request, "deposit.html")
-
-
-@login_required(login_url='sign')
-@never_cache
-def supplier(request):
-    return render(request, "supplier.html")
-
-
-@login_required(login_url='sign')
-@never_cache
-def reports(request):
-    return render(request, "reports.html")
-
-
-def logout_view(request):
-    logout(request)
-    request.session.flush()
-    return redirect("sign")
 
