@@ -22,7 +22,7 @@
       <h1>LOG IN AS YOUR ROLE</h1>
 
    
-      {% if error %}
+      <!-- {% if error %}
         <div style="
             background: #ffdddd;
             color: #a94442;
@@ -33,9 +33,9 @@
         ">
           {{ error }}
         </div>
-      {% endif %}
+      {% endif %} -->
 
-      <form method="POST">
+      <form method="POST" novalidate>
         {% csrf_token %}
 
         <label for="username">Username</label>

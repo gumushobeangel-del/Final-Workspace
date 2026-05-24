@@ -5,285 +5,415 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Nyondo Hardware Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
+    :root {
+      --navy:       #0d1b2a;
+      --navy-mid:   #1a2e45;
+      --navy-light: #243b55;
+      --gold:       #c9a84c;
+      --gold-light: #e8c97a;
+      --cream:      #f9f6f0;
+      --cream-dark: #ede8df;
+      --text-dark:  #1a1a2e;
+      --text-mid:   #4a5568;
+      --text-light: #718096;
+      --white:      #ffffff;
+      --danger:     #c0392b;
+      --success:    #276749;
+      --shadow-md:  0 8px 30px rgba(13,27,42,.12);
+      --radius:     14px;
+      --radius-sm:  8px;
+      --sidebar-w:  240px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #eef3f8, #dfe9f3);
-      padding-top: 80px;
+      font-family: "DM Sans", sans-serif;
+      background: var(--cream);
+      background-image:
+        radial-gradient(ellipse at 10% 20%, rgba(201,168,76,.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(13,27,42,.06) 0%, transparent 50%);
+      min-height: 100vh;
+      padding-top: 0;
+      color: var(--text-dark);
     }
 
-    .header {
-      background: linear-gradient(135deg, #1e2a38, #2f4f6f);
-      color: white;
-      padding: 20px;
-      font-size: 28px;
-      text-align: center;
-      font-weight: bold;
-      position: fixed;
-      top: 0;
-      left: 240px;
-      right: 0;
-      z-index: 1000;
-    }
-
+    /* Sidebar */
     .sidebar {
-      background: #1e2a38;
-      color: white;
+      background: linear-gradient(180deg, var(--navy) 0%, var(--navy-mid) 100%);
       position: fixed;
       top: 0;
       left: 0;
-      width: 240px;
+      width: var(--sidebar-w);
       height: 100vh;
       overflow-y: auto;
-      padding-top: 80px;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      box-shadow: 4px 0 20px rgba(13,27,42,.18);
     }
 
-    .sidebar a {
-      display: block;
-      padding: 15px;
-      color: white;
-      text-decoration: none;
-      transition: 0.3s;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .sidebar a:hover {
-      background: #2f4f6f;
-      padding-left: 20px;
-    }
-
-    .logo {
+    .sidebar-logo {
+      padding: 28px 20px 20px;
       text-align: center;
-      padding: 15px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
 
-    .logo-img {
-      width: 200px;
+    .sidebar-logo img {
+      width: 130px;
+      border-radius: 8px;
     }
 
+    .sidebar-brand {
+      font-family: "Playfair Display", serif;
+      font-size: 15px;
+      color: var(--gold);
+      margin-top: 10px;
+      letter-spacing: .4px;
+    }
+
+    .sidebar nav { padding: 12px 0; flex: 1; }
+
+    .sidebar nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 22px;
+      color: rgba(255,255,255,.75);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all .22s;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar nav a:hover {
+      background: rgba(255,255,255,.07);
+      color: var(--gold-light);
+      border-left-color: var(--gold);
+      padding-left: 26px;
+    }
+
+    .sidebar nav a .icon { font-size: 15px; width: 20px; text-align: center; }
+
+    .sidebar-footer {
+      padding: 16px 22px;
+      font-size: 11px;
+      color: rgba(255,255,255,.3);
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: var(--sidebar-w);
+      right: 0;
+      z-index: 99;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-md);
+    }
+
+    .header h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 20px;
+      color: var(--white);
+      letter-spacing: -.2px;
+    }
+
+    .header-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,.45);
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+
+    /* Main */
     .main {
-      margin-left: 240px;
-      padding: 20px;
+      margin-left: var(--sidebar-w);
+      padding: 90px 28px 32px;
     }
 
+    /* Section labels */
+    .section-title {
+      font-family: "Playfair Display", serif;
+      font-size: 18px;
+      color: var(--navy);
+      margin: 32px 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    /* Stat cards */
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
     }
 
     .card {
-      background: white;
-      padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-      border-top: 4px solid #1e2a38;
-      animation: floatCard 3s ease-in-out infinite;/*makes the cards hover around*/
-      transition: transform 0.4s, box-shadow 0.4s;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      box-shadow: var(--shadow-md);
+      border-top: 3px solid var(--gold);
+      animation: floatCard 3s ease-in-out infinite;
+      transition: box-shadow .3s;
+      position: relative;
     }
+
+    .card:nth-child(2) { animation-delay: .06s; }
+    .card:nth-child(3) { animation-delay: .12s; }
+    .card:nth-child(4) { animation-delay: .18s; }
 
     .card:hover {
-      transform: translateY(-10px) scale(1.03);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
-      cursor: pointer;
-    }
-
-    @keyframes floatCard {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-      100% { transform: translateY(0); }
+      box-shadow: 0 14px 36px rgba(13,27,42,.16);
     }
 
     .card h3 {
-      margin: 0;
-      color: #1e2a38;
-      font-size: 18px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: .8px;
     }
 
     .card p {
-      font-size: 20px;
-      font-weight: bold;
+      font-family: "Playfair Display", serif;
+      font-size: 26px;
+      color: var(--navy);
       margin-top: 10px;
-      color: #2f4f6f;
+      letter-spacing: -.5px;
     }
+
+    @keyframes floatCard {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Table card */
+    .table-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-top: 16px;
+      animation: fadeSlideUp .45s .1s ease both;
+    }
+
+    .table-card-header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      padding: 16px 22px;
+    }
+
+    .table-card-header h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 15px;
+      color: var(--white);
+    }
+
+    .table-card-header p {
+      font-size: 11px;
+      color: rgba(255,255,255,.45);
+      margin-top: 2px;
+    }
+
+    .table-wrapper { overflow-x: auto; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      margin-top: 20px;
+      font-size: 12.5px;
+    }
+
+    thead tr {
+      background: var(--cream);
+      border-bottom: 2px solid var(--cream-dark);
     }
 
     th {
-      background: #1e2a38;
-      color: white;
-      padding: 10px;
+      padding: 11px 16px;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-light);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
 
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #eee;
-      text-align: center;
+    tbody tr { border-bottom: 1px solid var(--cream-dark); transition: background .15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(201,168,76,.04); }
+
+    td { padding: 12px 16px; color: var(--text-dark); vertical-align: middle; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
     }
 
-    tr:hover {
-      background: #eaf3ff;
-    }
+    .badge-low  { background: rgba(192,57,43,.1);  color: var(--danger); }
+    .badge-ok   { background: rgba(39,103,73,.1);  color: var(--success); }
 
-    .low {
-      color: red;
-      font-weight: bold;
-    }
+    .price-cell { font-weight: 600; color: var(--navy); }
 
-    .stock {
-      color: green;
-      font-weight: bold;
-    }
+    .empty-state { padding: 40px; text-align: center; color: var(--text-light); font-size: 14px; }
 
     footer {
+      margin-left: var(--sidebar-w);
       text-align: center;
-      padding: 15px;
-      color: #444;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--text-light);
+      border-top: 1px solid var(--cream-dark);
     }
 
+    /* Responsive */
     @media (max-width: 760px) {
-      .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-      }
-
-      .header {
-        left: 0;
-      }
-
-      .main {
-        margin-left: 0;
-      }
+      .sidebar { position: relative; width: 100%; height: auto; }
+      .header  { left: 0; }
+      .main    { margin-left: 0; padding-top: 90px; }
+      footer   { margin-left: 0; }
     }
   </style>
 </head>
 
 <body>
 
+  <!-- Sidebar -->
   <div class="sidebar">
-    <div class="logo">
-      <img src="{% static 'images/logo22.png' %}" class="logo-img">
+    <div class="sidebar-logo">
+      <img src="{% static 'images/logo22.png' %}" alt="Logo" />
+      <div class="sidebar-brand">Nyondo Hardware</div>
     </div>
-
-    
-    <a href="{% url 'sales' %}">💰 Add Sale</a>
-    <a href="{% url 'deposit' %}">🏦 Customer Deposit</a>
-    <a href="{% url 'stock' %}">📦 Add Stock</a>
-    <a href="{% url 'supplier' %}">🚚 Suppliers</a>
-    <a href="{% url 'register' %}">🚮Register Customer</a>
-    <a href="{% url 'credit' %}">📋 Supplier Credit</a>
-    <a href="{% url 'reports' %}">📊 Reports</a>
-    <a href="{% url 'log' %}">➕ Logout</a>
+    <nav>
+      <a href="{% url 'sales' %}"><span class="icon">💰</span> Add Sale</a>
+      <a href="{% url 'deposit' %}"><span class="icon">🏦</span> Customer Deposit</a>
+      <a href="{% url 'stock' %}"><span class="icon">📦</span> Add Stock</a>
+      <a href="{% url 'supplier' %}"><span class="icon">🚚</span> Suppliers</a>
+      <a href="{% url 'register' %}"><span class="icon">👤</span> Register Customer</a>
+      <a href="{% url 'credit' %}"><span class="icon">📋</span> Supplier Credit</a>
+      <a href="{% url 'reports' %}"><span class="icon">📊</span> Reports</a>
+      <a href="{% url 'log' %}"><span class="icon">🚪</span> Logout</a>
+    </nav>
+    <div class="sidebar-footer">&copy; 2026 Nyondo General Hardware Ltd</div>
   </div>
 
-  <div class="header">Nyondo General Hardware Dashboard</div>
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <h1>Dashboard</h1>
+      <div class="header-sub">Nyondo General Hardware</div>
+    </div>
+  </div>
 
+  <!-- Main -->
   <div class="main">
 
+    <!-- Summary cards -->
+    <div class="section-title">Overview</div>
     <div class="cards">
       <div class="card">
         <h3>Total Products</h3>
         <p>{{ total_products }}</p>
       </div>
-
       <div class="card">
         <h3>Total Sales</h3>
         <p>UGX {{ total_sales|default:0 }}</p>
       </div>
-
       <div class="card">
         <h3>Low Stock Items</h3>
         <p>{{ low_stock }}</p>
       </div>
-
       <div class="card">
         <h3>Suppliers</h3>
         <p>{{ suppliers }}</p>
       </div>
     </div>
 
-    <!-- STOCK TABLE -->
-    <h2>Stock Overview</h2>
+    <!-- Stock table -->
+    <div class="section-title">Stock Overview</div>
+    <div class="table-card">
+      <div class="table-card-header">
+        <h2>Stock Records</h2>
+        <p>Current inventory status</p>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Status</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in stocks %}
+            <tr>
+              <td>{{ item.item_name }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>
+                {% if item.quantity < 20 %}
+                  <span class="badge badge-low">Low Stock</span>
+                {% else %}
+                  <span class="badge badge-ok">In Stock</span>
+                {% endif %}
+              </td>
+              <td class="price-cell">UGX {{ item.unit_price }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4"><div class="empty-state">No stock available</div></td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-    <table>
-      <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Status</th>
-        <th>Price</th>
-      </tr>
-
-      {% for item in stocks %}
-      <tr>
-        <td>{{ item.item_name }}</td>
-        <td>{{ item.quantity }}</td>
-
-        <td class="{% if item.quantity < 20 %}low{% else %}stock{% endif %}">
-          {% if item.quantity < 20 %}
-            Low Stock
-          {% else %}
-            In Stock
-          {% endif %}
-        </td>
-
-        <td>UGX {{ item.unit_price }}</td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="4">No stock available</td>
-      </tr>
-      {% endfor %}
-    </table>
-
-    <!-- SALES -->
-    <h2>Sales Overview</h2>
-
+    <!-- Sales cards -->
+    <div class="section-title">Sales Overview</div>
     <div class="cards">
       <div class="card">
         <h3>Today's Sales</h3>
         <p>UGX {{ today_sales|default:0 }}</p>
       </div>
-
       <div class="card">
         <h3>This Week</h3>
         <p>UGX {{ week_sales|default:0 }}</p>
       </div>
-
       <div class="card">
         <h3>This Month</h3>
         <p>UGX {{ month_sales|default:0 }}</p>
       </div>
-
       <div class="card">
         <h3>Top Product</h3>
-        <p>
-          {% if top_product %}
-            {{ top_product.item_name }}
-          {% else %}
-            No sales yet
-          {% endif %}
-        </p>
+        <p>{% if top_product %}{{ top_product.item_name }}{% else %}—{% endif %}</p>
       </div>
     </div>
 
-    <canvas id="salesChart"></canvas>
+    <canvas id="salesChart" style="margin-top:24px;"></canvas>
 
   </div>
 
-  <footer>
-    &copy; 2026 @Nyondo General Hardware Ltd
-  </footer>
+  <footer>&copy; 2026 Nyondo General Hardware Ltd</footer>
 
 </body>
 </html>
