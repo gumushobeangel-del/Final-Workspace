@@ -707,7 +707,7 @@
 
         <!-- ADMIN -->
         {% if request.session.role == "admin" %}
-
+        <a href="{% url 'dash' %}">Dashboard</a>
         <a href="{% url 'sales' %}">Sales</a>
         <a href="{% url 'stock' %}">Add Stock</a>
         <a href="{% url 'supplier' %}">Suppliers</a>

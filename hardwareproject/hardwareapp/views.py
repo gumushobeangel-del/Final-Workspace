@@ -331,7 +331,7 @@ def sales(request):
         stock.quantity -= quantity
         stock.save()
 
-        subtotal = quantity * unit_price
+        subtotal = quantity * unit_price#calculates automatically
 
         if distance <= 10 and subtotal >= 500000:
             transport = 0
@@ -506,11 +506,6 @@ def edit_stock(request, id):
 
     return render(request, "edit_stock.html", {"stock": stock})
 
-def delete_stock(request, id):
-
-    Stock.objects.filter(id=id).delete()
-
-    return redirect("stock")
 
 
 # EDIT SALES
@@ -692,7 +687,7 @@ def credit(request):
 
         today = date.today()
 
-        # BLOCK FUTURE DATES (JUST RELOAD PAGE)
+        # block future date and reload page
         if credit_date > today:
             return redirect("credit")
 

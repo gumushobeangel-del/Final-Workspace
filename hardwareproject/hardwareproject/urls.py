@@ -30,7 +30,7 @@ urlpatterns = [
 
     # Stock actions
     path('edit/<int:id>/', views.edit_stock, name='edit_stock'),
-    path('delete/<int:id>/', views.delete_stock, name='delete_stock'),
+ 
 
     # Sales actions
     path('edit_sales/<int:id>/', views.edit_sales, name='edit_sales'),
