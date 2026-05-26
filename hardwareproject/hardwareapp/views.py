@@ -306,7 +306,7 @@ def sales(request):
         distance = float(request.POST.get("distance_km") or 0)
         sale_date_str = request.POST.get("date")
 
-        # validation (silent, no messages)
+        #prevents negatives
         if quantity <= 0 or unit_price <= 0:
             return redirect("sales")
 
@@ -390,7 +390,7 @@ def deposit(request):
         item_name = request.POST.get("item_name")
         deposit_date_str = request.POST.get("date")
 
-        # basic validation (silent)
+        # prevents negatives
         if amount <= 0 or quantity <= 0:
             return redirect("deposit")
 
@@ -675,7 +675,7 @@ def credit(request):
         amount_paid = float(request.POST.get("amount_paid") or 0)
         date_str = request.POST.get("date")
 
-        # quantity & price validation (silent)
+        # prevents negatives
         if quantity <= 0 or unit_price <= 0:
             return redirect("credit")
 
@@ -793,7 +793,7 @@ def reports(request):
     total_cost = Decimal(str(total_cost))
 
     # CALCULATE PROFIT
-    profit = total_sales - total_cost
+    profit = total_sales - total_cost#gets the profit
 
     recent_sales = Sale.objects.all().order_by('-id')[:5]
 
