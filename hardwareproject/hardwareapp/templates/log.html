@@ -92,6 +92,20 @@
         animation: fadeIn 0.4s ease-in-out;
       }
 
+      .error-box {
+        background: #ffebee;
+        color: red;
+        border: 1px solid red;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        font-weight: bold;
+      }
+
+      input:invalid {
+        border: 2px solid red;
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -110,6 +124,18 @@
         color: #555;
       }
 
+      .error-input{
+    border: 2px solid red;
+    outline: none;
+}
+
+.error-text{
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}
+
       a {
         color: #1e2a38;
         font-weight: bold;
@@ -127,36 +153,31 @@
       <h1>Welcome to Nyondo Hardware!</h1>
 
       {% if messages %} {% for message in messages %}
-      <div class="alert">{{ message }}</div>
+      <div class="error-box">{{ message }}</div>
       {% endfor %} {% endif %}
+      <form method="POST">
+    {% csrf_token %}
 
-      <form method="POST" action="{% url 'log' %}">
-        {% csrf_token %}
+    <div class="input-box">
+        <input type="text" name="username" placeholder="Username"
+        class="{% if error_username %}error-input{% endif %}">
+        
+        {% if error_username %}
+            <small class="error-text">Fill in the username</small>
+        {% endif %}
+    </div>
 
-        <label>Username</label>
-        <input
-          type="text"
-          name="username"
-          placeholder="Enter admin username"
-          required
-          autocomplete="off"
-        />
+    <div class="input-box">
+        <input type="password" name="password" placeholder="Password"
+        class="{% if error_password %}error-input{% endif %}">
+        
+        {% if error_password %}
+            <small class="error-text">Fill in the password</small>
+        {% endif %}
+    </div>
 
-        <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          placeholder="Enter admin password"
-          required
-        />
-
-        <button type="submit">Login</button>
-
-        <p>
-          Login as your role
-          <a href="{% url 'sign' %}">Log in</a>
-        </p>
-      </form>
+    <button type="submit">Login</button>
+</form>
     </div>
   </body>
 </html>

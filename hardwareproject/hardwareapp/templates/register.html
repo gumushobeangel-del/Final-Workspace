@@ -547,6 +547,19 @@
         color: var(--navy);
       }
 
+      .error-input {
+        border: 2px solid red !important;
+        background: #fff5f5 !important;
+      }
+
+      .error-text {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+        font-weight: 500;
+      }
+
       /* ─── ANIMATIONS ─── */
       @keyframes fadeSlideUp {
         from {
@@ -621,18 +634,24 @@
 
             <div class="field-group">
               <label>Full Name <span class="req">*</span></label>
+
               <div class="input-wrap">
                 <input
                   type="text"
                   name="name"
                   placeholder="e.g. Niwagaba Angella"
-                  required
+                  class="{% if error_name %}error-input{% endif %}"
                 />
               </div>
+
+              {% if error_name %}
+              <small class="error-text">Fill in the full name</small>
+              {% endif %}
             </div>
 
             <div class="field-group">
               <label>Phone Number <span class="req">*</span></label>
+
               <div class="input-wrap">
                 <input
                   type="text"
@@ -640,28 +659,47 @@
                   placeholder="+256740230081"
                   pattern="^\+256[0-9]{9}$"
                   maxlength="13"
-                  title="Phone must be in format +256XXXXXXXXX"
-                  required
+                  class="{% if error_phone %}error-input{% endif %}"
                 />
               </div>
+
+              {% if error_phone %}
+              <small class="error-text">Fill in the phone number</small>
+              {% endif %}
             </div>
 
             <div class="field-group">
               <label>Email Address</label>
+
               <div class="input-wrap">
-                <input type="email" name="email" placeholder="email" />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="email"
+                  class="{% if error_email %}error-input{% endif %}"
+                />
               </div>
+
+              {% if error_email %}
+              <small class="error-text">Fill in the email</small>
+              {% endif %}
             </div>
 
             <div class="field-group">
               <label>Address</label>
+
               <div class="input-wrap">
                 <input
                   type="text"
                   name="address"
                   placeholder="e.g. Kampala, Uganda"
+                  class="{% if error_address %}error-input{% endif %}"
                 />
               </div>
+
+              {% if error_address %}
+              <small class="error-text">Fill in the address</small>
+              {% endif %}
             </div>
 
             <button type="submit" class="btn-submit">Register Customer</button>

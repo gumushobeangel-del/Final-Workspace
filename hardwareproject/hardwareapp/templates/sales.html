@@ -640,6 +640,21 @@
         color: var(--navy);
       }
 
+      /* ERROR INPUT STYLE */
+      .input-error {
+        border: 1.5px solid #dc3545 !important;
+        background: #fff5f5 !important;
+      }
+
+      /* ERROR TEXT */
+      .error-text {
+        color: #dc3545;
+        font-size: 12px;
+        margin-top: 4px;
+        display: block;
+        font-weight: 500;
+      }
+
       @media (max-width: 768px) {
         body {
           padding: 12px;
@@ -769,11 +784,12 @@
         </div>
 
         <div class="form-body">
-          <form method="POST">
+          <form method="POST" id="salesForm" novalidate>
             {% csrf_token %}
 
+            <!-- ITEM -->
             <div class="field-group">
-              <label>Item Name <span class="req">*</span></label>
+              <label>Item Name *</label>
               <div class="input-wrap">
                 <select name="stock_id" required>
                   <option value="">Select Item</option>
@@ -784,107 +800,92 @@
                   {% endfor %}
                 </select>
               </div>
+              <span class="error-text">{{ errors.stock }}</span>
             </div>
 
+            <!-- QUANTITY + DATE -->
             <div class="field-row">
               <div class="field-group">
-                <label>Quantity <span class="req">*</span></label>
+                <label>Quantity *</label>
                 <div class="input-wrap">
-                  <input
-                    type="number"
-                    name="quantity"
-                    min="1"
-                    placeholder="0"
-                    required
-                  />
+                  <input type="number" name="quantity" min="1" required />
                 </div>
+                <span class="error-text">{{ errors.quantity }}</span>
               </div>
+
               <div class="field-group">
-                <label>Date <span class="req">*</span></label>
+                <label>Date *</label>
                 <div class="input-wrap">
                   <input type="date" name="date" required />
                 </div>
+                <span class="error-text">{{ errors.date }}</span>
               </div>
             </div>
 
+            <!-- UNIT PRICE -->
             <div class="field-group">
-              <label>Unit Price (UGX) <span class="req">*</span></label>
+              <label>Unit Price *</label>
               <div class="input-wrap">
-                <input
-                  type="number"
-                  name="unit_price"
-                  min="1"
-                  placeholder="0"
-                  required
-                />
+                <input type="number" name="unit_price" min="1" required />
               </div>
+              <span class="error-text">{{ errors.price }}</span>
             </div>
 
+            <!-- CUSTOMER NAME -->
             <div class="field-group">
-              <label>Customer Name <span class="req">*</span></label>
+              <label>Customer Name *</label>
               <div class="input-wrap">
-                <input
-                  type="text"
-                  name="customer_name"
-                  placeholder="Full name"
-                  required
-                />
+                <input type="text" name="customer_name" required />
               </div>
+              <span class="error-text">{{ errors.customer }}</span>
             </div>
 
-            <div class="field-group">
-              <label>Customer Contact <span class="req">*</span></label>
-              <div class="input-wrap">
-                <input
-                  type="text"
-                  name="customer_contact"
-                  placeholder="+256740230081"
-                  pattern="^\+256[0-9]{9}$"
-                  maxlength="13"
-                  title="Format: +256XXXXXXXXX"
-                  required
-                />
-              </div>
-            </div>
+            <!-- CONTACT -->
+          <div class="field-group">
+  <label>Customer Contact *</label>
 
-            <div class="form-divider" data-label="ITEM DETAILS"></div>
+  <div class="input-wrap">
+    <input
+      type="text"
+      name="customer_contact"
+      placeholder="+256740230081"
+      pattern="^\+256[0-9]{9}$"
+      maxlength="13"
+      required
+    />
+  </div>
 
+  <span class="error-text">{{ errors.contact }}</span>
+</div>
+
+            <!-- ITEM TYPE -->
             <div class="field-row">
               <div class="field-group">
-                <label>Item Type <span class="req">*</span></label>
+                <label>Item Type *</label>
                 <div class="input-wrap">
-                  <input
-                    type="text"
-                    name="item_type"
-                    placeholder="e.g. Building"
-                    required
-                  />
+                  <input type="text" name="item_type" required />
                 </div>
+                <span class="error-text">{{ errors.type }}</span>
               </div>
+
               <div class="field-group">
-                <label>Item Brand <span class="req">*</span></label>
+                <label>Item Brand *</label>
                 <div class="input-wrap">
-                  <input
-                    type="text"
-                    name="item_brand"
-                    placeholder="e.g. Simba"
-                    required
-                  />
+                  <input type="text" name="item_brand" required />
                 </div>
+                <span class="error-text">{{ errors.brand }}</span>
               </div>
             </div>
 
-            <div class="form-divider" data-label="DELIVERY"></div>
-
+            <!-- DISTANCE -->
             <div class="field-group">
-              <label>Distance (KM) <span class="req">*</span></label>
+              <label>Distance (KM) *</label>
               <div class="input-wrap">
                 <input
                   type="number"
                   name="distance_km"
                   min="0"
                   step="0.01"
-                  placeholder="00.0"
                   required
                 />
               </div>
@@ -997,5 +998,66 @@
         </div>
       </div>
     </div>
+    <script>
+      const form = document.getElementById("salesForm");
+
+      function showError(field, message) {
+        const parent = field.closest(".field-group");
+        const errorBox = parent.querySelector(".error-text");
+
+        field.classList.add("input-error");
+        errorBox.innerText = message;
+      }
+
+      function clearError(field) {
+        const parent = field.closest(".field-group");
+        const errorBox = parent.querySelector(".error-text");
+
+        field.classList.remove("input-error");
+        errorBox.innerText = "";
+      }
+
+      form.addEventListener("submit", function (e) {
+        let valid = true;
+
+        const fields = form.querySelectorAll("input, select");
+
+        fields.forEach((field) => {
+          clearError(field);
+
+          // REQUIRED VALIDATION
+          if (field.hasAttribute("required") && !field.value.trim()) {
+            showError(field, "This field is required");
+            valid = false;
+          }
+
+          // PHONE VALIDATION
+          if (field.name === "customer_contact" && field.value.trim()) {
+            const phonePattern = /^\+256[0-9]{9}$/;
+
+            if (!phonePattern.test(field.value)) {
+              showError(field, "Enter valid phone (+256XXXXXXXXX)");
+              valid = false;
+            }
+          }
+
+          // NUMBER VALIDATION
+          if (
+            (field.name === "quantity" ||
+              field.name === "unit_price" ||
+              field.name === "distance_km") &&
+            field.value &&
+            Number(field.value) <= 0
+          ) {
+            showError(field, "Must be greater than 0");
+            valid = false;
+          }
+        });
+
+        if (!valid) {
+          e.preventDefault();
+        }
+      });
+    </script>
   </body>
 </html>

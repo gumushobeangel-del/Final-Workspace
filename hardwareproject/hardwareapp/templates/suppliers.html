@@ -367,17 +367,31 @@
       <div class="nav-logo">Nyondo Hardware</div>
       <div class="nav-links">
         <a href="{% url 'index' %}">Home</a>
-        <a href="{% url 'dash' %}">Dashboard</a>
-        <a href="{% url 'sales' %}">Sales</a>
-        <a href="{% url 'stock' %}">Add Stock</a>
-        <a href="{% url 'supplier' %}">Suppliers</a>
-        <a href="{% url 'register' %}">Register Customer</a>
-        <a href="{% url 'credit' %}">Supplier Credit</a>
-        <a href="{% url 'deposit' %}">Deposits</a>
-        <a href="{% url 'reports' %}">Reports</a>
+
+        {% if request.session.role == "admin" %}
+          <a href="{% url 'dash' %}">Dashboard</a>
+          <a href="{% url 'sales' %}">Sales</a>
+          <a href="{% url 'stock' %}" class="active">Add Stock</a>
+          <a href="{% url 'supplier' %}">Suppliers</a>
+          <a href="{% url 'register' %}">Register Customer</a>
+          <a href="{% url 'credit' %}">Supplier Credit</a>
+          <a href="{% url 'reports' %}">Reports</a>
+          <a href="{% url 'deposit' %}">Deposits</a>
+        {% endif %}
+
+        {% if request.session.role == "sales" %}
+          <a href="{% url 'sales' %}">Sales</a>
+        {% endif %}
+
+        {% if request.session.role == "stock_manager" %}
+          <a href="{% url 'stock' %}" class="active">Add Stock</a>
+          <a href="{% url 'supplier' %}" class="active">Add Supplier</a>
+        {% endif %}
+
         <a href="{% url 'log' %}">Logout</a>
       </div>
     </nav>
+
 
     <div class="page-header">
       <h1>Supplier Management</h1>

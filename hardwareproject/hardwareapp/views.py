@@ -19,10 +19,21 @@ from django.contrib.auth import authenticate, login
 
 def login_view(request):
 
+    context = {}
+
     if request.method == "POST":
 
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "").strip()
+
+        if not username:
+            context["error_username"] = True
+
+        if not password:
+            context["error_password"] = True
+
+        if context:
+            return render(request, "log.html", context)
 
         user = authenticate(request, username=username, password=password)
 
@@ -37,12 +48,9 @@ def login_view(request):
 
         else:
             messages.error(request, "Wrong username or password")
-
             return redirect("log")
 
     return render(request, "log.html")
-
-
 def sign(request):
 
     error = None
@@ -93,14 +101,34 @@ def logout_view(request):
     logout(request)
     request.session.flush()
     return redirect("sign")
-
 @login_required
 def register(request):
+
+    context = {}
+
     if request.method == "POST":
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
+
+        name = request.POST.get('name', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        email = request.POST.get('email', '').strip()
+        address = request.POST.get('address', '').strip()
+
+        if not name:
+            context["error_name"] = True
+
+        if not phone:
+            context["error_phone"] = True
+
+        if not email:
+            context["error_email"] = True
+
+        if not address:
+            context["error_address"] = True
+
+        if context:
+            customers = Register.objects.all().order_by('-id')
+            context["customers"] = customers
+            return render(request, "register.html", context)
 
         Register.objects.create(
             name=name,
@@ -113,8 +141,9 @@ def register(request):
 
     customers = Register.objects.all().order_by('-id')
 
-    return render(request, 'register.html', {'customers': customers})
-
+    return render(request, 'register.html', {
+        'customers': customers
+    })
 @login_required
 def edit_customer(request, id):
     customer = get_object_or_404(Register, id=id)
@@ -204,8 +233,10 @@ def dash(request):
 
 #stock
 from datetime import datetime, date, timedelta
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 @login_required
 def stock_view(request):
 
@@ -215,50 +246,108 @@ def stock_view(request):
         return redirect("sign")
 
     stocks = Stock.objects.all()
+    errors = {}
 
     if request.method == "POST":
 
-        item_name = request.POST.get("item_name")
-        quantity = int(request.POST.get("quantity") or 0)
-        unit_cost = float(request.POST.get("unit_cost") or 0)
-        unit_price = float(request.POST.get("unit_price") or 0)
-        stock_date_str = request.POST.get("date")
+        item_name = request.POST.get("item_name", "").strip()
+        quantity = request.POST.get("quantity", "").strip()
+        unit_cost = request.POST.get("unit_cost", "").strip()
+        unit_price = request.POST.get("unit_price", "").strip()
+        stock_date_str = request.POST.get("date", "").strip()
+        category = request.POST.get("category", "").strip()
+        payment_method = request.POST.get("payment_method", "").strip()
 
-        # validation
+        # ── VALIDATION ──
         if not item_name:
-            messages.error(request, "Item name is required")
-            return redirect("stock")
+            errors["item_name"] = "Item name is required"
 
-        if quantity <= 0 or unit_cost <= 0 or unit_price <= 0:
-            messages.error(request, "Values must be greater than zero")
-            return redirect("stock")
+        if not quantity:
+            errors["quantity"] = "Quantity is required"
 
+        if not unit_cost:
+            errors["unit_cost"] = "Unit cost is required"
+
+        if not unit_price:
+            errors["unit_price"] = "Unit price is required"
+
+        if not stock_date_str:
+            errors["date"] = "Date is required"
+
+        if not category:
+            errors["category"] = "Category is required"
+
+        if not payment_method:
+            errors["payment_method"] = "Payment method is required"
+
+        # stop if missing fields
+        if errors:
+            return render(request, "stock.html", {
+                "stocks": stocks,
+                "errors": errors
+            })
+
+        # convert safely
+        try:
+            quantity = int(quantity)
+            unit_cost = float(unit_cost)
+            unit_price = float(unit_price)
+        except:
+            errors["numbers"] = "Enter valid numeric values"
+            return render(request, "stock.html", {
+                "stocks": stocks,
+                "errors": errors
+            })
+
+        # prevent negatives
+        if quantity <= 0:
+            errors["quantity"] = "Quantity must be greater than zero"
+        if unit_cost <= 0:
+            errors["unit_cost"] = "Unit cost must be greater than zero"
+        if unit_price <= 0:
+            errors["unit_price"] = "Unit price must be greater than zero"
+
+        if errors:
+            return render(request, "stock.html", {
+                "stocks": stocks,
+                "errors": errors
+            })
+
+        # date validation
         try:
             stock_date = datetime.strptime(stock_date_str, "%Y-%m-%d").date()
         except:
-            messages.error(request, "Invalid date format")
-            return redirect("stock")
+            errors["date"] = "Invalid date format"
+            return render(request, "stock.html", {
+                "stocks": stocks,
+                "errors": errors
+            })
 
         today = date.today()
         one_week_ago = today - timedelta(days=7)
 
-        # future date check
         if stock_date > today:
-            messages.error(request, "Future dates are not allowed")
-            return redirect("stock")
+            errors["date"] = "Future dates are not allowed"
 
-        # too old date check
         if stock_date < one_week_ago:
-            messages.error(request, "Date cannot be older than 7 days")
-            return redirect("stock")
+            errors["date"] = "Date cannot be older than 7 days"
 
+        if errors:
+            return render(request, "stock.html", {
+                "stocks": stocks,
+                "errors": errors
+            })
+
+        # SAVE STOCK
         stock_item, created = Stock.objects.get_or_create(
             item_name=item_name,
             defaults={
                 "quantity": quantity,
                 "unit_cost": unit_cost,
                 "unit_price": unit_price,
-                "date": stock_date
+                "date": stock_date,
+                "category": category,
+                "payment_method": payment_method
             }
         )
 
@@ -269,71 +358,132 @@ def stock_view(request):
             stock_item.date = stock_date
             stock_item.save()
 
-            messages.success(request, f"{item_name} stock updated successfully!")
-
-        else:
-            messages.success(request, f"{item_name} stock added successfully!")
-
+        messages.success(request, "Stock saved successfully!")
         return redirect("stock")
 
-    return render(request, "stock.html", {"stocks": stocks})
-
+    return render(request, "stock.html", {
+        "stocks": stocks,
+        "errors": {}
+    })
 
 # SALES
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
-from .models import Stock, Sale
+from datetime import datetime, date
+from django.contrib.auth.decorators import login_required
+import re   # ✅ ADD THIS
 
 @login_required
 def sales(request):
 
+    errors = {}
+
     if request.method == "POST":
 
-        stock_id = request.POST.get("stock_id")
-        quantity = int(request.POST.get("quantity") or 0)
-        unit_price = float(request.POST.get("unit_price") or 0)
-        distance = float(request.POST.get("distance_km") or 0)
-        sale_date_str = request.POST.get("date")
+        stock_id = request.POST.get("stock_id", "").strip()
+        quantity = request.POST.get("quantity", "").strip()
+        unit_price = request.POST.get("unit_price", "").strip()
+        distance = request.POST.get("distance_km", "").strip()
+        sale_date_str = request.POST.get("date", "").strip()
+        customer_name = request.POST.get("customer_name", "").strip()
+        customer_contact = request.POST.get("customer_contact", "").strip()
+        item_type = request.POST.get("item_type", "").strip()
+        item_brand = request.POST.get("item_brand", "").strip()
 
-        # invalid quantity/price
-        if quantity <= 0 or unit_price <= 0:
-            messages.error(request, "Quantity and price must be greater than 0")
+        # ── REQUIRED FIELD VALIDATION ──
+        if not stock_id:
+            errors["stock"] = "Please select an item"
+
+        if not quantity:
+            errors["quantity"] = "Quantity is required"
+
+        if not unit_price:
+            errors["price"] = "Unit price is required"
+
+        if not distance:
+            errors["distance"] = "Distance is required"
+
+        if not sale_date_str:
+            errors["date"] = "Date is required"
+
+        if not customer_name:
+            errors["customer"] = "Customer name is required"
+
+        if not customer_contact:
+            errors["contact"] = "Customer contact is required"
+
+        if not item_type:
+            errors["type"] = "Item type is required"
+
+        if not item_brand:
+            errors["brand"] = "Item brand is required"
+
+        # ✅ STOP IF MISSING FIELDS
+        if errors:
+            return render(request, "sales.html", {
+                "errors": errors,
+                "stocks": Stock.objects.all().order_by("-id"),
+                "sales": Sale.objects.all().order_by("-id")
+            })
+
+        # ── PHONE VALIDATION (NEW FIX) ──
+        phone_pattern = r"^\+256[0-9]{9}$"
+        if not re.match(phone_pattern, customer_contact):
+            messages.error(request, "Invalid phone number. Use +256XXXXXXXXX format")
             return redirect("sales")
 
-        # invalid date format
+        # ── SAFE CONVERSION ──
+        try:
+            quantity = int(quantity)
+            unit_price = float(unit_price)
+            distance = float(distance)
+        except ValueError:
+            messages.error(request, "Please enter valid numeric values")
+            return redirect("sales")
+
+        # ── BLOCK NEGATIVE / ZERO VALUES ──
+        if quantity <= 0:
+            messages.error(request, "Quantity must be greater than zero")
+            return redirect("sales")
+
+        if unit_price <= 0:
+            messages.error(request, "Unit price must be greater than zero")
+            return redirect("sales")
+
+        if distance < 0:
+            messages.error(request, "Distance cannot be negative")
+            return redirect("sales")
+
+        # ── DATE PARSING ──
         try:
             sale_date = datetime.strptime(sale_date_str, "%Y-%m-%d").date()
-        except (ValueError, TypeError):
-            messages.error(request, "Invalid date selected")
+        except ValueError:
+            messages.error(request, "Invalid date format")
             return redirect("sales")
 
+        # ── BLOCK FUTURE SALES ──
         today = date.today()
-
-        # future date check
         if sale_date > today:
-            messages.error(request, "You cannot select a future date")
+            messages.error(request, "Future sales are not allowed")
             return redirect("sales")
 
+        # ── STOCK CHECK ──
         stock = get_object_or_404(Stock, id=stock_id)
 
-        # insufficient stock
         if stock.quantity < quantity:
             messages.error(request, "Not enough stock available")
             return redirect("sales")
 
-        # reduce stock
+        # ── UPDATE STOCK ──
         stock.quantity -= quantity
         stock.save()
 
+        # ── CALCULATIONS ──
         subtotal = quantity * unit_price
-
-        if distance <= 10 and subtotal >= 500000:
-            transport = 0
-        else:
-            transport = 30000
-
+        transport = 0 if (distance <= 10 and subtotal >= 500000) else 30000
         grand_total = subtotal + transport
 
+        # ── SAVE SALE ──
         Sale.objects.create(
             item_name=stock.item_name,
             quantity=quantity,
@@ -342,24 +492,22 @@ def sales(request):
             distance_km=distance,
             transport=transport,
             grand_total=grand_total,
-            customer_name=request.POST.get("customer_name"),
-            customer_contact=request.POST.get("customer_contact"),
-            item_type=request.POST.get("item_type"),
-            item_brand=request.POST.get("item_brand"),
+            customer_name=customer_name,
+            customer_contact=customer_contact,
+            item_type=item_type,
+            item_brand=item_brand,
             date=sale_date
         )
 
         messages.success(request, "Sale recorded successfully!")
-
         return redirect("sales")
 
-    stocks = Stock.objects.all().order_by("-id")
-    sales = Sale.objects.all().order_by("-id")
-
     return render(request, "sales.html", {
-        "stocks": stocks,
-        "sales": sales
+        "errors": {},
+        "stocks": Stock.objects.all().order_by("-id"),
+        "sales": Sale.objects.all().order_by("-id")
     })
+
 def deposit(request):
 
     if request.method == "POST":
