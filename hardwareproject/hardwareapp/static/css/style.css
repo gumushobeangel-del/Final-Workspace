@@ -28,6 +28,16 @@ body {
   border-bottom: 2px solid black;
 }
 
+.error-message{
+    background-color: #ffe5e5;
+    color: red;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+}
+
 /* LOGO */
 .logo {
   text-align: center;

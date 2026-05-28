@@ -4,30 +4,140 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Form</title>
+    <title>Login Form</title>
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #eef3f8, #dfe9f3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      /* CONTAINER */
+      .container {
+        width: 100%;
+        max-width: 550px;
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-top: 5px solid #1e2a38;
+      }
+
+      /* LOGO */
+      .logo {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .logo img {
+        width: 140px;
+      }
+
+      /* TITLE */
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #1e2a38;
+      }
+
+      /* ERROR MESSAGE */
+      .error-message {
+        background-color: #ffe5e5;
+        color: #b30000;
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        font-weight: bold;
+        text-align: center;
+        border: 1px solid #ffb3b3;
+      }
+
+      /* LABEL */
+      label {
+        display: block;
+        margin-top: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      /* INPUTS */
+      input,
+      select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 6px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        font-size: 14px;
+        outline: none;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: #1e2a38;
+        box-shadow: 0 0 0 3px rgba(30, 42, 56, 0.1);
+      }
+
+      /* BUTTON */
+      button {
+        width: 100%;
+        margin-top: 18px;
+        padding: 12px;
+        background: linear-gradient(135deg, #1e2a38, #2f4f6f);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #0f1720;
+      }
+
+      /* REMEMBER */
+      .remember-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 15px;
+      }
+
+      .remember-box input {
+        width: 18px;
+        height: 18px;
+      }
+    </style>
   </head>
 
   <body>
     <div class="container">
       <div class="logo">
-        <img
-          src="{% static 'images/logo22.png' %}"
-          alt="Logo"
-          class="logo-img"
-        />
+        <img src="{% static 'images/logo22.png' %}" alt="Logo" />
       </div>
 
       <h1>LOG IN AS YOUR ROLE</h1>
 
-   
-     
-
-      <form method="POST" novalidate>
+      {% if error and error != None %}
+      <div class="error-message">{{ error }}</div>
+      {% endif %}
+      <form method="POST">
         {% csrf_token %}
 
-        <label for="username">Username</label>
+        <label>Username</label>
         <input
           type="text"
           name="username"
@@ -35,41 +145,34 @@
           required
         />
 
-        <label for="nin">NIN</label>
+        <label>NIN</label>
         <input
           type="text"
           name="nin"
+          placeholder="e.g CM123456789AB"
           maxlength="14"
           minlength="14"
-          placeholder="e.g CM123456789AB"
           pattern="^(CM|CF)[A-Z0-9]{12}$"
-          title="NIN must be exactly 14 characters (CM or CF + 12 characters)"
           required
         />
 
-        <label for="email">Email Address</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter email address"
-          required
-        />
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="Enter email" required />
 
         <label>Password</label>
         <input type="password" name="password" required />
 
-        <label for="phone">Phone Number</label>
+        <label>Contact <span class="req">*</span></label>
         <input
           type="text"
-          name="phone"
+          name="contact"
           placeholder="+256740230081"
           pattern="^\+256[0-9]{9}$"
           maxlength="13"
           title="Phone must be in format +256XXXXXXXXX"
           required
         />
-
-        <label for="role">Log in As</label>
+        <label>Log in As</label>
         <select name="role" required>
           <option value="">Select your role</option>
           <option value="admin">Admin</option>
@@ -83,7 +186,6 @@
         </div>
 
         <button type="submit">Log in</button>
-    
       </form>
     </div>
   </body>

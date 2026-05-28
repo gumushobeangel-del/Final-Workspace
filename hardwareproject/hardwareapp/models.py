@@ -22,7 +22,7 @@ from django.db import models
 
 class Register(models.Model):
     name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(max_length=13)
     email = models.EmailField(blank=True, null=True)
     address = models.CharField(max_length=200, blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -66,7 +66,7 @@ class Sale(models.Model):
 class Deposit(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=1, default=0)
     name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=100)
+    phone = models.CharField(max_length=13)
     method = models.CharField(max_length=100)
     item_name = models.CharField(max_length=100)
     nin = models.CharField(max_length=100, default="N/A")
@@ -120,7 +120,7 @@ class Receipt(models.Model):
 class Supplier(models.Model):
     supplier_name = models.CharField(max_length=100)
     company = models.CharField(max_length=100)
-    contact = models.CharField(max_length=14, blank=True, null=True)
+    contact = models.CharField(max_length=13, blank=True, null=True)
     email = models.EmailField()
     location = models.CharField(max_length=100)
 

@@ -35,82 +35,60 @@ def login_view(request):
 
             return redirect("dash")
 
-        # Wrong credentials → just reload login page silently
-        return redirect("log")
+        else:
+            messages.error(request, "Wrong username or password")
+
+            return redirect("log")
 
     return render(request, "log.html")
 
 
-
 def sign(request):
 
-    error = ""
+    error = None
+
+    users = {
+        "admin": {"username": "Angellina", "password": "angel266"},
+        "sales": {"username": "kevin", "password": "kevin256"},
+        "stock_manager": {"username": "alvin", "password": "alvie233"},
+    }
 
     if request.method == "POST":
 
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        role = request.POST.get("role")
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "").strip()
+        role = request.POST.get("role", "").strip()
 
-        # Users dictionary
-        users = {
-            "admin": {
-                "username": "Angellina",
-                "password": "angel266"
-            },
+        # STEP 1: check empty fields FIRST
+        if not username or not password or not role:
+            error = "All fields are required"
 
-            "sales": {
-                "username": "kevin",
-                "password": "kevin256"
-            },
+        # STEP 2: validate role
+        elif role not in users:
+            error = "Invalid role selected"
 
-            "stock_manager": {
-                "username": "alvin",
-                "password": "alvie233"
-            },
-        }
-
-        # Django validation
-        if not username:
-            error = "Username is required"
-
-        elif not password:
-            error = "Password is required"
-
-        elif not role:
-            error = "Please select a role"
-
-        # Check role exists
-        elif role in users:
-
+        else:
             stored_user = users[role]
 
-            # Username validation
-            if username.lower().strip() != stored_user["username"].lower().strip():
-                error = "Username is incorrect"
+            # STEP 3: username check
+            if username.lower() != stored_user["username"].lower():
+                error = "Wrong username"
 
-            # Password validation
+            # STEP 4: password check
             elif password != stored_user["password"]:
-                error = "Password is incorrect"
+                error = "Wrong password"
 
             else:
-                # Successful login
                 request.session["role"] = role
                 request.session["username"] = username
 
-                redirect_map = {
+                return redirect({
                     "admin": "dash",
                     "sales": "sales",
-                    "stock_manager": "stock",
-                }
-
-                return redirect(redirect_map[role])
-
-        else:
-            error = "Invalid role selected"
+                    "stock_manager": "stock"
+                }[role])
 
     return render(request, "sign.html", {"error": error})
-
 def logout_view(request):
     logout(request)
     request.session.flush()
@@ -228,7 +206,6 @@ def dash(request):
 from datetime import datetime, date, timedelta
 from django.shortcuts import render
 from django.contrib import messages
-
 @login_required
 def stock_view(request):
 
@@ -247,27 +224,32 @@ def stock_view(request):
         unit_price = float(request.POST.get("unit_price") or 0)
         stock_date_str = request.POST.get("date")
 
-        # validation (silent redirect, no messages)
+        # validation
         if not item_name:
+            messages.error(request, "Item name is required")
             return redirect("stock")
 
-        #prevents negatives
         if quantity <= 0 or unit_cost <= 0 or unit_price <= 0:
+            messages.error(request, "Values must be greater than zero")
             return redirect("stock")
 
         try:
             stock_date = datetime.strptime(stock_date_str, "%Y-%m-%d").date()
         except:
+            messages.error(request, "Invalid date format")
             return redirect("stock")
 
-        #reloads page and prevents tommorow date 
         today = date.today()
         one_week_ago = today - timedelta(days=7)
 
+        # future date check
         if stock_date > today:
+            messages.error(request, "Future dates are not allowed")
             return redirect("stock")
 
+        # too old date check
         if stock_date < one_week_ago:
+            messages.error(request, "Date cannot be older than 7 days")
             return redirect("stock")
 
         stock_item, created = Stock.objects.get_or_create(
@@ -287,9 +269,16 @@ def stock_view(request):
             stock_item.date = stock_date
             stock_item.save()
 
+            messages.success(request, f"{item_name} stock updated successfully!")
+
+        else:
+            messages.success(request, f"{item_name} stock added successfully!")
+
         return redirect("stock")
 
     return render(request, "stock.html", {"stocks": stocks})
+
+
 # SALES
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
@@ -306,32 +295,37 @@ def sales(request):
         distance = float(request.POST.get("distance_km") or 0)
         sale_date_str = request.POST.get("date")
 
-        #prevents negatives
+        # invalid quantity/price
         if quantity <= 0 or unit_price <= 0:
+            messages.error(request, "Quantity and price must be greater than 0")
             return redirect("sales")
 
+        # invalid date format
         try:
             sale_date = datetime.strptime(sale_date_str, "%Y-%m-%d").date()
         except (ValueError, TypeError):
+            messages.error(request, "Invalid date selected")
             return redirect("sales")
 
         today = date.today()
 
-        # block future dates and reloads page
+        # future date check
         if sale_date > today:
+            messages.error(request, "You cannot select a future date")
             return redirect("sales")
 
         stock = get_object_or_404(Stock, id=stock_id)
 
-        # stock check
+        # insufficient stock
         if stock.quantity < quantity:
+            messages.error(request, "Not enough stock available")
             return redirect("sales")
 
         # reduce stock
         stock.quantity -= quantity
         stock.save()
 
-        subtotal = quantity * unit_price#calculates automatically
+        subtotal = quantity * unit_price
 
         if distance <= 10 and subtotal >= 500000:
             transport = 0
@@ -355,6 +349,8 @@ def sales(request):
             date=sale_date
         )
 
+        messages.success(request, "Sale recorded successfully!")
+
         return redirect("sales")
 
     stocks = Stock.objects.all().order_by("-id")
@@ -364,7 +360,6 @@ def sales(request):
         "stocks": stocks,
         "sales": sales
     })
-
 def deposit(request):
 
     if request.method == "POST":
@@ -392,29 +387,33 @@ def deposit(request):
 
         # prevents negatives
         if amount <= 0 or quantity <= 0:
+            messages.error(request, "Amount and quantity must be greater than 0")
             return redirect("deposit")
 
         # validate item
         price = ITEM_PRICES.get(item_name)
-
         if not price:
+            messages.error(request, "Invalid item selected")
             return redirect("deposit")
 
         # date validation
         try:
             deposit_date = datetime.strptime(deposit_date_str, "%Y-%m-%d").date()
         except (ValueError, TypeError):
+            messages.error(request, "Invalid date format")
             return redirect("deposit")
 
         today = date.today()
         one_week_ago = today - timedelta(days=7)
 
-        # block future dates and reloads page
+        # block future dates
         if deposit_date > today:
+            messages.error(request, "Future dates are not allowed")
             return redirect("deposit")
 
         # block old dates
         if deposit_date < one_week_ago:
+            messages.error(request, "Date is too old (must be within 7 days)")
             return redirect("deposit")
 
         # calculations
@@ -436,6 +435,7 @@ def deposit(request):
             date=deposit_date
         )
 
+        messages.success(request, "Deposit recorded successfully")
         return redirect("deposit")
 
     deposits = Deposit.objects.all().order_by("-id")
@@ -677,18 +677,21 @@ def credit(request):
 
         # prevents negatives
         if quantity <= 0 or unit_price <= 0:
+            messages.error(request, "Quantity and unit price must be greater than 0")
             return redirect("credit")
 
         # date validation
         try:
             credit_date = datetime.strptime(date_str, "%Y-%m-%d").date()
         except (ValueError, TypeError):
+            messages.error(request, "Invalid date selected")
             return redirect("credit")
 
         today = date.today()
 
-        # block future date and reload page
+        # block future date
         if credit_date > today:
+            messages.error(request, "Future dates are not allowed")
             return redirect("credit")
 
         Credit.objects.create(
@@ -700,12 +703,9 @@ def credit(request):
             date=credit_date
         )
 
-        credits = Credit.objects.all().order_by("-id")
+        messages.success(request, "Credit record added successfully!")
 
-        return render(request, "credit.html", {
-            "credits": credits,
-            "print_now": True
-        })
+        return redirect("credit")
 
     credits = Credit.objects.all().order_by("-id")
 
