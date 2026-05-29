@@ -641,6 +641,18 @@
         }
       }
 
+      .input-error {
+        border: 2px solid #c0392b !important;
+        background: #fff5f5 !important;
+      }
+
+      .error-message {
+        color: #c0392b;
+        font-size: 11px;
+        margin-top: 4px;
+        font-weight: 600;
+      }
+
       /* Responsive */
       @media (max-width: 900px) {
         .layout {
@@ -691,7 +703,12 @@
         <a href="{% url 'credit' %}">Supplier Credit</a>
         <a href="{% url 'deposit' %}">Deposits</a>
         <a href="{% url 'reports' %}">Reports</a>
-        <a href="{% url 'log' %}">Logout</a>
+        <a
+          href="{% url 'logout' %}"
+          onclick="return confirm('Are you sure you want to log out?');"
+        >
+          Logout
+        </a>
       </div>
     </nav>
 
@@ -729,7 +746,7 @@
         </div>
 
         <div class="form-body">
-          <form method="POST">
+          <form method="POST" id="deposit-form" novalidate>
             {% csrf_token %}
 
             <div class="field-group">
@@ -937,5 +954,168 @@
         </div>
       </div>
     </div>
+    <script>
+      const form = document.getElementById("deposit-form");
+
+      form.addEventListener("submit", function (e) {
+        let valid = true;
+
+        /* remove old errors */
+        document
+          .querySelectorAll(".error-message")
+          .forEach((el) => el.remove());
+
+        document.querySelectorAll("input, select").forEach((field) => {
+          field.classList.remove("input-error");
+        });
+
+        const fields = [
+          {
+            name: "name",
+            message: "Full name is required",
+          },
+          {
+            name: "nin",
+            message: "NIN is required",
+          },
+          {
+            name: "phone",
+            message: "Phone number is required",
+          },
+          {
+            name: "item_name",
+            message: "Please select an item",
+          },
+          {
+            name: "date",
+            message: "Date is required",
+          },
+          {
+            name: "method",
+            message: "Please select payment method",
+          },
+          {
+            name: "amount",
+            message: "Amount is required",
+          },
+          {
+            name: "quantity",
+            message: "Quantity is required",
+          },
+        ];
+
+        fields.forEach((fieldData) => {
+          const field = document.querySelector(`[name="${fieldData.name}"]`);
+
+          if (!field.value.trim()) {
+            valid = false;
+
+            field.classList.add("input-error");
+
+            const error = document.createElement("div");
+            error.className = "error-message";
+            error.textContent = fieldData.message;
+
+            field.parentElement.parentElement.appendChild(error);
+          }
+        });
+
+        /* amount validation */
+        const amount = document.querySelector('[name="amount"]');
+
+        if (amount.value && Number(amount.value) <= 0) {
+          valid = false;
+
+          amount.classList.add("input-error");
+
+          const error = document.createElement("div");
+          error.className = "error-message";
+          error.textContent = "Amount must be greater than 0";
+
+          amount.parentElement.parentElement.appendChild(error);
+        }
+
+        /* quantity validation */
+        const quantity = document.querySelector('[name="quantity"]');
+
+        if (quantity.value && Number(quantity.value) <= 0) {
+          valid = false;
+
+          quantity.classList.add("input-error");
+
+          const error = document.createElement("div");
+          error.className = "error-message";
+          error.textContent = "Quantity must be greater than 0";
+
+          quantity.parentElement.parentElement.appendChild(error);
+        }
+
+        /* phone validation */
+        const phone = document.querySelector('[name="phone"]');
+        const phoneRegex = /^\+256[0-9]{9}$/;
+
+        if (phone.value && !phoneRegex.test(phone.value)) {
+          valid = false;
+
+          phone.classList.add("input-error");
+
+          const error = document.createElement("div");
+          error.className = "error-message";
+          error.textContent = "Phone must be in format +256XXXXXXXXX";
+
+          phone.parentElement.parentElement.appendChild(error);
+        }
+
+        /* NIN validation */
+        const nin = document.querySelector('[name="nin"]');
+        const ninRegex = /^(CM|CF)[A-Z0-9]{12}$/;
+
+        if (nin.value && !ninRegex.test(nin.value)) {
+          valid = false;
+
+          nin.classList.add("input-error");
+
+          const error = document.createElement("div");
+          error.className = "error-message";
+          error.textContent =
+            "NIN must start with CM or CF and contain 14 characters";
+
+          nin.parentElement.parentElement.appendChild(error);
+        }
+
+        /* future date validation */
+        const dateField = document.querySelector('[name="date"]');
+
+        if (dateField.value) {
+          // use pure string comparison (BEST FIX)
+          const selectedDate = dateField.value; // "YYYY-MM-DD"
+
+          const today = new Date();
+          const todayStr = today.toISOString().split("T")[0];
+
+          if (selectedDate > todayStr) {
+            valid = false;
+
+            dateField.classList.add("input-error");
+
+            // remove old error if exists (prevents duplicates)
+            const oldError =
+              dateField.parentElement.querySelector(".error-message");
+            if (oldError) {
+              oldError.remove();
+            }
+
+            const error = document.createElement("div");
+            error.className = "error-message";
+            error.textContent = "Future dates are not allowed";
+
+            dateField.parentElement.appendChild(error);
+          }
+        }
+        if (!valid) {
+          e.preventDefault();
+        }
+      });
+    </script>
   </body>
 </html>

@@ -11,7 +11,7 @@ urlpatterns = [
     # Auth
     path('log/', views.login_view, name='log'),
     path('sign/', views.sign, name='sign'),
-    path('register/', views.register, name='register'), 
+    path('register/', views.register, name='register'),
 
     path('customer/edit/<int:id>/', views.edit_customer, name='edit_customer'),
     path('customer/delete/<int:id>/', views.delete_customer, name='delete_customer'),
@@ -30,7 +30,6 @@ urlpatterns = [
 
     # Stock actions
     path('edit/<int:id>/', views.edit_stock, name='edit_stock'),
- 
 
     # Sales actions
     path('edit_sales/<int:id>/', views.edit_sales, name='edit_sales'),
@@ -52,8 +51,6 @@ urlpatterns = [
 
     path('deposit-receipt/<int:id>/', views.deposit_receipt, name='deposit_receipt'),
 
-    
-
+    # LOGOUT
+    path("logout/", views.logout_view, name="logout"),
 ]
-
-   

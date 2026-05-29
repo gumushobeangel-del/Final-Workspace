@@ -748,7 +748,12 @@
         {% endif %}
 
         <!-- LOGOUT FOR EVERYONE -->
-        <a href="{% url 'log' %}">Logout</a>
+        <a
+          href="{% url 'logout' %}"
+          onclick="return confirm('Are you sure you want to log out?');"
+        >
+          Logout
+        </a>
       </div>
     </nav>
     <div class="page-header">
@@ -841,22 +846,22 @@
             </div>
 
             <!-- CONTACT -->
-          <div class="field-group">
-  <label>Customer Contact *</label>
+            <div class="field-group">
+              <label>Customer Contact *</label>
 
-  <div class="input-wrap">
-    <input
-      type="text"
-      name="customer_contact"
-      placeholder="+256740230081"
-      pattern="^\+256[0-9]{9}$"
-      maxlength="13"
-      required
-    />
-  </div>
+              <div class="input-wrap">
+                <input
+                  type="text"
+                  name="customer_contact"
+                  placeholder="+256740230081"
+                  pattern="^\+256[0-9]{9}$"
+                  maxlength="13"
+                  required
+                />
+              </div>
 
-  <span class="error-text">{{ errors.contact }}</span>
-</div>
+              <span class="error-text">{{ errors.contact }}</span>
+            </div>
 
             <!-- ITEM TYPE -->
             <div class="field-row">

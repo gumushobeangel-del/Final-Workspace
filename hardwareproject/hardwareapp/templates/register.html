@@ -605,7 +605,12 @@
         <a href="{% url 'credit' %}">Supplier Credit</a>
         <a href="{% url 'deposit' %}">Deposits</a>
         <a href="{% url 'reports' %}">Reports</a>
-        <a href="{% url 'log' %}">Logout</a>
+        <a
+          href="{% url 'logout' %}"
+          onclick="return confirm('Are you sure you want to log out?');"
+        >
+          Logout
+        </a>
       </div>
     </div>
     <div class="page-header">

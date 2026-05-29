@@ -369,6 +369,18 @@
         border: 1px solid #c3e6cb;
       }
 
+      .input-error {
+        border: 2px solid #c0392b !important;
+        background: #fff5f5 !important;
+      }
+
+      .error-message {
+        color: #c0392b;
+        font-size: 11px;
+        margin-top: 4px;
+        font-weight: 600;
+      }
+
       .message-alert.error {
         background: #f8d7da;
         color: #721c24;
@@ -418,7 +430,12 @@
         <a href="{% url 'credit' %}">Supplier Credit</a>
         <a href="{% url 'deposit' %}">Deposits</a>
         <a href="{% url 'reports' %}">Reports</a>
-        <a href="{% url 'log' %}">Logout</a>
+        <a
+          href="{% url 'logout' %}"
+          onclick="return confirm('Are you sure you want to log out?');"
+        >
+          Logout
+        </a>
       </div>
     </nav>
 
@@ -442,7 +459,7 @@
           <p>Complete all fields to log a supplier credit</p>
         </div>
         <div class="form-body">
-          <form method="POST">
+          <form method="POST" id="credit-form" novalidate>
             {% csrf_token %}
 
             <div class="field-group">
@@ -489,7 +506,15 @@
 
             <div class="field-group">
               <label>Amount Paid</label>
-              <input type="number" name="amount_paid" min="0" placeholder="0" />
+              <input
+                type="number"
+                name="amount_paid"
+                class="{% if errors.amount_paid %}input-error{% endif %}"
+              />
+
+              {% if errors.amount_paid %}
+              <div class="error-message">{{ errors.amount_paid }}</div>
+              {% endif %}
             </div>
 
             <div class="field-group">
@@ -563,5 +588,115 @@
         </div>
       </div>
     </div>
+    <script>
+      const form = document.getElementById("credit-form");
+
+      form.addEventListener("submit", function (e) {
+        let valid = true;
+
+        /* remove old errors */
+        document
+          .querySelectorAll(".error-message")
+          .forEach((el) => el.remove());
+
+        document.querySelectorAll("input").forEach((field) => {
+          field.classList.remove("input-error");
+        });
+
+        const fields = [
+          {
+            name: "supplier_name",
+            message: "Supplier name is required",
+          },
+          {
+            name: "item_name",
+            message: "Item name is required",
+          },
+          {
+            name: "quantity",
+            message: "Quantity is required",
+          },
+          {
+            name: "unit_price",
+            message: "Unit price is required",
+          },
+          {
+            name: "date",
+            message: "Date is required",
+          },
+        ];
+
+        fields.forEach((fieldData) => {
+          const field = document.querySelector(`[name="${fieldData.name}"]`);
+
+          if (!field.value.trim()) {
+            valid = false;
+
+            field.classList.add("input-error");
+
+            const error = document.createElement("div");
+            error.className = "error-message";
+            error.textContent = fieldData.message;
+
+            field.parentElement.appendChild(error);
+          }
+        });
+
+        /* quantity validation */
+        const quantity = document.querySelector('[name="quantity"]');
+
+        if (quantity.value && Number(quantity.value) <= 0) {
+          valid = false;
+
+          quantity.classList.add("input-error");
+
+          const error = document.createElement("div");
+          error.className = "error-message";
+          error.textContent = "Quantity must be greater than 0";
+
+          quantity.parentElement.appendChild(error);
+        }
+
+        /* unit price validation */
+        const unitPrice = document.querySelector('[name="unit_price"]');
+
+        if (unitPrice.value && Number(unitPrice.value) <= 0) {
+          valid = false;
+
+          unitPrice.classList.add("input-error");
+
+          const error = document.createElement("div");
+          error.className = "error-message";
+          error.textContent = "Unit price must be greater than 0";
+
+          unitPrice.parentElement.appendChild(error);
+        }
+
+        const dateField = document.querySelector('[name="date"]');
+
+        if (dateField.value) {
+          const selectedDate = dateField.value; // string "YYYY-MM-DD"
+
+          const today = new Date();
+          const todayStr = today.toISOString().split("T")[0]; // YYYY-MM-DD
+
+          if (selectedDate > todayStr) {
+            valid = false;
+
+            dateField.classList.add("input-error");
+
+            const error = document.createElement("div");
+            error.className = "error-message";
+            error.textContent = "Future dates are not allowed";
+
+            dateField.parentElement.appendChild(error);
+          }
+        }
+
+        if (!valid) {
+          e.preventDefault();
+        }
+      });
+    </script>
   </body>
 </html>

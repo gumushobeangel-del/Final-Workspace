@@ -29,7 +29,9 @@
         --radius-sm: 8px;
       }
 
-      *, *::before, *::after {
+      *,
+      *::before,
+      *::after {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -39,8 +41,16 @@
         font-family: "DM Sans", sans-serif;
         background: var(--cream);
         background-image:
-          radial-gradient(ellipse at 10% 20%, rgba(201, 168, 76, 0.08) 0%, transparent 50%),
-          radial-gradient(ellipse at 90% 80%, rgba(13, 27, 42, 0.06) 0%, transparent 50%);
+          radial-gradient(
+            ellipse at 10% 20%,
+            rgba(201, 168, 76, 0.08) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 90% 80%,
+            rgba(13, 27, 42, 0.06) 0%,
+            transparent 50%
+          );
         min-height: 100vh;
         padding: 32px 24px;
         color: var(--text-dark);
@@ -48,7 +58,11 @@
 
       /* ── Nav ── */
       .top-nav {
-        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-light) 100%
+        );
         padding: 18px 28px;
         border-radius: var(--radius);
         margin-bottom: 26px;
@@ -133,15 +147,27 @@
         animation: fadeSlideUp 0.4s ease both;
       }
 
-      .card:nth-child(2) { animation-delay: 0.08s; }
+      .card:nth-child(2) {
+        animation-delay: 0.08s;
+      }
 
       @keyframes fadeSlideUp {
-        from { opacity: 0; transform: translateY(16px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .card-header {
-        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-light) 100%
+        );
         padding: 20px 26px;
         display: flex;
         justify-content: space-between;
@@ -173,8 +199,8 @@
       .table-search input {
         padding: 7px 12px;
         border-radius: var(--radius-sm);
-        border: 1.5px solid rgba(255,255,255,0.2);
-        background: rgba(255,255,255,0.1);
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.1);
         color: var(--white);
         font-family: "DM Sans", sans-serif;
         font-size: 12.5px;
@@ -182,16 +208,20 @@
         transition: all 0.2s;
       }
 
-      .table-search input::placeholder { color: rgba(255,255,255,0.45); }
+      .table-search input::placeholder {
+        color: rgba(255, 255, 255, 0.45);
+      }
 
       .table-search input:focus {
         outline: none;
         border-color: var(--gold);
-        background: rgba(255,255,255,0.15);
+        background: rgba(255, 255, 255, 0.15);
       }
 
       /* ── Form ── */
-      .form-body { padding: 26px; }
+      .form-body {
+        padding: 26px;
+      }
 
       .section-label {
         font-size: 10px;
@@ -205,10 +235,16 @@
         border-bottom: 1px solid var(--cream-dark);
       }
 
-      .section-label:first-child { margin-top: 0; }
+      .section-label:first-child {
+        margin-top: 0;
+      }
 
-      .field-group { margin-bottom: 13px; }
-      .field-group.no-mb { margin-bottom: 0; }
+      .field-group {
+        margin-bottom: 13px;
+      }
+      .field-group.no-mb {
+        margin-bottom: 0;
+      }
 
       .field-group label {
         display: block;
@@ -235,11 +271,16 @@
         font-family: "DM Sans", sans-serif;
         color: var(--text-dark);
         background: var(--cream);
-        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          background 0.2s;
         appearance: none;
       }
 
-      .field-group input::placeholder { color: var(--text-light); }
+      .field-group input::placeholder {
+        color: var(--text-light);
+      }
 
       .field-group input:focus,
       .field-group select:focus {
@@ -255,8 +296,12 @@
         margin-bottom: 13px;
       }
 
-      .cols-2 { grid-template-columns: 1fr 1fr; }
-      .cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+      .cols-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .cols-3 {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
 
       .hint {
         font-size: 11px;
@@ -274,7 +319,11 @@
 
       .btn-submit {
         padding: 13px;
-        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-light) 100%
+        );
         color: var(--white);
         border: none;
         border-radius: var(--radius-sm);
@@ -321,7 +370,9 @@
       }
 
       /* ── Table ── */
-      .table-wrapper { overflow-x: auto; }
+      .table-wrapper {
+        overflow-x: auto;
+      }
 
       table {
         width: 100%;
@@ -347,7 +398,10 @@
         user-select: none;
       }
 
-      th:last-child { text-align: center; cursor: default; }
+      th:last-child {
+        text-align: center;
+        cursor: default;
+      }
 
       th .sort-icon {
         display: inline-block;
@@ -356,15 +410,22 @@
         font-style: normal;
       }
 
-      th.sorted .sort-icon { opacity: 1; color: var(--gold); }
+      th.sorted .sort-icon {
+        opacity: 1;
+        color: var(--gold);
+      }
 
       tbody tr {
         border-bottom: 1px solid var(--cream-dark);
         transition: background 0.15s;
       }
 
-      tbody tr:last-child { border-bottom: none; }
-      tbody tr:hover { background: rgba(201, 168, 76, 0.04); }
+      tbody tr:last-child {
+        border-bottom: none;
+      }
+      tbody tr:hover {
+        background: rgba(201, 168, 76, 0.04);
+      }
 
       td {
         padding: 12px 14px;
@@ -396,16 +457,46 @@
         letter-spacing: 0.3px;
       }
 
-      .cat-building   { background: #e8f4fd; color: #1a6fa8; }
-      .cat-steel      { background: #f0f0f5; color: #4a4a6a; }
-      .cat-wood       { background: #fdf3e8; color: #8a5a1a; }
-      .cat-roofing    { background: #eaf5ea; color: #2a7a2a; }
-      .cat-paint      { background: #fce8f5; color: #8a2a6a; }
-      .cat-glass      { background: #e8f8f5; color: #1a7a6a; }
-      .cat-plumbing   { background: #e8eef8; color: #1a3a8a; }
-      .cat-electrical { background: #fdf8e8; color: #7a6a1a; }
-      .cat-mechanical { background: #f5e8e8; color: #8a2a2a; }
-      .cat-other      { background: #f0f0f0; color: #5a5a5a; }
+      .cat-building {
+        background: #e8f4fd;
+        color: #1a6fa8;
+      }
+      .cat-steel {
+        background: #f0f0f5;
+        color: #4a4a6a;
+      }
+      .cat-wood {
+        background: #fdf3e8;
+        color: #8a5a1a;
+      }
+      .cat-roofing {
+        background: #eaf5ea;
+        color: #2a7a2a;
+      }
+      .cat-paint {
+        background: #fce8f5;
+        color: #8a2a6a;
+      }
+      .cat-glass {
+        background: #e8f8f5;
+        color: #1a7a6a;
+      }
+      .cat-plumbing {
+        background: #e8eef8;
+        color: #1a3a8a;
+      }
+      .cat-electrical {
+        background: #fdf8e8;
+        color: #7a6a1a;
+      }
+      .cat-mechanical {
+        background: #f5e8e8;
+        color: #8a2a2a;
+      }
+      .cat-other {
+        background: #f0f0f0;
+        color: #5a5a5a;
+      }
 
       /* ── Payment badge ── */
       .pay-badge {
@@ -416,9 +507,18 @@
         font-weight: 600;
       }
 
-      .pay-cash   { background: #eaf5ea; color: #2a7a2a; }
-      .pay-mobile { background: #fdf3e8; color: #8a5a1a; }
-      .pay-bank   { background: #e8eef8; color: #1a3a8a; }
+      .pay-cash {
+        background: #eaf5ea;
+        color: #2a7a2a;
+      }
+      .pay-mobile {
+        background: #fdf3e8;
+        color: #8a5a1a;
+      }
+      .pay-bank {
+        background: #e8eef8;
+        color: #1a3a8a;
+      }
 
       /* ── Action buttons ── */
       .actions {
@@ -483,6 +583,24 @@
         transition: all 0.2s;
       }
 
+      .field-error {
+        color: #c0392b;
+        font-size: 11px;
+        margin-top: 4px;
+        font-weight: 600;
+      }
+      .input-error {
+        border: 2px solid #c0392b !important;
+        background: #fff5f5 !important;
+      }
+
+      .error-message {
+        color: #c0392b;
+        font-size: 11px;
+        margin-top: 4px;
+        font-weight: 600;
+      }
+
       .page-btn:hover:not(:disabled) {
         border-color: var(--gold);
         color: var(--navy);
@@ -501,19 +619,26 @@
 
       /* ── Responsive ── */
       @media (max-width: 960px) {
-        .layout { grid-template-columns: 1fr; }
+        .layout {
+          grid-template-columns: 1fr;
+        }
       }
 
       @media (max-width: 600px) {
-        body { padding: 12px; }
-        .cols-3 { grid-template-columns: 1fr 1fr; }
-        .table-search input { width: 130px; }
+        body {
+          padding: 12px;
+        }
+        .cols-3 {
+          grid-template-columns: 1fr 1fr;
+        }
+        .table-search input {
+          width: 130px;
+        }
       }
     </style>
   </head>
 
   <body>
-
     <!-- ═══ NAVBAR ═══ -->
     <nav class="top-nav">
       <div class="nav-logo">Nyondo Hardware</div>
@@ -521,26 +646,26 @@
         <a href="{% url 'index' %}">Home</a>
 
         {% if request.session.role == "admin" %}
-          <a href="{% url 'dash' %}">Dashboard</a>
-          <a href="{% url 'sales' %}">Sales</a>
-          <a href="{% url 'stock' %}" class="active">Add Stock</a>
-          <a href="{% url 'supplier' %}">Suppliers</a>
-          <a href="{% url 'register' %}">Register Customer</a>
-          <a href="{% url 'credit' %}">Supplier Credit</a>
-          <a href="{% url 'reports' %}">Reports</a>
-          <a href="{% url 'deposit' %}">Deposits</a>
+        <a href="{% url 'dash' %}">Dashboard</a>
+        <a href="{% url 'sales' %}">Sales</a>
+        <a href="{% url 'stock' %}" class="active">Add Stock</a>
+        <a href="{% url 'supplier' %}">Suppliers</a>
+        <a href="{% url 'register' %}">Register Customer</a>
+        <a href="{% url 'credit' %}">Supplier Credit</a>
+        <a href="{% url 'reports' %}">Reports</a>
+        <a href="{% url 'deposit' %}">Deposits</a>
+        {% endif %} {% if request.session.role == "sales" %}
+        <a href="{% url 'sales' %}">Sales</a>
+        {% endif %} {% if request.session.role == "stock_manager" %}
+        <a href="{% url 'stock' %}" class="active">Add Stock</a>
+        <a href="{% url 'supplier' %}" class="active">Add Supplier</a>
         {% endif %}
-
-        {% if request.session.role == "sales" %}
-          <a href="{% url 'sales' %}">Sales</a>
-        {% endif %}
-
-        {% if request.session.role == "stock_manager" %}
-          <a href="{% url 'stock' %}" class="active">Add Stock</a>
-          <a href="{% url 'supplier' %}" class="active">Add Supplier</a>
-        {% endif %}
-
-        <a href="{% url 'log' %}">Logout</a>
+        <a
+          href="{% url 'logout' %}"
+          onclick="return confirm('Are you sure you want to log out?');"
+        >
+          Logout
+        </a>
       </div>
     </nav>
 
@@ -552,7 +677,6 @@
 
     <!-- ═══ LAYOUT ═══ -->
     <div class="layout">
-
       <!-- ── FORM CARD ── -->
       <div class="card">
         <div class="card-header">
@@ -562,161 +686,321 @@
           </div>
         </div>
         <div class="form-body">
-
-          {% if messages %}
-            {% for message in messages %}
-              <div class="alert">{{ message }}</div>
-            {% endfor %}
-          {% endif %}
-
-          <form method="POST">
+          {% if messages %} {% for message in messages %}
+          <div class="alert">{{ message }}</div>
+          {% endfor %} {% endif %}
+          <form method="POST" id="stock-form" novalidate>
             {% csrf_token %}
 
-            <!-- Item Details -->
+            <!-- ITEM DETAILS -->
             <div class="section-label">Item Details</div>
 
             <div class="field-row cols-2">
+              <!-- ITEM NAME -->
               <div class="field-group no-mb">
                 <label>Item Name <span class="req">*</span></label>
-                <select name="item_name" id="item-sel" required onchange="onItem()">
+
+                <select
+                  name="item_name"
+                  id="item-sel"
+                  onchange="onItem()"
+                  required
+                >
                   <option value="">Select item…</option>
-                  <optgroup label="Building Materials">
-                    <option value="Cement (50kg bag)">Cement (50kg bag)</option>
-                    <option value="Sand (tonne)">Sand (tonne)</option>
-                    <option value="Bricks (pcs)">Bricks (pcs)</option>
-                    <option value="Hardcore gravel (tonne)">Hardcore gravel (tonne)</option>
-                  </optgroup>
-                  <optgroup label="Steel &amp; Metal">
-                    <option value="Iron bars (12mm)">Iron bars (12mm)</option>
-                    <option value="Iron bars (16mm)">Iron bars (16mm)</option>
-                    <option value="Iron sheets (gauge 28)">Iron sheets (gauge 28)</option>
-                    <option value="Iron sheets (gauge 30)">Iron sheets (gauge 30)</option>
-                    <option value="Steel flat bar">Steel flat bar</option>
-                    <option value="Nails (1in box)">Nails (1in box)</option>
-                    <option value="Nails (2in box)">Nails (2in box)</option>
-                    <option value="Nails (3in box)">Nails (3in box)</option>
-                    <option value="Binding wire">Binding wire</option>
-                  </optgroup>
-                  <optgroup label="Wood &amp; Timber">
-                    <option value="Timber 2x2">Timber 2×2</option>
-                    <option value="Timber 2x4">Timber 2×4</option>
-                    <option value="Timber 2x6">Timber 2×6</option>
-                    <option value="Plywood 4x8 sheet">Plywood 4×8 sheet</option>
-                  </optgroup>
-                  <optgroup label="Roofing">
-                    <option value="Roofing nails (box)">Roofing nails (box)</option>
-                    <option value="Ridge cap (pcs)">Ridge cap (pcs)</option>
-                    <option value="Roofing screws (box)">Roofing screws (box)</option>
-                  </optgroup>
-                  <optgroup label="Paint &amp; Finishes">
-                    <option value="Paint (20L bucket)">Paint (20L bucket)</option>
-                    <option value="Paint (4L tin)">Paint (4L tin)</option>
-                    <option value="Primer (20L)">Primer (20L)</option>
-                    <option value="Wall putty (20kg)">Wall putty (20kg)</option>
-                  </optgroup>
-                  <optgroup label="Glass &amp; Windows">
-                    <option value="Glass (4mm sheet)">Glass (4mm sheet)</option>
-                    <option value="Glass (6mm sheet)">Glass (6mm sheet)</option>
-                    <option value="Jalousie glass (box)">Jalousie glass (box)</option>
-                  </optgroup>
-                  <optgroup label="Plumbing">
-                    <option value="PVC pipe (1/2in)">PVC pipe (½in)</option>
-                    <option value="PVC pipe (3/4in)">PVC pipe (¾in)</option>
-                    <option value="GI pipe (1in)">GI pipe (1in)</option>
-                    <option value="Gate valve (1/2in)">Gate valve (½in)</option>
-                    <option value="Elbow fitting">Elbow fitting</option>
-                    <option value="Tee fitting">Tee fitting</option>
-                  </optgroup>
-                  <optgroup label="Electrical">
-                    <option value="Conduit (20mm)">Conduit (20mm)</option>
-                    <option value="Electric cable 2.5mm (roll)">Electric cable 2.5mm (roll)</option>
-                    <option value="Switch socket (pcs)">Switch socket (pcs)</option>
-                    <option value="Distribution board">Distribution board</option>
-                  </optgroup>
-                  <option value="Other">Other (specify below)</option>
+
+                  <option
+                    value="Cement (50kg bag)"
+                    {%
+                    if
+                    values.item_name=""
+                    ="Cement (50kg bag)"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Cement (50kg bag)
+                  </option>
+
+                  <option
+                    value="Sand (tonne)"
+                    {%
+                    if
+                    values.item_name=""
+                    ="Sand (tonne)"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Sand (tonne)
+                  </option>
+
+                  <option
+                    value="Bricks (pcs)"
+                    {%
+                    if
+                    values.item_name=""
+                    ="Bricks (pcs)"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Bricks (pcs)
+                  </option>
+
+                  <option
+                    value="Iron bars (12mm)"
+                    {%
+                    if
+                    values.item_name=""
+                    ="Iron bars (12mm)"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Iron bars (12mm)
+                  </option>
+
+                  <option
+                    value="Other"
+                    {%
+                    if
+                    values.item_name=""
+                    ="Other"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Other (specify below)
+                  </option>
                 </select>
+
+                {% if errors.item_name %}
+                <div class="field-error">{{ errors.item_name }}</div>
+                {% endif %}
               </div>
 
+              <!-- CATEGORY -->
               <div class="field-group no-mb">
                 <label>Category <span class="req">*</span></label>
+
                 <select name="category" id="cat-sel" required>
                   <option value="">Select…</option>
-                  <option value="building_materials">Building Materials</option>
-                  <option value="steel_metal">Steel &amp; Metal</option>
-                  <option value="wood_timber">Wood &amp; Timber</option>
-                  <option value="roofing">Roofing</option>
-                  <option value="paint_finishes">Paint &amp; Finishes</option>
-                  <option value="glass_windows">Glass &amp; Windows</option>
-                  <option value="plumbing">Plumbing</option>
-                  <option value="electrical">Electrical</option>
-                  <option value="mechanical">Mechanical</option>
+
+                  <option
+                    value="building_materials"
+                    {%
+                    if
+                    values.category=""
+                    ="building_materials"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Building Materials
+                  </option>
+
+                  <option
+                    value="steel_metal"
+                    {%
+                    if
+                    values.category=""
+                    ="steel_metal"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Steel & Metal
+                  </option>
+
+                  <option
+                    value="wood_timber"
+                    {%
+                    if
+                    values.category=""
+                    ="wood_timber"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Wood & Timber
+                  </option>
+
+                  <option
+                    value="roofing"
+                    {%
+                    if
+                    values.category=""
+                    ="roofing"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Roofing
+                  </option>
+
+                  <option
+                    value="plumbing"
+                    {%
+                    if
+                    values.category=""
+                    ="plumbing"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Plumbing
+                  </option>
+
+                  <option
+                    value="electrical"
+                    {%
+                    if
+                    values.category=""
+                    ="electrical"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Electrical
+                  </option>
                 </select>
+
+                {% if errors.category %}
+                <div class="field-error">{{ errors.category }}</div>
+                {% endif %}
               </div>
             </div>
 
-            <div class="field-group" id="other-wrap" style="display:none">
+            <!-- OTHER ITEM -->
+            <div class="field-group" id="other-wrap" style="display: none">
               <label>Specify Item <span class="req">*</span></label>
-              <input type="text" name="item_name_other" placeholder="e.g. M12 bolts (box of 50)" />
+              <input
+                type="text"
+                name="item_name_other"
+                placeholder="e.g. M12 bolts"
+                value="{{ values.item_name_other|default:'' }}"
+              />
+
+              {% if errors.item_name_other %}
+              <div class="field-error">{{ errors.item_name_other }}</div>
+              {% endif %}
             </div>
 
-            <div class="field-group">
-              <label>Unit of Measure</label>
-              <select name="unit_of_measure">
-                <option value="pcs">Pieces (pcs)</option>
-                <option value="bags">Bags</option>
-                <option value="tonnes">Tonnes</option>
-                <option value="boxes">Boxes</option>
-                <option value="metres">Metres (m)</option>
-                <option value="sheets">Sheets</option>
-                <option value="rolls">Rolls</option>
-                <option value="litres">Litres (L)</option>
-                <option value="buckets">Buckets</option>
-              </select>
-            </div>
-
-            <!-- Quantity & Pricing -->
-            <div class="section-label">Quantity &amp; Pricing (UGX)</div>
+            <!-- QUANTITY & PRICING -->
+            <div class="section-label">Quantity & Pricing (UGX)</div>
 
             <div class="field-row cols-3">
+              <!-- QUANTITY -->
               <div class="field-group no-mb">
                 <label>Quantity <span class="req">*</span></label>
-                <input type="number" name="quantity" min="1" step="1" value="1" required />
+                <input
+                  type="number"
+                  name="quantity"
+                  min="1"
+                  value="{{ values.quantity }}"
+                />
+
+                {% if errors.quantity %}
+                <div class="field-error">{{ errors.quantity }}</div>
+                {% endif %}
               </div>
+
+              <!-- UNIT COST -->
               <div class="field-group no-mb">
                 <label>Unit Cost <span class="req">*</span></label>
-                <input type="number" name="unit_cost" min="1" placeholder="0" required />
-                <div class="hint">Buying price per unit</div>
+                <input
+                  type="number"
+                  name="unit_cost"
+                  value="{{ values.unit_cost }}"
+                />
+
+                {% if errors.unit_cost %}
+                <div class="field-error">{{ errors.unit_cost }}</div>
+                {% endif %}
               </div>
+
+              <!-- UNIT PRICE -->
               <div class="field-group no-mb">
                 <label>Unit Price <span class="req">*</span></label>
-                <input type="number" name="unit_price" min="1" placeholder="0" required />
-                <div class="hint">Selling price per unit</div>
+                <input
+                  type="number"
+                  name="unit_price"
+                  value="{{ values.unit_price }}"
+                />
+
+                {% if errors.unit_price %}
+                <div class="field-error">{{ errors.unit_price }}</div>
+                {% endif %}
               </div>
             </div>
 
+            <!-- PAYMENT -->
             <div class="field-group">
               <label>Payment Method <span class="req">*</span></label>
-              <select name="payment_method" required>
+
+              <select name="payment_method">
                 <option value="">Select payment method…</option>
-                <option value="Cash">Cash</option>
-                <option value="Mobile Money">Mobile Money</option>
-                <option value="Bank">Bank</option>
+
+                <option
+                  value="Cash"
+                  {%
+                  if
+                  values.payment_method=""
+                  ="Cash"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  Cash
+                </option>
+
+                <option
+                  value="Mobile Money"
+                  {%
+                  if
+                  values.payment_method=""
+                  ="Mobile Money"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  Mobile Money
+                </option>
+
+                <option
+                  value="Bank"
+                  {%
+                  if
+                  values.payment_method=""
+                  ="Bank"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  Bank
+                </option>
               </select>
+
+              {% if errors.payment_method %}
+              <div class="field-error">{{ errors.payment_method }}</div>
+              {% endif %}
             </div>
 
-            <!-- Date -->
-            <div class="section-label">Date</div>
-
+            <!-- DATE -->
             <div class="field-group">
               <label>Date Received <span class="req">*</span></label>
-              <input type="date" name="date" id="date-in" required />
+              <input type="date" name="date" value="{{ values.date }}" />
+
+              {% if errors.date %}
+              <div class="field-error">{{ errors.date }}</div>
+              {% endif %}
             </div>
 
+            <!-- BUTTONS -->
             <div class="btn-row">
               <button type="reset" class="btn-clear">Clear</button>
               <button type="submit" class="btn-submit">Save Stock</button>
             </div>
-
           </form>
         </div>
       </div>
@@ -729,7 +1013,12 @@
             <p>All registered inventory items</p>
           </div>
           <div class="table-search">
-            <input type="text" id="search-input" placeholder="Search items…" oninput="filterTable()" />
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search items…"
+              oninput="filterTable()"
+            />
           </div>
         </div>
 
@@ -738,12 +1027,20 @@
             <thead>
               <tr>
                 <th onclick="sortTable(0)">Item <i class="sort-icon">↕</i></th>
-                <th onclick="sortTable(1)">Cost (UGX) <i class="sort-icon">↕</i></th>
-                <th onclick="sortTable(2)">Price (UGX) <i class="sort-icon">↕</i></th>
+                <th onclick="sortTable(1)">
+                  Cost (UGX) <i class="sort-icon">↕</i>
+                </th>
+                <th onclick="sortTable(2)">
+                  Price (UGX) <i class="sort-icon">↕</i>
+                </th>
                 <th onclick="sortTable(3)">Qty <i class="sort-icon">↕</i></th>
                 <th onclick="sortTable(4)">Date <i class="sort-icon">↕</i></th>
-                <th onclick="sortTable(5)">Category <i class="sort-icon">↕</i></th>
-                <th onclick="sortTable(6)">Payment <i class="sort-icon">↕</i></th>
+                <th onclick="sortTable(5)">
+                  Category <i class="sort-icon">↕</i>
+                </th>
+                <th onclick="sortTable(6)">
+                  Payment <i class="sort-icon">↕</i>
+                </th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -761,48 +1058,54 @@
                 <td>{{ stock.date }}</td>
                 <td>
                   {% if stock.category == "building_materials" %}
-                    <span class="cat-badge cat-building">Building Materials</span>
+                  <span class="cat-badge cat-building">Building Materials</span>
                   {% elif stock.category == "steel_metal" %}
-                    <span class="cat-badge cat-steel">Steel &amp; Metal</span>
+                  <span class="cat-badge cat-steel">Steel &amp; Metal</span>
                   {% elif stock.category == "wood_timber" %}
-                    <span class="cat-badge cat-wood">Wood &amp; Timber</span>
+                  <span class="cat-badge cat-wood">Wood &amp; Timber</span>
                   {% elif stock.category == "roofing" %}
-                    <span class="cat-badge cat-roofing">Roofing</span>
+                  <span class="cat-badge cat-roofing">Roofing</span>
                   {% elif stock.category == "paint_finishes" %}
-                    <span class="cat-badge cat-paint">Paint &amp; Finishes</span>
+                  <span class="cat-badge cat-paint">Paint &amp; Finishes</span>
                   {% elif stock.category == "glass_windows" %}
-                    <span class="cat-badge cat-glass">Glass &amp; Windows</span>
+                  <span class="cat-badge cat-glass">Glass &amp; Windows</span>
                   {% elif stock.category == "plumbing" %}
-                    <span class="cat-badge cat-plumbing">Plumbing</span>
+                  <span class="cat-badge cat-plumbing">Plumbing</span>
                   {% elif stock.category == "electrical" %}
-                    <span class="cat-badge cat-electrical">Electrical</span>
+                  <span class="cat-badge cat-electrical">Electrical</span>
                   {% elif stock.category == "mechanical" %}
-                    <span class="cat-badge cat-mechanical">Mechanical</span>
+                  <span class="cat-badge cat-mechanical">Mechanical</span>
                   {% else %}
-                    <span class="cat-badge cat-other">{{ stock.category }}</span>
+                  <span class="cat-badge cat-other">{{ stock.category }}</span>
                   {% endif %}
                 </td>
                 <td>
                   {% if stock.payment_method == "Cash" %}
-                    <span class="pay-badge pay-cash">Cash</span>
+                  <span class="pay-badge pay-cash">Cash</span>
                   {% elif stock.payment_method == "Mobile Money" %}
-                    <span class="pay-badge pay-mobile">Mobile Money</span>
+                  <span class="pay-badge pay-mobile">Mobile Money</span>
                   {% elif stock.payment_method == "Bank" %}
-                    <span class="pay-badge pay-bank">Bank</span>
+                  <span class="pay-badge pay-bank">Bank</span>
                   {% else %}
-                    <span class="pay-badge">{{ stock.payment_method }}</span>
+                  <span class="pay-badge">{{ stock.payment_method }}</span>
                   {% endif %}
                 </td>
                 <td>
                   <div class="actions">
-                    <a href="{% url 'edit_stock' stock.id %}" class="action-btn btn-edit">Edit</a>
+                    <a
+                      href="{% url 'edit_stock' stock.id %}"
+                      class="action-btn btn-edit"
+                      >Edit</a
+                    >
                   </div>
                 </td>
               </tr>
               {% empty %}
               <tr id="empty-row">
                 <td colspan="8">
-                  <div class="empty-state">No stock data available. Add your first item!</div>
+                  <div class="empty-state">
+                    No stock data available. Add your first item!
+                  </div>
                 </td>
               </tr>
               {% endfor %}
@@ -815,65 +1118,70 @@
           <span id="page-info">Showing 0 – 0 of 0</span>
           <div class="page-btns" id="page-btns"></div>
         </div>
-
-      </div><!-- end table card -->
-
-    </div><!-- end .layout -->
+      </div>
+      <!-- end table card -->
+    </div>
+    <!-- end .layout -->
 
     <script>
       /* ── Category auto-select map ── */
       const catMap = {
-        "Cement (50kg bag)":           "building_materials",
-        "Sand (tonne)":                "building_materials",
-        "Bricks (pcs)":                "building_materials",
-        "Hardcore gravel (tonne)":     "building_materials",
-        "Iron bars (12mm)":            "steel_metal",
-        "Iron bars (16mm)":            "steel_metal",
-        "Iron sheets (gauge 28)":      "steel_metal",
-        "Iron sheets (gauge 30)":      "steel_metal",
-        "Steel flat bar":              "steel_metal",
-        "Nails (1in box)":             "steel_metal",
-        "Nails (2in box)":             "steel_metal",
-        "Nails (3in box)":             "steel_metal",
-        "Binding wire":                "steel_metal",
-        "Timber 2x2":                  "wood_timber",
-        "Timber 2x4":                  "wood_timber",
-        "Timber 2x6":                  "wood_timber",
-        "Plywood 4x8 sheet":           "wood_timber",
-        "Roofing nails (box)":         "roofing",
-        "Ridge cap (pcs)":             "roofing",
-        "Roofing screws (box)":        "roofing",
-        "Paint (20L bucket)":          "paint_finishes",
-        "Paint (4L tin)":              "paint_finishes",
-        "Primer (20L)":                "paint_finishes",
-        "Wall putty (20kg)":           "paint_finishes",
-        "Glass (4mm sheet)":           "glass_windows",
-        "Glass (6mm sheet)":           "glass_windows",
-        "Jalousie glass (box)":        "glass_windows",
-        "PVC pipe (1/2in)":            "plumbing",
-        "PVC pipe (3/4in)":            "plumbing",
-        "GI pipe (1in)":               "plumbing",
-        "Gate valve (1/2in)":          "plumbing",
-        "Elbow fitting":               "plumbing",
-        "Tee fitting":                 "plumbing",
-        "Conduit (20mm)":              "electrical",
+        "Cement (50kg bag)": "building_materials",
+        "Sand (tonne)": "building_materials",
+        "Bricks (pcs)": "building_materials",
+        "Hardcore gravel (tonne)": "building_materials",
+        "Iron bars (12mm)": "steel_metal",
+        "Iron bars (16mm)": "steel_metal",
+        "Iron sheets (gauge 28)": "steel_metal",
+        "Iron sheets (gauge 30)": "steel_metal",
+        "Steel flat bar": "steel_metal",
+        "Nails (1in box)": "steel_metal",
+        "Nails (2in box)": "steel_metal",
+        "Nails (3in box)": "steel_metal",
+        "Binding wire": "steel_metal",
+        "Timber 2x2": "wood_timber",
+        "Timber 2x4": "wood_timber",
+        "Timber 2x6": "wood_timber",
+        "Plywood 4x8 sheet": "wood_timber",
+        "Roofing nails (box)": "roofing",
+        "Ridge cap (pcs)": "roofing",
+        "Roofing screws (box)": "roofing",
+        "Paint (20L bucket)": "paint_finishes",
+        "Paint (4L tin)": "paint_finishes",
+        "Primer (20L)": "paint_finishes",
+        "Wall putty (20kg)": "paint_finishes",
+        "Glass (4mm sheet)": "glass_windows",
+        "Glass (6mm sheet)": "glass_windows",
+        "Jalousie glass (box)": "glass_windows",
+        "PVC pipe (1/2in)": "plumbing",
+        "PVC pipe (3/4in)": "plumbing",
+        "GI pipe (1in)": "plumbing",
+        "Gate valve (1/2in)": "plumbing",
+        "Elbow fitting": "plumbing",
+        "Tee fitting": "plumbing",
+        "Conduit (20mm)": "electrical",
         "Electric cable 2.5mm (roll)": "electrical",
-        "Switch socket (pcs)":         "electrical",
-        "Distribution board":          "electrical",
+        "Switch socket (pcs)": "electrical",
+        "Distribution board": "electrical",
       };
 
       function onItem() {
         const v = document.getElementById("item-sel").value;
-        document.getElementById("other-wrap").style.display = v === "Other" ? "block" : "none";
+        document.getElementById("other-wrap").style.display =
+          v === "Other" ? "block" : "none";
         if (catMap[v]) document.getElementById("cat-sel").value = catMap[v];
       }
 
       /* Set today's date */
-      document.getElementById("date-in").value = new Date().toISOString().split("T")[0];
+      document.getElementById("date-in").value = new Date()
+        .toISOString()
+        .split("T")[0];
 
       /* ── Format UGX numbers with commas ── */
-      document.querySelectorAll(".amount-cell").forEach(td => {
-        const raw = parseFloat(td.dataset.val || td.textContent.replace(/,/g, ""));
+      document.querySelectorAll(".amount-cell").forEach((td) => {
+        const raw = parseFloat(
+          td.dataset.val || td.textContent.replace(/,/g, ""),
+        );
         if (!isNaN(raw)) td.textContent = raw.toLocaleString("en-UG");
       });
 
@@ -882,15 +1190,15 @@
       let currentPage = 1;
       let filteredRows = [];
 
-      const tbody    = document.getElementById("stock-body");
-      const allRows  = Array.from(tbody.querySelectorAll("tr:not(#empty-row)"));
+      const tbody = document.getElementById("stock-body");
+      const allRows = Array.from(tbody.querySelectorAll("tr:not(#empty-row)"));
       const pageInfo = document.getElementById("page-info");
       const pageBtns = document.getElementById("page-btns");
 
       function filterTable() {
         const q = document.getElementById("search-input").value.toLowerCase();
-        filteredRows = allRows.filter(row =>
-          row.textContent.toLowerCase().includes(q)
+        filteredRows = allRows.filter((row) =>
+          row.textContent.toLowerCase().includes(q),
         );
         currentPage = 1;
         renderTable();
@@ -899,9 +1207,9 @@
       function renderTable() {
         const total = filteredRows.length;
         const start = (currentPage - 1) * ROWS_PER_PAGE;
-        const end   = Math.min(start + ROWS_PER_PAGE, total);
+        const end = Math.min(start + ROWS_PER_PAGE, total);
 
-        allRows.forEach(r => r.style.display = "none");
+        allRows.forEach((r) => (r.style.display = "none"));
 
         if (total === 0) {
           pageInfo.textContent = "No results found";
@@ -910,7 +1218,7 @@
         }
 
         filteredRows.forEach((r, i) => {
-          r.style.display = (i >= start && i < end) ? "" : "none";
+          r.style.display = i >= start && i < end ? "" : "none";
         });
 
         pageInfo.textContent = `Showing ${start + 1}–${end} of ${total}`;
@@ -925,14 +1233,20 @@
         prev.className = "page-btn";
         prev.textContent = "←";
         prev.disabled = currentPage === 1;
-        prev.onclick = () => { currentPage--; renderTable(); };
+        prev.onclick = () => {
+          currentPage--;
+          renderTable();
+        };
         pageBtns.appendChild(prev);
 
         for (let p = 1; p <= pages; p++) {
           const btn = document.createElement("button");
           btn.className = "page-btn" + (p === currentPage ? " active" : "");
           btn.textContent = p;
-          btn.onclick = () => { currentPage = p; renderTable(); };
+          btn.onclick = () => {
+            currentPage = p;
+            renderTable();
+          };
           pageBtns.appendChild(btn);
         }
 
@@ -940,16 +1254,23 @@
         next.className = "page-btn";
         next.textContent = "→";
         next.disabled = currentPage === pages;
-        next.onclick = () => { currentPage++; renderTable(); };
+        next.onclick = () => {
+          currentPage++;
+          renderTable();
+        };
         pageBtns.appendChild(next);
       }
 
       /* ── Sortable columns ── */
-      let sortCol = -1, sortAsc = true;
+      let sortCol = -1,
+        sortAsc = true;
 
       function sortTable(col) {
         if (sortCol === col) sortAsc = !sortAsc;
-        else { sortCol = col; sortAsc = true; }
+        else {
+          sortCol = col;
+          sortAsc = true;
+        }
 
         document.querySelectorAll("th").forEach((th, i) => {
           th.classList.toggle("sorted", i === col);
@@ -969,7 +1290,7 @@
           return sortAsc ? cmp : -cmp;
         });
 
-        filteredRows.forEach(r => tbody.appendChild(r));
+        filteredRows.forEach((r) => tbody.appendChild(r));
         currentPage = 1;
         renderTable();
       }
@@ -977,7 +1298,98 @@
       /* ── Init ── */
       filteredRows = [...allRows];
       renderTable();
-    </script>
+      /* ── Form Validation ── */
+      const form = document.getElementById("stock-form");
 
+      form.addEventListener("submit", function (e) {
+        let valid = true;
+
+        /* remove old errors */
+        document
+          .querySelectorAll(".error-message")
+          .forEach((el) => el.remove());
+
+        document
+          .querySelectorAll("input, select")
+          .forEach((field) => field.classList.remove("input-error"));
+
+        /* required fields */
+        const requiredFields = [
+          {
+            id: "item-sel",
+            message: "Please select an item",
+          },
+          {
+            id: "cat-sel",
+            message: "Please select a category",
+          },
+          {
+            name: "quantity",
+            message: "Quantity is required",
+          },
+          {
+            name: "unit_cost",
+            message: "Unit cost is required",
+          },
+          {
+            name: "unit_price",
+            message: "Unit price is required",
+          },
+          {
+            name: "payment_method",
+            message: "Please select payment method",
+          },
+          {
+            name: "date",
+            message: "Date is required",
+          },
+        ];
+
+        requiredFields.forEach((fieldData) => {
+          let field;
+
+          if (fieldData.id) {
+            field = document.getElementById(fieldData.id);
+          } else {
+            field = document.querySelector(`[name="${fieldData.name}"]`);
+          }
+
+          if (!field.value.trim()) {
+            valid = false;
+
+            field.classList.add("input-error");
+
+            const error = document.createElement("div");
+            error.className = "error-message";
+            error.textContent = fieldData.message;
+
+            field.parentElement.appendChild(error);
+          }
+        });
+
+        /* validate Other item */
+        const itemSelect = document.getElementById("item-sel");
+
+        if (itemSelect.value === "Other") {
+          const otherField = document.querySelector('[name="item_name_other"]');
+
+          if (!otherField.value.trim()) {
+            valid = false;
+
+            otherField.classList.add("input-error");
+
+            const error = document.createElement("div");
+            error.className = "error-message";
+            error.textContent = "Please specify the item";
+
+            otherField.parentElement.appendChild(error);
+          }
+        }
+
+        if (!valid) {
+          e.preventDefault();
+        }
+      });
+    </script>
   </body>
 </html>

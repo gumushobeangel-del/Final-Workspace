@@ -348,6 +348,18 @@
         color: var(--white);
       }
 
+      .input-error {
+        border: 1.5px solid #c0392b !important;
+        background: #fff5f5 !important;
+      }
+
+      .error-text {
+        color: #c0392b;
+        font-size: 12px;
+        margin-top: 5px;
+        font-weight: 500;
+      }
+
       /* Responsive */
       @media (max-width: 900px) {
         .layout {
@@ -369,29 +381,28 @@
         <a href="{% url 'index' %}">Home</a>
 
         {% if request.session.role == "admin" %}
-          <a href="{% url 'dash' %}">Dashboard</a>
-          <a href="{% url 'sales' %}">Sales</a>
-          <a href="{% url 'stock' %}" class="active">Add Stock</a>
-          <a href="{% url 'supplier' %}">Suppliers</a>
-          <a href="{% url 'register' %}">Register Customer</a>
-          <a href="{% url 'credit' %}">Supplier Credit</a>
-          <a href="{% url 'reports' %}">Reports</a>
-          <a href="{% url 'deposit' %}">Deposits</a>
+        <a href="{% url 'dash' %}">Dashboard</a>
+        <a href="{% url 'sales' %}">Sales</a>
+        <a href="{% url 'stock' %}" class="active">Add Stock</a>
+        <a href="{% url 'supplier' %}">Suppliers</a>
+        <a href="{% url 'register' %}">Register Customer</a>
+        <a href="{% url 'credit' %}">Supplier Credit</a>
+        <a href="{% url 'reports' %}">Reports</a>
+        <a href="{% url 'deposit' %}">Deposits</a>
+        {% endif %} {% if request.session.role == "sales" %}
+        <a href="{% url 'sales' %}">Sales</a>
+        {% endif %} {% if request.session.role == "stock_manager" %}
+        <a href="{% url 'stock' %}" class="active">Add Stock</a>
+        <a href="{% url 'supplier' %}" class="active">Add Supplier</a>
         {% endif %}
-
-        {% if request.session.role == "sales" %}
-          <a href="{% url 'sales' %}">Sales</a>
-        {% endif %}
-
-        {% if request.session.role == "stock_manager" %}
-          <a href="{% url 'stock' %}" class="active">Add Stock</a>
-          <a href="{% url 'supplier' %}" class="active">Add Supplier</a>
-        {% endif %}
-
-        <a href="{% url 'log' %}">Logout</a>
+        <a
+          href="{% url 'logout' %}"
+          onclick="return confirm('Are you sure you want to log out?');"
+        >
+          Logout
+        </a>
       </div>
     </nav>
-
 
     <div class="page-header">
       <h1>Supplier Management</h1>
@@ -411,55 +422,82 @@
 
             <div class="field-group">
               <label>Supplier Name <span class="req">*</span></label>
+
               <input
                 type="text"
                 name="supplier_name"
                 placeholder="Full name"
-                required
+                value="{{ request.POST.supplier_name }}"
+                class="{% if errors.supplier_name %}input-error{% endif %}"
               />
+
+              {% if errors.supplier_name %}
+              <div class="error-text">{{ errors.supplier_name }}</div>
+              {% endif %}
             </div>
 
             <div class="field-group">
               <label>Company <span class="req">*</span></label>
+
               <input
                 type="text"
                 name="company"
                 placeholder="Company name"
-                required
+                value="{{ request.POST.company }}"
+                class="{% if errors.company %}input-error{% endif %}"
               />
+
+              {% if errors.company %}
+              <div class="error-text">{{ errors.company }}</div>
+              {% endif %}
             </div>
 
             <div class="field-group">
               <label>Contact <span class="req">*</span></label>
+
               <input
                 type="text"
                 name="contact"
                 placeholder="+256740230081"
-                pattern="^\+256[0-9]{9}$"
+                value="{{ request.POST.contact }}"
+                class="{% if errors.contact %}input-error{% endif %}"
+                minlength="13"
                 maxlength="13"
-                title="Phone must be in format +256XXXXXXXXX"
-                required
               />
+              {% if errors.contact %}
+              <div class="error-text">{{ errors.contact }}</div>
+              {% endif %}
             </div>
-
             <div class="field-group">
               <label>Email <span class="req">*</span></label>
+
               <input
-                type="email"
+                type="text"
                 name="email"
                 placeholder="email@example.com"
-                required
+                value="{{ request.POST.email }}"
+                class="{% if errors.email %}input-error{% endif %}"
               />
+
+              {% if errors.email %}
+              <div class="error-text">{{ errors.email }}</div>
+              {% endif %}
             </div>
 
             <div class="field-group">
               <label>Location <span class="req">*</span></label>
+
               <input
                 type="text"
                 name="location"
                 placeholder="City / Area"
-                required
+                value="{{ request.POST.location }}"
+                class="{% if errors.location %}input-error{% endif %}"
               />
+
+              {% if errors.location %}
+              <div class="error-text">{{ errors.location }}</div>
+              {% endif %}
             </div>
 
             <button type="submit" class="btn-submit">Save Supplier</button>

@@ -13,9 +13,9 @@ from django.views.decorators.cache import never_cache
 def index(request):
     return render(request, "index.html")
 
-
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.shortcuts import render, redirect
 
 def login_view(request):
 
@@ -41,16 +41,44 @@ def login_view(request):
 
             login(request, user)
 
-            request.session["role"] = "admin"
-            request.session["username"] = username
+            # ASSIGN ROLE
+            if user.username.lower() == "angellina":
+                request.session["role"] = "admin"
 
-            return redirect("dash")
+            elif user.username.lower() == "kevin":
+                request.session["role"] = "sales"
+
+            elif user.username.lower() == "alvin":
+                request.session["role"] = "stock_manager"
+
+            else:
+                request.session["role"] = "user"
+
+            request.session["username"] = user.username
+
+            # REDIRECT BASED ON ROLE
+            role = request.session["role"]
+
+            if role == "admin":
+                return redirect("dash")
+
+            elif role == "sales":
+                return redirect("sales")
+
+            elif role == "stock_manager":
+                return redirect("stock")
+
+            else:
+                return redirect("log")
 
         else:
             messages.error(request, "Wrong username or password")
             return redirect("log")
 
     return render(request, "log.html")
+
+
+
 def sign(request):
 
     error = None
@@ -100,7 +128,7 @@ def sign(request):
 def logout_view(request):
     logout(request)
     request.session.flush()
-    return redirect("sign")
+    return redirect("log")
 @login_required
 def register(request):
 
@@ -371,7 +399,10 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime, date
 from django.contrib.auth.decorators import login_required
-import re   # ✅ ADD THIS
+import re
+
+from .models import Stock, Sale
+
 
 @login_required
 def sales(request):
@@ -390,7 +421,7 @@ def sales(request):
         item_type = request.POST.get("item_type", "").strip()
         item_brand = request.POST.get("item_brand", "").strip()
 
-        # ── REQUIRED FIELD VALIDATION ──
+        # REQUIRED FIELDS
         if not stock_id:
             errors["stock"] = "Please select an item"
 
@@ -418,7 +449,49 @@ def sales(request):
         if not item_brand:
             errors["brand"] = "Item brand is required"
 
-        # ✅ STOP IF MISSING FIELDS
+        # PHONE VALIDATION
+        phone_pattern = r"^\+256[0-9]{9}$"
+        if customer_contact and not re.match(phone_pattern, customer_contact):
+            errors["contact"] = "Invalid phone number (+256XXXXXXXXX)"
+
+        # SAFE CONVERSION
+        try:
+            quantity = int(quantity)
+            if quantity <= 0:
+                errors["quantity"] = "Quantity must be greater than 0"
+        except:
+            if "quantity" not in errors:
+                errors["quantity"] = "Enter a valid quantity"
+
+        try:
+            unit_price = float(unit_price)
+            if unit_price <= 0:
+                errors["price"] = "Unit price must be greater than 0"
+        except:
+            if "price" not in errors:
+                errors["price"] = "Enter a valid unit price"
+
+        try:
+            distance = float(distance)
+            if distance < 0:
+                errors["distance"] = "Distance cannot be negative"
+        except:
+            if "distance" not in errors:
+                errors["distance"] = "Enter a valid distance"
+
+        # DATE VALIDATION (FIXED)
+        try:
+            sale_date = datetime.strptime(sale_date_str, "%Y-%m-%d").date()
+            today = date.today()
+
+            if sale_date > today:
+                errors["date"] = "Future sales are not allowed"
+
+        except:
+            if "date" not in errors:
+                errors["date"] = "Invalid date format"
+
+        # STOP IF ERRORS EXIST
         if errors:
             return render(request, "sales.html", {
                 "errors": errors,
@@ -426,64 +499,23 @@ def sales(request):
                 "sales": Sale.objects.all().order_by("-id")
             })
 
-        # ── PHONE VALIDATION (NEW FIX) ──
-        phone_pattern = r"^\+256[0-9]{9}$"
-        if not re.match(phone_pattern, customer_contact):
-            messages.error(request, "Invalid phone number. Use +256XXXXXXXXX format")
-            return redirect("sales")
-
-        # ── SAFE CONVERSION ──
-        try:
-            quantity = int(quantity)
-            unit_price = float(unit_price)
-            distance = float(distance)
-        except ValueError:
-            messages.error(request, "Please enter valid numeric values")
-            return redirect("sales")
-
-        # ── BLOCK NEGATIVE / ZERO VALUES ──
-        if quantity <= 0:
-            messages.error(request, "Quantity must be greater than zero")
-            return redirect("sales")
-
-        if unit_price <= 0:
-            messages.error(request, "Unit price must be greater than zero")
-            return redirect("sales")
-
-        if distance < 0:
-            messages.error(request, "Distance cannot be negative")
-            return redirect("sales")
-
-        # ── DATE PARSING ──
-        try:
-            sale_date = datetime.strptime(sale_date_str, "%Y-%m-%d").date()
-        except ValueError:
-            messages.error(request, "Invalid date format")
-            return redirect("sales")
-
-        # ── BLOCK FUTURE SALES ──
-        today = date.today()
-        if sale_date > today:
-            messages.error(request, "Future sales are not allowed")
-            return redirect("sales")
-
-        # ── STOCK CHECK ──
+        # STOCK CHECK
         stock = get_object_or_404(Stock, id=stock_id)
 
         if stock.quantity < quantity:
             messages.error(request, "Not enough stock available")
             return redirect("sales")
 
-        # ── UPDATE STOCK ──
+        # UPDATE STOCK
         stock.quantity -= quantity
         stock.save()
 
-        # ── CALCULATIONS ──
+        # CALCULATIONS
         subtotal = quantity * unit_price
         transport = 0 if (distance <= 10 and subtotal >= 500000) else 30000
         grand_total = subtotal + transport
 
-        # ── SAVE SALE ──
+        # SAVE SALE
         Sale.objects.create(
             item_name=stock.item_name,
             quantity=quantity,
@@ -507,7 +539,6 @@ def sales(request):
         "stocks": Stock.objects.all().order_by("-id"),
         "sales": Sale.objects.all().order_by("-id")
     })
-
 def deposit(request):
 
     if request.method == "POST":
@@ -602,29 +633,74 @@ def receipt(request, id):
 
 # SUPPLIERS
 
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Supplier
+import re
+
+
 @login_required
 def suppliers(request):
 
+    errors = {}
+
     if request.method == "POST":
 
-        Supplier.objects.create(
-            supplier_name=request.POST.get("supplier_name"),
-          
-            company=request.POST.get("company"),
-            contact=request.POST.get("contact"),
-            email=request.POST.get("email"),
-            location=request.POST.get("location"),
-        )
+        supplier_name = request.POST.get("supplier_name", "").strip()
+        company = request.POST.get("company", "").strip()
+        contact = request.POST.get("contact", "").strip()
+        email = request.POST.get("email", "").strip()
+        location = request.POST.get("location", "").strip()
 
-        return redirect("supplier")  
+        # REQUIRED VALIDATION
+        if not supplier_name:
+            errors["supplier_name"] = "Supplier name is required"
 
-    suppliers = Supplier.objects.all()
+        if not company:
+            errors["company"] = "Company is required"
+
+        if not contact:
+            errors["contact"] = "Contact is required"
+
+        if not email:
+            errors["email"] = "Email is required"
+
+        if not location:
+            errors["location"] = "Location is required"
+
+        # CONTACT VALIDATION (STRICT 13 CHAR RULE)
+        if contact:
+            if len(contact) != 13:
+                errors["contact"] = "Contact must be exactly 13 characters"
+
+            elif not re.match(r"^\+256[0-9]{9}$", contact):
+                errors["contact"] = "Contact must start with +256 and have 9 digits after"
+
+        # EMAIL VALIDATION
+        if email and "@" not in email:
+            errors["email"] = "Enter a valid email address"
+
+        # SAVE ONLY IF NO ERRORS
+        if not errors:
+
+            Supplier.objects.create(
+                supplier_name=supplier_name,
+                company=company,
+                contact=contact,
+                email=email,
+                location=location,
+            )
+
+            messages.success(request, "Supplier added successfully!")
+            return redirect("supplier")
+
+    suppliers = Supplier.objects.all().order_by("-id")
 
     return render(request, "suppliers.html", {
-        "suppliers": suppliers
+        "suppliers": suppliers,
+        "errors": errors
     })
-
-
 
 # EDIT STOCK
 
@@ -810,88 +886,109 @@ def delete_supplier(request, id):
 
     return redirect("supplier")
 
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.utils.dateparse import parse_date
+from django.utils import timezone
+from .models import Credit
+
+
 @login_required
 def credit(request):
 
+    errors = {}
+
     if request.method == "POST":
 
-        supplier_name = request.POST.get("supplier_name")
-        item_name = request.POST.get("item_name")
+        supplier_name = request.POST.get("supplier_name", "").strip()
+        item_name = request.POST.get("item_name", "").strip()
+        quantity_raw = request.POST.get("quantity", "").strip()
+        unit_price_raw = request.POST.get("unit_price", "").strip()
+        amount_paid_raw = request.POST.get("amount_paid", "").strip()
+        date_str = request.POST.get("date", "").strip()
 
-        quantity = int(request.POST.get("quantity") or 0)
-        unit_price = float(request.POST.get("unit_price") or 0)
-        amount_paid = float(request.POST.get("amount_paid") or 0)
-        date_str = request.POST.get("date")
+        # REQUIRED FIELDS
+        if not supplier_name:
+            errors["supplier_name"] = "Supplier name is required"
 
-        # prevents negatives
-        if quantity <= 0 or unit_price <= 0:
-            messages.error(request, "Quantity and unit price must be greater than 0")
+        if not item_name:
+            errors["item_name"] = "Item name is required"
+
+        if not quantity_raw:
+            errors["quantity"] = "Quantity is required"
+
+        if not unit_price_raw:
+            errors["unit_price"] = "Unit price is required"
+
+        if not date_str:
+            errors["date"] = "Date is required"
+
+        # DEFAULTS
+        quantity = None
+        unit_price = None
+        amount_paid = 0
+
+        # VALIDATE QUANTITY
+        if quantity_raw:
+            try:
+                quantity = int(quantity_raw)
+                if quantity <= 0:
+                    errors["quantity"] = "Quantity must be greater than 0"
+            except:
+                errors["quantity"] = "Enter a valid quantity"
+
+        # VALIDATE UNIT PRICE
+        if unit_price_raw:
+            try:
+                unit_price = float(unit_price_raw)
+                if unit_price <= 0:
+                    errors["unit_price"] = "Unit price must be greater than 0"
+            except:
+                errors["unit_price"] = "Enter a valid unit price"
+
+        # VALIDATE AMOUNT PAID
+        if amount_paid_raw:
+            try:
+                amount_paid = float(amount_paid_raw)
+                if amount_paid < 0:
+                    errors["amount_paid"] = "Amount paid cannot be negative"
+            except:
+                errors["amount_paid"] = "Enter a valid amount"
+
+        # DATE VALIDATION (FIXED PROPERLY HERE)
+        credit_date = None
+
+        if date_str:
+            credit_date = parse_date(date_str)
+            today = timezone.localdate()
+
+            if not credit_date:
+                errors["date"] = "Invalid date selected"
+
+            elif credit_date > today:
+                errors["date"] = "Future dates are not allowed"
+
+        # SAVE ONLY IF VALID
+        if not errors and credit_date:
+
+            Credit.objects.create(
+                supplier_name=supplier_name,
+                item_name=item_name,
+                quantity=quantity,
+                unit_price=unit_price,
+                amount_paid=amount_paid,
+                date=credit_date
+            )
+
+            messages.success(request, "Credit record added successfully!")
             return redirect("credit")
-
-        # date validation
-        try:
-            credit_date = datetime.strptime(date_str, "%Y-%m-%d").date()
-        except (ValueError, TypeError):
-            messages.error(request, "Invalid date selected")
-            return redirect("credit")
-
-        today = date.today()
-
-        # block future date
-        if credit_date > today:
-            messages.error(request, "Future dates are not allowed")
-            return redirect("credit")
-
-        Credit.objects.create(
-            supplier_name=supplier_name,
-            item_name=item_name,
-            quantity=quantity,
-            unit_price=unit_price,
-            amount_paid=amount_paid,
-            date=credit_date
-        )
-
-        messages.success(request, "Credit record added successfully!")
-
-        return redirect("credit")
 
     credits = Credit.objects.all().order_by("-id")
 
     return render(request, "credit.html", {
-        "credits": credits
-    })
-
-@login_required
-def edit_supplier_credit(request, id):
-    credit = get_object_or_404(Credit, id=id)
-
-    if request.method == "POST":
-
-        credit.supplier_name = request.POST.get("supplier_name")
-        credit.item_name = request.POST.get("item_name")
-
-        quantity = int(request.POST.get("quantity") or 0)
-        unit_price = float(request.POST.get("unit_price") or 0)
-        amount_paid = float(request.POST.get("amount_paid") or 0)
-
-        credit.quantity = quantity
-        credit.unit_price = unit_price
-        credit.amount_paid = amount_paid
-        credit.date = request.POST.get("date")
-
-        # RECALCULATE
-        credit.total_cost = quantity * unit_price
-        credit.balance = credit.total_cost - amount_paid
-
-        if credit.balance < 0:
-            credit.balance = 0
-
-        credit.save()
-
-        return redirect("credit")
-
-    return render(request, "edit_credit.html", {
-        "credit": credit
+        "credits": credits,
+        "errors": errors
     })
 
 @login_required
@@ -900,6 +997,90 @@ def delete_supplier_credit(request, id):
     credit.delete()
 
     return redirect("credit")  
+
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.utils.dateparse import parse_date
+from .models import Credit
+
+@login_required
+def edit_supplier_credit(request, id):
+
+    credit = get_object_or_404(Credit, id=id)
+
+    if request.method == "POST":
+
+        supplier_name = request.POST.get("supplier_name", "").strip()
+        item_name = request.POST.get("item_name", "").strip()
+        quantity = request.POST.get("quantity", "").strip()
+        unit_price = request.POST.get("unit_price", "").strip()
+        amount_paid = request.POST.get("amount_paid", "").strip()
+        date_str = request.POST.get("date", "").strip()
+
+        errors = {}
+
+        # VALIDATION
+        if not supplier_name:
+            errors["supplier_name"] = "Supplier name is required"
+
+        if not item_name:
+            errors["item_name"] = "Item name is required"
+
+        # quantity
+        try:
+            quantity = int(quantity)
+            if quantity <= 0:
+                errors["quantity"] = "Quantity must be greater than 0"
+        except:
+            errors["quantity"] = "Invalid quantity"
+
+        # unit price
+        try:
+            unit_price = float(unit_price)
+            if unit_price <= 0:
+                errors["unit_price"] = "Unit price must be greater than 0"
+        except:
+            errors["unit_price"] = "Invalid unit price"
+
+        # amount paid
+        try:
+            amount_paid = float(amount_paid or 0)
+            if amount_paid < 0:
+                errors["amount_paid"] = "Amount paid cannot be negative"
+        except:
+            errors["amount_paid"] = "Invalid amount paid"
+
+        # DATE (FIXED)
+        credit_date = parse_date(date_str)
+
+        if not credit_date:
+            errors["date"] = "Invalid date selected"
+
+        # SAVE ONLY IF NO ERRORS
+        if not errors:
+
+            credit.supplier_name = supplier_name
+            credit.item_name = item_name
+            credit.quantity = quantity
+            credit.unit_price = unit_price
+            credit.amount_paid = amount_paid
+            credit.date = credit_date
+
+            credit.save()
+
+            messages.success(request, "Credit updated successfully!")
+            return redirect("credit")
+
+        # if errors → show form again
+        return render(request, "edit_credit.html", {
+            "credit": credit,
+            "errors": errors
+        })
+
+    return render(request, "edit_credit.html", {
+        "credit": credit
+    })
 
 
 @login_required
@@ -956,14 +1137,6 @@ def reports(request):
     }
 
     return render(request, 'reports.html', context)
-
-
-
-
-
-
-
-
 
 
 

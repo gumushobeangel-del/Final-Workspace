@@ -1,312 +1,397 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reports Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
-  <style>
-    :root {
-      --navy:       #0d1b2a;
-      --navy-mid:   #1a2e45;
-      --navy-light: #243b55;
-      --gold:       #c9a84c;
-      --gold-light: #e8c97a;
-      --cream:      #f9f6f0;
-      --cream-dark: #ede8df;
-      --text-dark:  #1a1a2e;
-      --text-mid:   #4a5568;
-      --text-light: #718096;
-      --white:      #ffffff;
-      --shadow-sm:  0 2px 8px rgba(13,27,42,.08);
-      --shadow-md:  0 8px 30px rgba(13,27,42,.12);
-      --radius:     14px;
-      --radius-sm:  8px;
-    }
+    <style>
+      :root {
+        --navy: #0d1b2a;
+        --navy-mid: #1a2e45;
+        --navy-light: #243b55;
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --cream: #f9f6f0;
+        --cream-dark: #ede8df;
+        --text-dark: #1a1a2e;
+        --text-mid: #4a5568;
+        --text-light: #718096;
+        --white: #ffffff;
+        --shadow-sm: 0 2px 8px rgba(13, 27, 42, 0.08);
+        --shadow-md: 0 8px 30px rgba(13, 27, 42, 0.12);
+        --radius: 14px;
+        --radius-sm: 8px;
+      }
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    body {
-      font-family: "DM Sans", sans-serif;
-      background: var(--cream);
-      background-image:
-        radial-gradient(ellipse at 10% 20%, rgba(201,168,76,.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 90% 80%, rgba(13,27,42,.06) 0%, transparent 50%);
-      min-height: 100vh;
-      padding: 32px 24px;
-      color: var(--text-dark);
-    }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--cream);
+        background-image:
+          radial-gradient(
+            ellipse at 10% 20%,
+            rgba(201, 168, 76, 0.08) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 90% 80%,
+            rgba(13, 27, 42, 0.06) 0%,
+            transparent 50%
+          );
+        min-height: 100vh;
+        padding: 32px 24px;
+        color: var(--text-dark);
+      }
 
-    /* Nav */
-    .top-nav {
-      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-      padding: 18px 28px;
-      border-radius: var(--radius);
-      margin-bottom: 26px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      box-shadow: var(--shadow-md);
-    }
+      /* Nav */
+      .top-nav {
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-light) 100%
+        );
+        padding: 18px 28px;
+        border-radius: var(--radius);
+        margin-bottom: 26px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        box-shadow: var(--shadow-md);
+      }
 
-    .nav-logo {
-      font-family: "Playfair Display", serif;
-      font-size: 22px;
-      color: var(--gold);
-      letter-spacing: .5px;
-    }
+      .nav-logo {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        color: var(--gold);
+        letter-spacing: 0.5px;
+      }
 
-    .nav-links { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
 
-    .nav-links a {
-      text-decoration: none;
-      color: var(--white);
-      padding: 8px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      font-weight: 600;
-      transition: all .25s;
-    }
+      .nav-links a {
+        text-decoration: none;
+        color: var(--white);
+        padding: 8px 14px;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.25s;
+      }
 
-    .nav-links a:hover { background: rgba(255,255,255,.12); color: var(--gold-light); }
+      .nav-links a:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: var(--gold-light);
+      }
 
-    /* Page header */
-    .page-header {
-      margin-bottom: 28px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--cream-dark);
-    }
+      /* Page header */
+      .page-header {
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--cream-dark);
+      }
 
-    .page-header h1 {
-      font-family: "Playfair Display", serif;
-      font-size: 22px;
-      color: var(--navy);
-      letter-spacing: -.3px;
-    }
+      .page-header h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        color: var(--navy);
+        letter-spacing: -0.3px;
+      }
 
-    .page-header p {
-      font-size: 12px;
-      color: var(--text-light);
-      margin-top: 4px;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-    }
+      .page-header p {
+        font-size: 12px;
+        color: var(--text-light);
+        margin-top: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
 
-    /* Stat cards */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-bottom: 40px;
-    }
+      /* Stat cards */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 40px;
+      }
 
-    .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 22px;
-      box-shadow: var(--shadow-md);
-      position: relative;
-      overflow: hidden;
-      transition: transform .35s, box-shadow .35s;
-      animation: float 4s ease-in-out infinite;
-    }
+      .card {
+        background: var(--white);
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: var(--shadow-md);
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 0.35s,
+          box-shadow 0.35s;
+        animation: float 4s ease-in-out infinite;
+      }
 
-    .card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(13,27,42,.2);
-    }
+      .card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(13, 27, 42, 0.2);
+      }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-5px); }
-    }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
 
-    .card h3 { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; }
-    .card h2 { font-size: 28px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
-    .card small { font-size: 12px; color: var(--text-light); }
+      .card h3 {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: var(--text-light);
+        margin-bottom: 8px;
+      }
+      .card h2 {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--navy);
+        margin-bottom: 6px;
+      }
+      .card small {
+        font-size: 12px;
+        color: var(--text-light);
+      }
 
-    .card-icon {
-      position: absolute;
-      right: 18px;
-      top: 18px;
-      font-size: 28px;
-      opacity: .15;
-    }
+      .card-icon {
+        position: absolute;
+        right: 18px;
+        top: 18px;
+        font-size: 28px;
+        opacity: 0.15;
+      }
 
-    /* Gold accent stripe instead of colour-coded borders */
-    .card { border-left: 4px solid var(--gold); }
+      /* Gold accent stripe instead of colour-coded borders */
+      .card {
+        border-left: 4px solid var(--gold);
+      }
 
-    /* Section heading */
-    .section-title {
-      font-family: "Playfair Display", serif;
-      font-size: 18px;
-      color: var(--navy);
-      margin-bottom: 16px;
-    }
+      /* Section heading */
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: 18px;
+        color: var(--navy);
+        margin-bottom: 16px;
+      }
 
-    /* Table card */
-    .table-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-md);
-      overflow: hidden;
-    }
+      /* Table card */
+      .table-card {
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+      }
 
-    .table-card-header {
-      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-      padding: 18px 24px;
-    }
+      .table-card-header {
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-light) 100%
+        );
+        padding: 18px 24px;
+      }
 
-    .table-card-header h2 {
-      font-family: "Playfair Display", serif;
-      font-size: 17px;
-      color: var(--white);
-    }
+      .table-card-header h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 17px;
+        color: var(--white);
+      }
 
-    .table-card-header p {
-      font-size: 11px;
-      color: rgba(255,255,255,.55);
-      margin-top: 2px;
-    }
+      .table-card-header p {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.55);
+        margin-top: 2px;
+      }
 
-    .table-wrapper { overflow-x: auto; }
+      .table-wrapper {
+        overflow-x: auto;
+      }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
 
-    thead tr {
-      background: var(--cream);
-      border-bottom: 2px solid var(--cream-dark);
-    }
+      thead tr {
+        background: var(--cream);
+        border-bottom: 2px solid var(--cream-dark);
+      }
 
-    th {
-      padding: 11px 16px;
-      text-align: left;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--text-light);
-      letter-spacing: .8px;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
+      th {
+        padding: 11px 16px;
+        text-align: left;
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--text-light);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
 
-    tbody tr { border-bottom: 1px solid var(--cream-dark); transition: background .15s; }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: rgba(201,168,76,.05); }
+      tbody tr {
+        border-bottom: 1px solid var(--cream-dark);
+        transition: background 0.15s;
+      }
+      tbody tr:last-child {
+        border-bottom: none;
+      }
+      tbody tr:hover {
+        background: rgba(201, 168, 76, 0.05);
+      }
 
-    td { padding: 12px 16px; color: var(--text-dark); vertical-align: middle; }
+      td {
+        padding: 12px 16px;
+        color: var(--text-dark);
+        vertical-align: middle;
+      }
 
-    .amount-cell { font-weight: 600; color: var(--navy); }
+      .amount-cell {
+        font-weight: 600;
+        color: var(--navy);
+      }
 
-    /* Responsive */
-    @media (max-width: 900px) { .cards { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) {
-      .cards { grid-template-columns: 1fr; }
-      body { padding: 12px; }
-      .top-nav { flex-direction: column; align-items: flex-start; }
-    }
-  </style>
-</head>
+      /* Responsive */
+      @media (max-width: 900px) {
+        .cards {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 600px) {
+        .cards {
+          grid-template-columns: 1fr;
+        }
+        body {
+          padding: 12px;
+        }
+        .top-nav {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
 
-<body>
+  <body>
+    <nav class="top-nav">
+      <div class="nav-logo">📊 My Business</div>
+      <div class="nav-links">
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'dash' %}">Dashboard</a>
+        <a href="{% url 'sales' %}">Sales</a>
+        <a href="{% url 'stock' %}">Add Stock</a>
+        <a href="{% url 'supplier' %}">Suppliers</a>
+        <a href="{% url 'register' %}">Register Customer</a>
+        <a href="{% url 'credit' %}">Supplier Credit</a>
+        <a href="{% url 'reports' %}">Reports</a>
+        <a href="{% url 'deposit' %}">Deposits</a>
+        <a
+          href="{% url 'logout' %}"
+          onclick="return confirm('Are you sure you want to log out?');"
+        >
+          Logout
+        </a>
+      </div>
+    </nav>
 
-<nav class="top-nav">
-  <div class="nav-logo">📊 My Business</div>
-  <div class="nav-links">
-    <a href="{% url 'index' %}">Home</a>
-    <a href="{% url 'dash' %}">Dashboard</a>
-    <a href="{% url 'sales' %}">Sales</a>
-    <a href="{% url 'stock' %}">Add Stock</a>
-    <a href="{% url 'supplier' %}">Suppliers</a>
-    <a href="{% url 'register' %}">Register Customer</a>
-    <a href="{% url 'credit' %}">Supplier Credit</a>
-    <a href="{% url 'reports' %}">Reports</a>
-    <a href="{% url 'deposit' %}">Deposits</a>
-    <a href="{% url 'log' %}">Logout</a>
-  </div>
-</nav>
+    <div class="page-header">
+      <h1>Business Reports Dashboard</h1>
+      <p>Overview &middot; Analytics &middot; Insights</p>
+    </div>
 
-<div class="page-header">
-  <h1>Business Reports Dashboard</h1>
-  <p>Overview &middot; Analytics &middot; Insights</p>
-</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <h3>Total Sales</h3>
+        <h2>{{ total_sales }}</h2>
+        <small>All completed sales</small>
+      </div>
 
-<div class="cards">
-  <div class="card">
-    <div class="card-icon">💰</div>
-    <h3>Total Sales</h3>
-    <h2>{{ total_sales }}</h2>
-    <small>All completed sales</small>
-  </div>
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <h3>Stock Items</h3>
+        <h2>{{ total_stock }}</h2>
+        <small>Available inventory</small>
+      </div>
 
-  <div class="card">
-    <div class="card-icon">📦</div>
-    <h3>Stock Items</h3>
-    <h2>{{ total_stock }}</h2>
-    <small>Available inventory</small>
-  </div>
+      <div class="card">
+        <div class="card-icon">👥</div>
+        <h3>Customers</h3>
+        <h2>{{ total_customers }}</h2>
+        <small>Registered users</small>
+      </div>
 
-  <div class="card">
-    <div class="card-icon">👥</div>
-    <h3>Customers</h3>
-    <h2>{{ total_customers }}</h2>
-    <small>Registered users</small>
-  </div>
+      <div class="card">
+        <div class="card-icon">💳</div>
+        <h3>Total Deposits</h3>
+        <h2>{{ total_deposits }}</h2>
+        <small>Money received</small>
+      </div>
 
-  <div class="card">
-    <div class="card-icon">💳</div>
-    <h3>Total Deposits</h3>
-    <h2>{{ total_deposits }}</h2>
-    <small>Money received</small>
-  </div>
+      <div class="card">
+        <div class="card-icon">🛒</div>
+        <h3>Total Items Sold</h3>
+        <h2>{{ total_items }}</h2>
+        <small>Units sold</small>
+      </div>
+    </div>
 
- 
-
-  <div class="card">
-    <div class="card-icon">🛒</div>
-    <h3>Total Items Sold</h3>
-    <h2>{{ total_items }}</h2>
-    <small>Units sold</small>
-  </div>
-</div>
-
-<div class="table-card">
-  <div class="table-card-header">
-    <h2>Recent Sales</h2>
-    <p>Latest recorded transactions</p>
-  </div>
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>Customer</th>
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>Total</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for sale in recent_sales %}
-        <tr>
-          <td>{{ sale.customer_name }}</td>
-          <td>{{ sale.item_name }}</td>
-          <td>{{ sale.quantity }}</td>
-          <td class="amount-cell">{{ sale.grand_total }}</td>
-          <td>{{ sale.date }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
-
-</body>
+    <div class="table-card">
+      <div class="table-card-header">
+        <h2>Recent Sales</h2>
+        <p>Latest recorded transactions</p>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for sale in recent_sales %}
+            <tr>
+              <td>{{ sale.customer_name }}</td>
+              <td>{{ sale.item_name }}</td>
+              <td>{{ sale.quantity }}</td>
+              <td class="amount-cell">{{ sale.grand_total }}</td>
+              <td>{{ sale.date }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
 </html>
