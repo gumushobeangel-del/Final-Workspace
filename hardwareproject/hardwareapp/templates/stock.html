@@ -29,9 +29,7 @@
         --radius-sm: 8px;
       }
 
-      *,
-      *::before,
-      *::after {
+      *, *::before, *::after {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -41,28 +39,15 @@
         font-family: "DM Sans", sans-serif;
         background: var(--cream);
         background-image:
-          radial-gradient(
-            ellipse at 10% 20%,
-            rgba(201, 168, 76, 0.08) 0%,
-            transparent 50%
-          ),
-          radial-gradient(
-            ellipse at 90% 80%,
-            rgba(13, 27, 42, 0.06) 0%,
-            transparent 50%
-          );
+          radial-gradient(ellipse at 10% 20%, rgba(201, 168, 76, 0.08) 0%, transparent 50%),
+          radial-gradient(ellipse at 90% 80%, rgba(13, 27, 42, 0.06) 0%, transparent 50%);
         min-height: 100vh;
         padding: 32px 24px;
         color: var(--text-dark);
       }
 
-      /* ── Nav ── */
       .top-nav {
-        background: linear-gradient(
-          135deg,
-          var(--navy) 0%,
-          var(--navy-light) 100%
-        );
+        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
         padding: 18px 28px;
         border-radius: var(--radius);
         margin-bottom: 26px;
@@ -108,7 +93,6 @@
         color: var(--gold-light);
       }
 
-      /* ── Page header ── */
       .page-header {
         margin-bottom: 28px;
         padding-bottom: 18px;
@@ -130,7 +114,6 @@
         letter-spacing: 0.5px;
       }
 
-      /* ── Layout ── */
       .layout {
         display: grid;
         grid-template-columns: 420px 1fr;
@@ -138,7 +121,6 @@
         align-items: start;
       }
 
-      /* ── Cards ── */
       .card {
         background: var(--white);
         border-radius: var(--radius);
@@ -152,22 +134,12 @@
       }
 
       @keyframes fadeSlideUp {
-        from {
-          opacity: 0;
-          transform: translateY(16px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
       }
 
       .card-header {
-        background: linear-gradient(
-          135deg,
-          var(--navy) 0%,
-          var(--navy-light) 100%
-        );
+        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
         padding: 20px 26px;
         display: flex;
         justify-content: space-between;
@@ -189,7 +161,6 @@
         margin-top: 2px;
       }
 
-      /* ── Search bar in table header ── */
       .table-search {
         display: flex;
         align-items: center;
@@ -218,7 +189,6 @@
         background: rgba(255, 255, 255, 0.15);
       }
 
-      /* ── Form ── */
       .form-body {
         padding: 26px;
       }
@@ -242,6 +212,7 @@
       .field-group {
         margin-bottom: 13px;
       }
+
       .field-group.no-mb {
         margin-bottom: 0;
       }
@@ -271,10 +242,7 @@
         font-family: "DM Sans", sans-serif;
         color: var(--text-dark);
         background: var(--cream);
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s,
-          background 0.2s;
+        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         appearance: none;
       }
 
@@ -296,12 +264,8 @@
         margin-bottom: 13px;
       }
 
-      .cols-2 {
-        grid-template-columns: 1fr 1fr;
-      }
-      .cols-3 {
-        grid-template-columns: 1fr 1fr 1fr;
-      }
+      .cols-2 { grid-template-columns: 1fr 1fr; }
+      .cols-3 { grid-template-columns: 1fr 1fr 1fr; }
 
       .hint {
         font-size: 11px;
@@ -309,7 +273,6 @@
         margin-top: 3px;
       }
 
-      /* ── Buttons ── */
       .btn-row {
         display: grid;
         grid-template-columns: 1fr 2fr;
@@ -319,11 +282,7 @@
 
       .btn-submit {
         padding: 13px;
-        background: linear-gradient(
-          135deg,
-          var(--navy) 0%,
-          var(--navy-light) 100%
-        );
+        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
         color: var(--white);
         border: none;
         border-radius: var(--radius-sm);
@@ -357,7 +316,6 @@
         color: var(--navy);
       }
 
-      /* ── Alert ── */
       .alert {
         padding: 11px 14px;
         border-radius: var(--radius-sm);
@@ -369,7 +327,6 @@
         border: 1px solid #f5c6cb;
       }
 
-      /* ── Table ── */
       .table-wrapper {
         overflow-x: auto;
       }
@@ -423,6 +380,7 @@
       tbody tr:last-child {
         border-bottom: none;
       }
+
       tbody tr:hover {
         background: rgba(201, 168, 76, 0.04);
       }
@@ -447,7 +405,6 @@
         font-size: 14px;
       }
 
-      /* ── Category badge ── */
       .cat-badge {
         display: inline-block;
         padding: 3px 9px;
@@ -457,48 +414,17 @@
         letter-spacing: 0.3px;
       }
 
-      .cat-building {
-        background: #e8f4fd;
-        color: #1a6fa8;
-      }
-      .cat-steel {
-        background: #f0f0f5;
-        color: #4a4a6a;
-      }
-      .cat-wood {
-        background: #fdf3e8;
-        color: #8a5a1a;
-      }
-      .cat-roofing {
-        background: #eaf5ea;
-        color: #2a7a2a;
-      }
-      .cat-paint {
-        background: #fce8f5;
-        color: #8a2a6a;
-      }
-      .cat-glass {
-        background: #e8f8f5;
-        color: #1a7a6a;
-      }
-      .cat-plumbing {
-        background: #e8eef8;
-        color: #1a3a8a;
-      }
-      .cat-electrical {
-        background: #fdf8e8;
-        color: #7a6a1a;
-      }
-      .cat-mechanical {
-        background: #f5e8e8;
-        color: #8a2a2a;
-      }
-      .cat-other {
-        background: #f0f0f0;
-        color: #5a5a5a;
-      }
+      .cat-building  { background: #e8f4fd; color: #1a6fa8; }
+      .cat-steel     { background: #f0f0f5; color: #4a4a6a; }
+      .cat-wood      { background: #fdf3e8; color: #8a5a1a; }
+      .cat-roofing   { background: #eaf5ea; color: #2a7a2a; }
+      .cat-paint     { background: #fce8f5; color: #8a2a6a; }
+      .cat-glass     { background: #e8f8f5; color: #1a7a6a; }
+      .cat-plumbing  { background: #e8eef8; color: #1a3a8a; }
+      .cat-electrical{ background: #fdf8e8; color: #7a6a1a; }
+      .cat-mechanical{ background: #f5e8e8; color: #8a2a2a; }
+      .cat-other     { background: #f0f0f0; color: #5a5a5a; }
 
-      /* ── Payment badge ── */
       .pay-badge {
         display: inline-block;
         padding: 3px 9px;
@@ -507,20 +433,10 @@
         font-weight: 600;
       }
 
-      .pay-cash {
-        background: #eaf5ea;
-        color: #2a7a2a;
-      }
-      .pay-mobile {
-        background: #fdf3e8;
-        color: #8a5a1a;
-      }
-      .pay-bank {
-        background: #e8eef8;
-        color: #1a3a8a;
-      }
+      .pay-cash   { background: #eaf5ea; color: #2a7a2a; }
+      .pay-mobile { background: #fdf3e8; color: #8a5a1a; }
+      .pay-bank   { background: #e8eef8; color: #1a3a8a; }
 
-      /* ── Action buttons ── */
       .actions {
         display: flex;
         gap: 5px;
@@ -552,43 +468,13 @@
         color: var(--white);
       }
 
-      /* ── Pagination ── */
-      .pagination {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 14px 18px;
-        border-top: 1px solid var(--cream-dark);
-        font-size: 12px;
-        color: var(--text-light);
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .page-btns {
-        display: flex;
-        gap: 4px;
-      }
-
-      .page-btn {
-        padding: 5px 10px;
-        border-radius: 6px;
-        border: 1.5px solid var(--cream-dark);
-        background: var(--white);
-        color: var(--text-mid);
-        font-size: 12px;
-        font-family: "DM Sans", sans-serif;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
       .field-error {
         color: #c0392b;
         font-size: 11px;
         margin-top: 4px;
         font-weight: 600;
       }
+
       .input-error {
         border: 2px solid #c0392b !important;
         background: #fff5f5 !important;
@@ -601,45 +487,19 @@
         font-weight: 600;
       }
 
-      .page-btn:hover:not(:disabled) {
-        border-color: var(--gold);
-        color: var(--navy);
-      }
-
-      .page-btn.active {
-        background: var(--navy);
-        color: var(--white);
-        border-color: var(--navy);
-      }
-
-      .page-btn:disabled {
-        opacity: 0.35;
-        cursor: not-allowed;
-      }
-
-      /* ── Responsive ── */
       @media (max-width: 960px) {
-        .layout {
-          grid-template-columns: 1fr;
-        }
+        .layout { grid-template-columns: 1fr; }
       }
 
       @media (max-width: 600px) {
-        body {
-          padding: 12px;
-        }
-        .cols-3 {
-          grid-template-columns: 1fr 1fr;
-        }
-        .table-search input {
-          width: 130px;
-        }
+        body { padding: 12px; }
+        .cols-3 { grid-template-columns: 1fr 1fr; }
+        .table-search input { width: 130px; }
       }
     </style>
   </head>
 
   <body>
-    <!-- ═══ NAVBAR ═══ -->
     <nav class="top-nav">
       <div class="nav-logo">Nyondo Hardware</div>
       <div class="nav-links">
@@ -654,30 +514,31 @@
         <a href="{% url 'credit' %}">Supplier Credit</a>
         <a href="{% url 'reports' %}">Reports</a>
         <a href="{% url 'deposit' %}">Deposits</a>
-        {% endif %} {% if request.session.role == "sales" %}
+        {% endif %}
+
+        {% if request.session.role == "sales" %}
         <a href="{% url 'sales' %}">Sales</a>
-        {% endif %} {% if request.session.role == "stock_manager" %}
+        {% endif %}
+
+        {% if request.session.role == "stock_manager" %}
         <a href="{% url 'stock' %}" class="active">Add Stock</a>
         <a href="{% url 'supplier' %}" class="active">Add Supplier</a>
         {% endif %}
-        <a
-          href="{% url 'logout' %}"
-          onclick="return confirm('Are you sure you want to log out?');"
-        >
+
+        <a href="{% url 'logout' %}" onclick="return confirm('Are you sure you want to log out?');">
           Logout
         </a>
       </div>
     </nav>
 
-    <!-- ═══ PAGE HEADER ═══ -->
     <div class="page-header">
       <h1>Stock Management</h1>
       <p>Add &middot; Track &middot; Manage</p>
     </div>
 
-    <!-- ═══ LAYOUT ═══ -->
     <div class="layout">
-      <!-- ── FORM CARD ── -->
+
+      <!-- FORM CARD -->
       <div class="card">
         <div class="card-header">
           <div class="card-header-text">
@@ -686,317 +547,107 @@
           </div>
         </div>
         <div class="form-body">
-          {% if messages %} {% for message in messages %}
-          <div class="alert">{{ message }}</div>
-          {% endfor %} {% endif %}
+          {% if messages %}
+            {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+
           <form method="POST" id="stock-form" novalidate>
             {% csrf_token %}
 
-            <!-- ITEM DETAILS -->
             <div class="section-label">Item Details</div>
 
             <div class="field-row cols-2">
-              <!-- ITEM NAME -->
               <div class="field-group no-mb">
                 <label>Item Name <span class="req">*</span></label>
-
-                <select
-                  name="item_name"
-                  id="item-sel"
-                  onchange="onItem()"
-                  required
-                >
+                <select name="item_name" id="item-sel" onchange="onItem()" required>
                   <option value="">Select item…</option>
-
-                  <option
-                    value="Cement (50kg bag)"
-                    {%
-                    if
-                    values.item_name=""
-                    ="Cement (50kg bag)"
-                    %}selected{%
-                    endif
-                    %}
-                  >
-                    Cement (50kg bag)
-                  </option>
-
-                  <option
-                    value="Sand (tonne)"
-                    {%
-                    if
-                    values.item_name=""
-                    ="Sand (tonne)"
-                    %}selected{%
-                    endif
-                    %}
-                  >
-                    Sand (tonne)
-                  </option>
-
-                  <option
-                    value="Bricks (pcs)"
-                    {%
-                    if
-                    values.item_name=""
-                    ="Bricks (pcs)"
-                    %}selected{%
-                    endif
-                    %}
-                  >
-                    Bricks (pcs)
-                  </option>
-
-                  <option
-                    value="Iron bars (12mm)"
-                    {%
-                    if
-                    values.item_name=""
-                    ="Iron bars (12mm)"
-                    %}selected{%
-                    endif
-                    %}
-                  >
-                    Iron bars (12mm)
-                  </option>
-
-                  <option
-                    value="Other"
-                    {%
-                    if
-                    values.item_name=""
-                    ="Other"
-                    %}selected{%
-                    endif
-                    %}
-                  >
-                    Other (specify below)
-                  </option>
+                  <option value="Cement (50kg bag)"  {% if values.item_name == "Cement (50kg bag)"  %}selected{% endif %}>Cement (50kg bag)</option>
+                  <option value="Sand (tonne)"       {% if values.item_name == "Sand (tonne)"       %}selected{% endif %}>Sand (tonne)</option>
+                  <option value="Bricks (pcs)"       {% if values.item_name == "Bricks (pcs)"       %}selected{% endif %}>Bricks (pcs)</option>
+                  <option value="Iron bars (12mm)"   {% if values.item_name == "Iron bars (12mm)"   %}selected{% endif %}>Iron bars (12mm)</option>
+                  <option value="Other"              {% if values.item_name == "Other"              %}selected{% endif %}>Other (specify below)</option>
                 </select>
-
                 {% if errors.item_name %}
                 <div class="field-error">{{ errors.item_name }}</div>
                 {% endif %}
               </div>
 
-              <!-- CATEGORY -->
               <div class="field-group no-mb">
                 <label>Category <span class="req">*</span></label>
-
                 <select name="category" id="cat-sel" required>
                   <option value="">Select…</option>
-
-                  <option
-                    value="building_materials"
-                    {%
-                    if
-                    values.category=""
-                    ="building_materials"
-                    %}selected{%
-                    endif
-                    %}
-                  >
-                    Building Materials
-                  </option>
-
-                  <option
-                    value="steel_metal"
-                    {%
-                    if
-                    values.category=""
-                    ="steel_metal"
-                    %}selected{%
-                    endif
-                    %}
-                  >
-                    Steel & Metal
-                  </option>
-
-                  <option
-                    value="wood_timber"
-                    {%
-                    if
-                    values.category=""
-                    ="wood_timber"
-                    %}selected{%
-                    endif
-                    %}
-                  >
-                    Wood & Timber
-                  </option>
-
-                  <option
-                    value="roofing"
-                    {%
-                    if
-                    values.category=""
-                    ="roofing"
-                    %}selected{%
-                    endif
-                    %}
-                  >
-                    Roofing
-                  </option>
-
-                  <option
-                    value="plumbing"
-                    {%
-                    if
-                    values.category=""
-                    ="plumbing"
-                    %}selected{%
-                    endif
-                    %}
-                  >
-                    Plumbing
-                  </option>
-
-                  <option
-                    value="electrical"
-                    {%
-                    if
-                    values.category=""
-                    ="electrical"
-                    %}selected{%
-                    endif
-                    %}
-                  >
-                    Electrical
-                  </option>
+                  <option value="building_materials" {% if values.category == "building_materials" %}selected{% endif %}>Building Materials</option>
+                  <option value="steel_metal"        {% if values.category == "steel_metal"        %}selected{% endif %}>Steel &amp; Metal</option>
+                  <option value="wood_timber"        {% if values.category == "wood_timber"        %}selected{% endif %}>Wood &amp; Timber</option>
+                  <option value="roofing"            {% if values.category == "roofing"            %}selected{% endif %}>Roofing</option>
+                  <option value="plumbing"           {% if values.category == "plumbing"           %}selected{% endif %}>Plumbing</option>
+                  <option value="electrical"         {% if values.category == "electrical"         %}selected{% endif %}>Electrical</option>
                 </select>
-
                 {% if errors.category %}
                 <div class="field-error">{{ errors.category }}</div>
                 {% endif %}
               </div>
             </div>
 
-            <!-- OTHER ITEM -->
             <div class="field-group" id="other-wrap" style="display: none">
               <label>Specify Item <span class="req">*</span></label>
-              <input
-                type="text"
-                name="item_name_other"
-                placeholder="e.g. M12 bolts"
-                value="{{ values.item_name_other|default:'' }}"
-              />
-
+              <input type="text" name="item_name_other" placeholder="e.g. M12 bolts" value="{{ values.item_name_other|default:'' }}" />
               {% if errors.item_name_other %}
               <div class="field-error">{{ errors.item_name_other }}</div>
               {% endif %}
             </div>
 
-            <!-- QUANTITY & PRICING -->
-            <div class="section-label">Quantity & Pricing (UGX)</div>
+            <div class="section-label">Quantity &amp; Pricing (UGX)</div>
 
             <div class="field-row cols-3">
-              <!-- QUANTITY -->
               <div class="field-group no-mb">
                 <label>Quantity <span class="req">*</span></label>
-                <input
-                  type="number"
-                  name="quantity"
-                  min="1"
-                  value="{{ values.quantity }}"
-                />
-
+                <input type="number" name="quantity" min="1" value="{{ values.quantity }}" />
                 {% if errors.quantity %}
                 <div class="field-error">{{ errors.quantity }}</div>
                 {% endif %}
               </div>
 
-              <!-- UNIT COST -->
               <div class="field-group no-mb">
                 <label>Unit Cost <span class="req">*</span></label>
-                <input
-                  type="number"
-                  name="unit_cost"
-                  value="{{ values.unit_cost }}"
-                />
-
+                <input type="number" name="unit_cost" value="{{ values.unit_cost }}" />
                 {% if errors.unit_cost %}
                 <div class="field-error">{{ errors.unit_cost }}</div>
                 {% endif %}
               </div>
 
-              <!-- UNIT PRICE -->
               <div class="field-group no-mb">
                 <label>Unit Price <span class="req">*</span></label>
-                <input
-                  type="number"
-                  name="unit_price"
-                  value="{{ values.unit_price }}"
-                />
-
+                <input type="number" name="unit_price" value="{{ values.unit_price }}" />
                 {% if errors.unit_price %}
                 <div class="field-error">{{ errors.unit_price }}</div>
                 {% endif %}
               </div>
             </div>
 
-            <!-- PAYMENT -->
             <div class="field-group">
               <label>Payment Method <span class="req">*</span></label>
-
               <select name="payment_method">
                 <option value="">Select payment method…</option>
-
-                <option
-                  value="Cash"
-                  {%
-                  if
-                  values.payment_method=""
-                  ="Cash"
-                  %}selected{%
-                  endif
-                  %}
-                >
-                  Cash
-                </option>
-
-                <option
-                  value="Mobile Money"
-                  {%
-                  if
-                  values.payment_method=""
-                  ="Mobile Money"
-                  %}selected{%
-                  endif
-                  %}
-                >
-                  Mobile Money
-                </option>
-
-                <option
-                  value="Bank"
-                  {%
-                  if
-                  values.payment_method=""
-                  ="Bank"
-                  %}selected{%
-                  endif
-                  %}
-                >
-                  Bank
-                </option>
+                <option value="Cash"         {% if values.payment_method == "Cash"         %}selected{% endif %}>Cash</option>
+                <option value="Mobile Money" {% if values.payment_method == "Mobile Money" %}selected{% endif %}>Mobile Money</option>
+                <option value="Bank"         {% if values.payment_method == "Bank"         %}selected{% endif %}>Bank</option>
               </select>
-
               {% if errors.payment_method %}
               <div class="field-error">{{ errors.payment_method }}</div>
               {% endif %}
             </div>
 
-            <!-- DATE -->
             <div class="field-group">
               <label>Date Received <span class="req">*</span></label>
-              <input type="date" name="date" value="{{ values.date }}" />
-
+              <input type="date" name="date" id="date-in" value="{{ values.date }}" />
               {% if errors.date %}
               <div class="field-error">{{ errors.date }}</div>
               {% endif %}
             </div>
 
-            <!-- BUTTONS -->
             <div class="btn-row">
               <button type="reset" class="btn-clear">Clear</button>
               <button type="submit" class="btn-submit">Save Stock</button>
@@ -1005,7 +656,7 @@
         </div>
       </div>
 
-      <!-- ── TABLE CARD ── -->
+      <!-- TABLE CARD -->
       <div class="card">
         <div class="card-header">
           <div class="card-header-text">
@@ -1013,12 +664,7 @@
             <p>All registered inventory items</p>
           </div>
           <div class="table-search">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search items…"
-              oninput="filterTable()"
-            />
+            <input type="text" id="search-input" placeholder="Search items…" oninput="filterTable()" />
           </div>
         </div>
 
@@ -1027,20 +673,12 @@
             <thead>
               <tr>
                 <th onclick="sortTable(0)">Item <i class="sort-icon">↕</i></th>
-                <th onclick="sortTable(1)">
-                  Cost (UGX) <i class="sort-icon">↕</i>
-                </th>
-                <th onclick="sortTable(2)">
-                  Price (UGX) <i class="sort-icon">↕</i>
-                </th>
+                <th onclick="sortTable(1)">Cost (UGX) <i class="sort-icon">↕</i></th>
+                <th onclick="sortTable(2)">Price (UGX) <i class="sort-icon">↕</i></th>
                 <th onclick="sortTable(3)">Qty <i class="sort-icon">↕</i></th>
                 <th onclick="sortTable(4)">Date <i class="sort-icon">↕</i></th>
-                <th onclick="sortTable(5)">
-                  Category <i class="sort-icon">↕</i>
-                </th>
-                <th onclick="sortTable(6)">
-                  Payment <i class="sort-icon">↕</i>
-                </th>
+                <th onclick="sortTable(5)">Category <i class="sort-icon">↕</i></th>
+                <th onclick="sortTable(6)">Payment <i class="sort-icon">↕</i></th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -1048,83 +686,51 @@
               {% for stock in stocks %}
               <tr>
                 <td>{{ stock.item_name }}</td>
-                <td class="amount-cell" data-val="{{ stock.unit_cost }}">
-                  {{ stock.unit_cost|floatformat:0 }}
-                </td>
-                <td class="amount-cell" data-val="{{ stock.unit_price }}">
-                  {{ stock.unit_price|floatformat:0 }}
-                </td>
+                <td class="amount-cell" data-val="{{ stock.unit_cost }}">{{ stock.unit_cost|floatformat:0 }}</td>
+                <td class="amount-cell" data-val="{{ stock.unit_price }}">{{ stock.unit_price|floatformat:0 }}</td>
                 <td>{{ stock.quantity }}</td>
                 <td>{{ stock.date }}</td>
                 <td>
-                  {% if stock.category == "building_materials" %}
-                  <span class="cat-badge cat-building">Building Materials</span>
-                  {% elif stock.category == "steel_metal" %}
-                  <span class="cat-badge cat-steel">Steel &amp; Metal</span>
-                  {% elif stock.category == "wood_timber" %}
-                  <span class="cat-badge cat-wood">Wood &amp; Timber</span>
-                  {% elif stock.category == "roofing" %}
-                  <span class="cat-badge cat-roofing">Roofing</span>
-                  {% elif stock.category == "paint_finishes" %}
-                  <span class="cat-badge cat-paint">Paint &amp; Finishes</span>
-                  {% elif stock.category == "glass_windows" %}
-                  <span class="cat-badge cat-glass">Glass &amp; Windows</span>
-                  {% elif stock.category == "plumbing" %}
-                  <span class="cat-badge cat-plumbing">Plumbing</span>
-                  {% elif stock.category == "electrical" %}
-                  <span class="cat-badge cat-electrical">Electrical</span>
-                  {% elif stock.category == "mechanical" %}
-                  <span class="cat-badge cat-mechanical">Mechanical</span>
-                  {% else %}
-                  <span class="cat-badge cat-other">{{ stock.category }}</span>
+                  {% if stock.category == "building_materials" %}<span class="cat-badge cat-building">Building Materials</span>
+                  {% elif stock.category == "steel_metal" %}<span class="cat-badge cat-steel">Steel &amp; Metal</span>
+                  {% elif stock.category == "wood_timber" %}<span class="cat-badge cat-wood">Wood &amp; Timber</span>
+                  {% elif stock.category == "roofing" %}<span class="cat-badge cat-roofing">Roofing</span>
+                  {% elif stock.category == "paint_finishes" %}<span class="cat-badge cat-paint">Paint &amp; Finishes</span>
+                  {% elif stock.category == "glass_windows" %}<span class="cat-badge cat-glass">Glass &amp; Windows</span>
+                  {% elif stock.category == "plumbing" %}<span class="cat-badge cat-plumbing">Plumbing</span>
+                  {% elif stock.category == "electrical" %}<span class="cat-badge cat-electrical">Electrical</span>
+                  {% elif stock.category == "mechanical" %}<span class="cat-badge cat-mechanical">Mechanical</span>
+                  {% else %}<span class="cat-badge cat-other">{{ stock.category }}</span>
                   {% endif %}
                 </td>
                 <td>
-                  {% if stock.payment_method == "Cash" %}
-                  <span class="pay-badge pay-cash">Cash</span>
-                  {% elif stock.payment_method == "Mobile Money" %}
-                  <span class="pay-badge pay-mobile">Mobile Money</span>
-                  {% elif stock.payment_method == "Bank" %}
-                  <span class="pay-badge pay-bank">Bank</span>
-                  {% else %}
-                  <span class="pay-badge">{{ stock.payment_method }}</span>
+                  {% if stock.payment_method == "Cash" %}<span class="pay-badge pay-cash">Cash</span>
+                  {% elif stock.payment_method == "Mobile Money" %}<span class="pay-badge pay-mobile">Mobile Money</span>
+                  {% elif stock.payment_method == "Bank" %}<span class="pay-badge pay-bank">Bank</span>
+                  {% else %}<span class="pay-badge">{{ stock.payment_method }}</span>
                   {% endif %}
                 </td>
                 <td>
                   <div class="actions">
-                    <a
-                      href="{% url 'edit_stock' stock.id %}"
-                      class="action-btn btn-edit"
-                      >Edit</a
-                    >
+                    <a href="{% url 'edit_stock' stock.id %}" class="action-btn btn-edit">Edit</a>
                   </div>
                 </td>
               </tr>
               {% empty %}
               <tr id="empty-row">
                 <td colspan="8">
-                  <div class="empty-state">
-                    No stock data available. Add your first item!
-                  </div>
+                  <div class="empty-state">No stock data available. Add your first item!</div>
                 </td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
         </div>
-
-        <!-- Pagination -->
-        <div class="pagination" id="pagination-bar">
-          <span id="page-info">Showing 0 – 0 of 0</span>
-          <div class="page-btns" id="page-btns"></div>
-        </div>
       </div>
-      <!-- end table card -->
+
     </div>
-    <!-- end .layout -->
 
     <script>
-      /* ── Category auto-select map ── */
       const catMap = {
         "Cement (50kg bag)": "building_materials",
         "Sand (tonne)": "building_materials",
@@ -1172,223 +778,103 @@
         if (catMap[v]) document.getElementById("cat-sel").value = catMap[v];
       }
 
-      /* Set today's date */
-      document.getElementById("date-in").value = new Date()
-        .toISOString()
-        .split("T")[0];
+      /* Set today's date if not already set by Django */
+      const dateIn = document.getElementById("date-in");
+      if (!dateIn.value) {
+        dateIn.value = new Date().toISOString().split("T")[0];
+      }
 
-      /* ── Format UGX numbers with commas ── */
+      /* Format UGX numbers with commas */
       document.querySelectorAll(".amount-cell").forEach((td) => {
-        const raw = parseFloat(
-          td.dataset.val || td.textContent.replace(/,/g, ""),
-        );
+        const raw = parseFloat(td.dataset.val || td.textContent.replace(/,/g, ""));
         if (!isNaN(raw)) td.textContent = raw.toLocaleString("en-UG");
       });
 
-      /* ── Search + Pagination ── */
-      const ROWS_PER_PAGE = 10;
-      let currentPage = 1;
-      let filteredRows = [];
-
+      /* Search / filter */
       const tbody = document.getElementById("stock-body");
       const allRows = Array.from(tbody.querySelectorAll("tr:not(#empty-row)"));
-      const pageInfo = document.getElementById("page-info");
-      const pageBtns = document.getElementById("page-btns");
 
       function filterTable() {
-        const q = document.getElementById("search-input").value.toLowerCase();
-        filteredRows = allRows.filter((row) =>
-          row.textContent.toLowerCase().includes(q),
-        );
-        currentPage = 1;
-        renderTable();
-      }
-
-      function renderTable() {
-        const total = filteredRows.length;
-        const start = (currentPage - 1) * ROWS_PER_PAGE;
-        const end = Math.min(start + ROWS_PER_PAGE, total);
-
-        allRows.forEach((r) => (r.style.display = "none"));
-
-        if (total === 0) {
-          pageInfo.textContent = "No results found";
-          pageBtns.innerHTML = "";
-          return;
-        }
-
-        filteredRows.forEach((r, i) => {
-          r.style.display = i >= start && i < end ? "" : "none";
+        const q = document.getElementById("search-input").value.toLowerCase().trim();
+        allRows.forEach((row) => {
+          row.style.display = row.textContent.toLowerCase().includes(q) ? "" : "none";
         });
-
-        pageInfo.textContent = `Showing ${start + 1}–${end} of ${total}`;
-        renderPageButtons(total);
       }
 
-      function renderPageButtons(total) {
-        const pages = Math.ceil(total / ROWS_PER_PAGE);
-        pageBtns.innerHTML = "";
-
-        const prev = document.createElement("button");
-        prev.className = "page-btn";
-        prev.textContent = "←";
-        prev.disabled = currentPage === 1;
-        prev.onclick = () => {
-          currentPage--;
-          renderTable();
-        };
-        pageBtns.appendChild(prev);
-
-        for (let p = 1; p <= pages; p++) {
-          const btn = document.createElement("button");
-          btn.className = "page-btn" + (p === currentPage ? " active" : "");
-          btn.textContent = p;
-          btn.onclick = () => {
-            currentPage = p;
-            renderTable();
-          };
-          pageBtns.appendChild(btn);
-        }
-
-        const next = document.createElement("button");
-        next.className = "page-btn";
-        next.textContent = "→";
-        next.disabled = currentPage === pages;
-        next.onclick = () => {
-          currentPage++;
-          renderTable();
-        };
-        pageBtns.appendChild(next);
-      }
-
-      /* ── Sortable columns ── */
-      let sortCol = -1,
-        sortAsc = true;
+      /* Sortable columns */
+      let sortCol = -1, sortAsc = true;
 
       function sortTable(col) {
         if (sortCol === col) sortAsc = !sortAsc;
-        else {
-          sortCol = col;
-          sortAsc = true;
-        }
+        else { sortCol = col; sortAsc = true; }
 
-        document.querySelectorAll("th").forEach((th, i) => {
-          th.classList.toggle("sorted", i === col);
-        });
+        document.querySelectorAll("th").forEach((th, i) =>
+          th.classList.toggle("sorted", i === col)
+        );
 
-        filteredRows.sort((a, b) => {
+        allRows.sort((a, b) => {
           const aVal = a.cells[col].textContent.trim();
           const bVal = b.cells[col].textContent.trim();
           const aNum = parseFloat(aVal.replace(/,/g, ""));
           const bNum = parseFloat(bVal.replace(/,/g, ""));
-          let cmp;
-          if (!isNaN(aNum) && !isNaN(bNum)) {
-            cmp = aNum - bNum;
-          } else {
-            cmp = aVal.localeCompare(bVal);
-          }
+          const cmp = (!isNaN(aNum) && !isNaN(bNum))
+            ? aNum - bNum
+            : aVal.localeCompare(bVal);
           return sortAsc ? cmp : -cmp;
         });
 
-        filteredRows.forEach((r) => tbody.appendChild(r));
-        currentPage = 1;
-        renderTable();
+        allRows.forEach((r) => tbody.appendChild(r));
       }
 
-      /* ── Init ── */
-      filteredRows = [...allRows];
-      renderTable();
-      /* ── Form Validation ── */
+      /* Form validation */
       const form = document.getElementById("stock-form");
 
       form.addEventListener("submit", function (e) {
         let valid = true;
 
-        /* remove old errors */
-        document
-          .querySelectorAll(".error-message")
-          .forEach((el) => el.remove());
+        document.querySelectorAll(".error-message").forEach((el) => el.remove());
+        document.querySelectorAll("input, select").forEach((field) =>
+          field.classList.remove("input-error")
+        );
 
-        document
-          .querySelectorAll("input, select")
-          .forEach((field) => field.classList.remove("input-error"));
-
-        /* required fields */
         const requiredFields = [
-          {
-            id: "item-sel",
-            message: "Please select an item",
-          },
-          {
-            id: "cat-sel",
-            message: "Please select a category",
-          },
-          {
-            name: "quantity",
-            message: "Quantity is required",
-          },
-          {
-            name: "unit_cost",
-            message: "Unit cost is required",
-          },
-          {
-            name: "unit_price",
-            message: "Unit price is required",
-          },
-          {
-            name: "payment_method",
-            message: "Please select payment method",
-          },
-          {
-            name: "date",
-            message: "Date is required",
-          },
+          { id: "item-sel",         message: "Please select an item" },
+          { id: "cat-sel",          message: "Please select a category" },
+          { name: "quantity",       message: "Quantity is required" },
+          { name: "unit_cost",      message: "Unit cost is required" },
+          { name: "unit_price",     message: "Unit price is required" },
+          { name: "payment_method", message: "Please select payment method" },
+          { name: "date",           message: "Date is required" },
         ];
 
         requiredFields.forEach((fieldData) => {
-          let field;
-
-          if (fieldData.id) {
-            field = document.getElementById(fieldData.id);
-          } else {
-            field = document.querySelector(`[name="${fieldData.name}"]`);
-          }
+          const field = fieldData.id
+            ? document.getElementById(fieldData.id)
+            : document.querySelector(`[name="${fieldData.name}"]`);
 
           if (!field.value.trim()) {
             valid = false;
-
             field.classList.add("input-error");
-
             const error = document.createElement("div");
             error.className = "error-message";
             error.textContent = fieldData.message;
-
             field.parentElement.appendChild(error);
           }
         });
 
-        /* validate Other item */
-        const itemSelect = document.getElementById("item-sel");
-
-        if (itemSelect.value === "Other") {
+        if (document.getElementById("item-sel").value === "Other") {
           const otherField = document.querySelector('[name="item_name_other"]');
-
           if (!otherField.value.trim()) {
             valid = false;
-
             otherField.classList.add("input-error");
-
             const error = document.createElement("div");
             error.className = "error-message";
             error.textContent = "Please specify the item";
-
             otherField.parentElement.appendChild(error);
           }
         }
 
-        if (!valid) {
-          e.preventDefault();
-        }
+        if (!valid) e.preventDefault();
       });
     </script>
   </body>

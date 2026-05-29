@@ -454,7 +454,6 @@ def sales(request):
         if customer_contact and not re.match(phone_pattern, customer_contact):
             errors["contact"] = "Invalid phone number (+256XXXXXXXXX)"
 
-        # SAFE CONVERSION
         try:
             quantity = int(quantity)
             if quantity <= 0:
