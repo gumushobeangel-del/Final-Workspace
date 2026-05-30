@@ -435,31 +435,6 @@
         white-space: nowrap;
       }
 
-      .cell-name {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--navy), var(--navy-light));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--gold);
-        flex-shrink: 0;
-        letter-spacing: 0.5px;
-      }
-
-      .cell-name span {
-        font-weight: 500;
-      }
-
       /* Amount */
       .amount-cell {
         font-weight: 600;
@@ -892,12 +867,7 @@
             <tbody>
               {% for d in deposits %}
               <tr>
-                <td>
-                  <div class="cell-name">
-                    <div class="avatar">{{ d.name|slice:":2"|upper }}</div>
-                    <span>{{ d.name }}</span>
-                  </div>
-                </td>
+                <td>{{ d.name }}</td>
                 <td><span class="nin-badge">{{ d.nin }}</span></td>
                 <td>{{ d.phone }}</td>
                 <td><span class="item-badge">{{ d.item_name }}</span></td>
@@ -954,6 +924,7 @@
         </div>
       </div>
     </div>
+
     <script>
       const form = document.getElementById("deposit-form");
 
@@ -1087,9 +1058,7 @@
         const dateField = document.querySelector('[name="date"]');
 
         if (dateField.value) {
-          // use pure string comparison (BEST FIX)
-          const selectedDate = dateField.value; // "YYYY-MM-DD"
-
+          const selectedDate = dateField.value;
           const today = new Date();
           const todayStr = today.toISOString().split("T")[0];
 
@@ -1098,7 +1067,6 @@
 
             dateField.classList.add("input-error");
 
-            // remove old error if exists (prevents duplicates)
             const oldError =
               dateField.parentElement.querySelector(".error-message");
             if (oldError) {
@@ -1112,6 +1080,7 @@
             dateField.parentElement.appendChild(error);
           }
         }
+
         if (!valid) {
           e.preventDefault();
         }
