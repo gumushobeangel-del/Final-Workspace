@@ -286,7 +286,7 @@ def stock_view(request):
         category = request.POST.get("category", "").strip()
         payment_method = request.POST.get("payment_method", "").strip()
 
-        # ── VALIDATION ──
+        # VALIDATION
         if not item_name:
             errors["item_name"] = "Item name is required"
 
@@ -538,6 +538,8 @@ def sales(request):
         "stocks": Stock.objects.all().order_by("-id"),
         "sales": Sale.objects.all().order_by("-id")
     })
+
+
 def deposit(request):
 
     if request.method == "POST":
@@ -622,7 +624,7 @@ def deposit(request):
         "deposits": deposits
     })
 # RECEIPT
-#helps in printing the receipt
+
 
 @login_required
 def receipt(request, id):

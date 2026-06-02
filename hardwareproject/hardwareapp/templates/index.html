@@ -21,30 +21,13 @@
         color: #333;
       }
 
-      /* HEADER */
-      header {
-        background: #1f2a40;
-        color: white;
-        padding: 15px 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      header h1 {
-        font-size: 28px;
-      }
-
       /* HERO SECTION */
       .her {
         height: 100vh;
 
         /* BACKGROUND IMAGE */
         background:
-          linear-gradient(
-            rgba(0, 0, 0, 0.6),
-            rgba(0, 0, 0, 0.6)
-          ),
+          linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
           url("{% static 'images/nyondo cover.png' %}");
 
         background-size: cover;
@@ -167,10 +150,6 @@
   </head>
 
   <body>
-    <header>
-      <h1>Nyondo Hardware</h1>
-    </header>
-
     <section class="her">
       <a href="{% url 'log' %}" class="btn">Get Started</a>
     </section>

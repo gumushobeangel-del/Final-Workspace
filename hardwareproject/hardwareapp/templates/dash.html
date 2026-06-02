@@ -348,6 +348,11 @@
         <h3>Suppliers</h3>
         <p>{{ suppliers }}</p>
       </div>
+
+        <div class="card">
+        <h3>Top Product</h3>
+        <p>{% if top_product %}{{ top_product.item_name }}{% else %}—{% endif %}</p>
+      </div>
     </div>
 
     <!-- Stock table -->
