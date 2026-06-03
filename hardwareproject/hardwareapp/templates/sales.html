@@ -3,34 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sales Management</title>
+    <title>Sales Management — Nyondo Hardware</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Syne:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
     <style>
       :root {
-        --navy: #0d1b2a;
-        --navy-mid: #1a2e45;
-        --navy-light: #243b55;
-        --gold: #c9a84c;
-        --gold-light: #e8c97a;
-        --cream: #f9f6f0;
-        --cream-dark: #ede8df;
-        --text-dark: #1a1a2e;
-        --text-mid: #4a5568;
-        --text-light: #718096;
-        --white: #ffffff;
-        --success: #2d7a5e;
-        --success-bg: rgba(45, 122, 94, 0.09);
-        --danger: #c0392b;
-        --warn: #b7791f;
-        --shadow-sm: 0 2px 8px rgba(13, 27, 42, 0.08);
-        --shadow-md: 0 8px 30px rgba(13, 27, 42, 0.12);
-        --shadow-lg: 0 20px 60px rgba(13, 27, 42, 0.18);
-        --radius: 14px;
-        --radius-sm: 8px;
+        --ink: #0e0f0d;
+        --ink-soft: #2c2d2a;
+        --ink-muted: #6b6d68;
+        --ink-ghost: #a8a9a5;
+        --canvas: #f4f0e8;
+        --canvas-warm: #ece8de;
+        --canvas-card: #faf8f4;
+        --gold: #b8860b;
+        --gold-light: #d4a017;
+        --gold-pale: #f5e6c0;
+        --gold-ring: rgba(184, 134, 11, 0.18);
+        --emerald: #1a5c42;
+        --emerald-bg: #eaf4ee;
+        --ruby: #8b1a1a;
+        --ruby-bg: #fdeaea;
+        --amber: #7a4f00;
+        --amber-bg: #fef3dc;
+        --border: rgba(14, 15, 13, 0.1);
+        --border-mid: rgba(14, 15, 13, 0.16);
+        --shadow-xs: 0 1px 3px rgba(14, 15, 13, 0.06);
+        --shadow-sm: 0 2px 10px rgba(14, 15, 13, 0.08);
+        --shadow-md: 0 6px 28px rgba(14, 15, 13, 0.1);
+        --shadow-lg: 0 16px 56px rgba(14, 15, 13, 0.13);
+        --r-sm: 6px;
+        --r-md: 10px;
+        --r-lg: 16px;
+        --r-xl: 22px;
       }
 
       * {
@@ -40,160 +46,239 @@
       }
 
       body {
-        font-family: "DM Sans", sans-serif;
-        background: var(--cream);
-        background-image:
-          radial-gradient(
-            ellipse at 10% 20%,
-            rgba(201, 168, 76, 0.08) 0%,
-            transparent 50%
-          ),
-          radial-gradient(
-            ellipse at 90% 80%,
-            rgba(13, 27, 42, 0.06) 0%,
-            transparent 50%
-          );
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--canvas);
         min-height: 100vh;
-        padding: 32px 24px;
-        color: var(--text-dark);
+        color: var(--ink);
       }
 
-      /* ─── PAGE HEADER ─── */
-      .page-header {
+      .topbar {
+        background: var(--ink);
+        padding: 0 32px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 32px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid var(--cream-dark);
-        flex-wrap: wrap;
-        gap: 12px;
+        height: 60px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        gap: 16px;
       }
 
-      .brand {
+      .topbar-logo {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--gold-light);
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .topbar-logo span {
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 500;
+        font-size: 18px;
+        margin-left: 6px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.62);
+        padding: 7px 13px;
+        border-radius: var(--r-sm);
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+
+      .nav-links a:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.09);
+      }
+      .nav-links a.active {
+        color: var(--ink);
+        background: var(--gold-light);
+      }
+      .nav-links a.logout {
+        color: rgba(255, 100, 100, 0.75);
+      }
+      .nav-links a.logout:hover {
+        color: #fff;
+        background: rgba(192, 57, 43, 0.5);
+      }
+
+      .page {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 36px 32px 56px;
+      }
+
+      .page-hero {
+        margin-bottom: 32px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .page-eyebrow {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 6px;
+      }
+
+      .page-title {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 40px;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1.05;
+        letter-spacing: -0.5px;
+      }
+
+      .page-subtitle {
+        font-size: 13.5px;
+        color: var(--ink-muted);
+        margin-top: 6px;
+        font-weight: 400;
+      }
+
+      .alerts {
+        margin-bottom: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .alert {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        border-radius: var(--r-md);
+        font-size: 13.5px;
+        font-weight: 500;
+        animation: slideDown 0.3s ease both;
+      }
+
+      .alert-icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+      .alert.success {
+        background: var(--emerald-bg);
+        color: var(--emerald);
+        border: 1px solid rgba(26, 92, 66, 0.2);
+      }
+      .alert.error {
+        background: var(--ruby-bg);
+        color: var(--ruby);
+        border: 1px solid rgba(139, 26, 26, 0.2);
+      }
+      .alert.warning {
+        background: var(--amber-bg);
+        color: var(--amber);
+        border: 1px solid rgba(122, 79, 0, 0.2);
+      }
+      .workspace {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .panel {
+        background: var(--canvas-card);
+        border-radius: var(--r-xl);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        animation: fadeUp 0.45s ease both;
+      }
+
+      .panel:nth-child(2) {
+        animation-delay: 0.07s;
+      }
+
+      .panel-head {
+        padding: 22px 26px 20px;
+        border-bottom: 1px solid var(--border);
         display: flex;
         align-items: center;
         gap: 14px;
       }
 
-      .brand-icon {
-        width: 48px;
-        height: 48px;
-        background: linear-gradient(135deg, var(--navy), var(--navy-light));
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: var(--shadow-sm);
-      }
-
-      .brand-icon svg {
-        width: 26px;
-        height: 26px;
-        fill: var(--gold);
-      }
-
-      .brand-text h1 {
-        font-family: "Playfair Display", serif;
-        font-size: 22px;
-        color: var(--navy);
-        letter-spacing: -0.3px;
-        line-height: 1;
-      }
-
-      .brand-text p {
-        font-size: 12px;
-        color: var(--text-light);
-        font-weight: 400;
-        margin-top: 3px;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-      }
-
-      .layout {
-        display: grid;
-        grid-template-columns: 380px 1fr;
-        gap: 24px;
-        align-items: start;
-      }
-
-      .card {
-        background: var(--white);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-md);
-        overflow: hidden;
-        animation: fadeSlideUp 0.4s ease both;
-      }
-
-      .card:nth-child(2) {
-        animation-delay: 0.08s;
-      }
-
-      .card-header {
-        background: linear-gradient(
-          135deg,
-          var(--navy) 0%,
-          var(--navy-light) 100%
-        );
-        padding: 22px 28px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .card-header-icon {
-        width: 36px;
-        height: 36px;
-        background: rgba(201, 168, 76, 0.2);
-        border-radius: 10px;
+      .panel-head-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--gold-pale);
+        border-radius: var(--r-md);
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        border: 1px solid rgba(184, 134, 11, 0.25);
       }
 
-      .card-header-icon svg {
+      .panel-head-icon svg {
         width: 18px;
         height: 18px;
         fill: var(--gold);
       }
 
-      .card-header h2 {
-        font-family: "Playfair Display", serif;
-        font-size: 17px;
-        color: var(--white);
+      .panel-head-copy h2 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1.1;
       }
-
-      .card-header p {
-        font-size: 11px;
-        color: rgba(255, 255, 255, 0.55);
+      .panel-head-copy p {
+        font-size: 12px;
+        color: var(--ink-muted);
         margin-top: 2px;
         font-weight: 400;
       }
 
       .form-body {
-        padding: 28px;
+        padding: 24px 26px 26px;
       }
 
-      .field-group {
+      .field {
         margin-bottom: 14px;
       }
 
-      .field-group label {
+      .field label {
         display: flex;
         align-items: center;
-        gap: 5px;
-        font-size: 11px;
-        font-weight: 600;
-        color: var(--text-light);
-        letter-spacing: 0.8px;
+        gap: 4px;
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 1px;
         text-transform: uppercase;
+        color: var(--ink-muted);
         margin-bottom: 6px;
       }
 
-      .field-group label .req {
+      .req {
         color: var(--gold);
         font-size: 13px;
+        line-height: 1;
       }
 
       .field-row {
@@ -202,151 +287,141 @@
         gap: 12px;
       }
 
-      .input-wrap {
+      .inp-wrap {
         position: relative;
       }
 
-      .input-wrap svg {
+      .inp-wrap svg.ico {
         position: absolute;
-        left: 12px;
+        left: 11px;
         top: 50%;
         transform: translateY(-50%);
-        width: 15px;
-        height: 15px;
-        fill: var(--text-light);
+        width: 14px;
+        height: 14px;
+        fill: var(--ink-ghost);
         pointer-events: none;
+        z-index: 1;
       }
 
-      .input-wrap input,
-      .input-wrap select {
+      .inp-wrap input,
+      .inp-wrap select {
         width: 100%;
-        padding: 11px 14px 11px 38px;
-        border: 1.5px solid var(--cream-dark);
-        border-radius: var(--radius-sm);
-        font-size: 13.5px;
-        font-family: "DM Sans", sans-serif;
-        color: var(--text-dark);
-        background: var(--cream);
+        height: 40px;
+        padding: 0 12px 0 34px;
+        background: var(--canvas-warm);
+        border: 1.5px solid var(--border-mid);
+        border-radius: var(--r-md);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        color: var(--ink);
         transition:
-          border-color 0.2s,
-          box-shadow 0.2s,
-          background 0.2s;
+          border-color 0.18s,
+          box-shadow 0.18s,
+          background 0.18s;
         appearance: none;
       }
 
-      .input-wrap input::placeholder {
-        color: var(--text-light);
+      .inp-wrap input::placeholder {
+        color: var(--ink-ghost);
       }
 
-      .input-wrap input:focus,
-      .input-wrap select:focus {
+      .inp-wrap input:focus,
+      .inp-wrap select:focus {
         outline: none;
         border-color: var(--gold);
-        background: var(--white);
-        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+        background: #fff;
+        box-shadow: 0 0 0 3px var(--gold-ring);
       }
 
-      .btn-submit {
+      .inp-wrap.no-icon input,
+      .inp-wrap.no-icon select {
+        padding-left: 12px;
+      }
+
+      .err-text {
+        display: block;
+        font-size: 11.5px;
+        color: var(--ruby);
+        margin-top: 4px;
+        font-weight: 500;
+      }
+
+      .inp-error {
+        border-color: var(--ruby) !important;
+        background: var(--ruby-bg) !important;
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 18px 0;
+      }
+
+      .section-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--ink-ghost);
+        margin-bottom: 12px;
+      }
+
+      .btn-primary {
         width: 100%;
-        margin-top: 6px;
-        padding: 13px;
-        background: linear-gradient(
-          135deg,
-          var(--navy) 0%,
-          var(--navy-light) 100%
-        );
-        color: var(--white);
+        height: 44px;
+        margin-top: 8px;
+        background: var(--ink);
+        color: #fff;
         border: none;
-        border-radius: var(--radius-sm);
-        font-family: "DM Sans", sans-serif;
-        font-size: 14px;
-        font-weight: 600;
+        border-radius: var(--r-md);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13.5px;
+        font-weight: 700;
         letter-spacing: 0.5px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
-        transition: all 0.25s ease;
+        gap: 9px;
+        transition: all 0.22s;
         position: relative;
         overflow: hidden;
-        text-decoration: none;
       }
 
-      .btn-submit::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(201, 168, 76, 0.15),
-          transparent
-        );
-        transition: left 0.5s ease;
-      }
-
-      .btn-submit:hover::before {
-        left: 100%;
-      }
-
-      .btn-submit:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(13, 27, 42, 0.3);
-      }
-
-      .btn-submit svg {
-        width: 16px;
-        height: 16px;
-        fill: var(--gold);
-        flex-shrink: 0;
-      }
-
-      .btn-outline {
-        width: 100%;
-        margin-top: 10px;
-        padding: 12px;
-        background: transparent;
-        color: var(--navy);
-        border: 1.5px solid var(--cream-dark);
-        border-radius: var(--radius-sm);
-        font-family: "DM Sans", sans-serif;
-        font-size: 13.5px;
-        font-weight: 600;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: all 0.2s ease;
-        text-decoration: none;
-      }
-
-      .btn-outline:hover {
-        border-color: var(--navy);
-        background: var(--cream);
-      }
-
-      .btn-outline svg {
+      .btn-primary svg {
         width: 15px;
         height: 15px;
-        fill: var(--navy);
+        fill: var(--gold-light);
       }
 
-      .table-controls {
-        padding: 16px 24px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid var(--cream-dark);
-        gap: 12px;
-        flex-wrap: wrap;
+      .btn-primary::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(212, 160, 23, 0.13) 50%,
+          transparent 100%
+        );
+        transform: translateX(-100%);
+        transition: transform 0.55s ease;
       }
 
-      .table-wrapper {
+      .btn-primary:hover::after {
+        transform: translateX(100%);
+      }
+      .btn-primary:hover {
+        background: var(--ink-soft);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 22px rgba(14, 15, 13, 0.25);
+      }
+      .btn-primary:active {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+
+      .tbl-wrap {
         overflow-x: auto;
       }
 
@@ -357,8 +432,8 @@
       }
 
       thead tr {
-        background: var(--cream);
-        border-bottom: 2px solid var(--cream-dark);
+        background: var(--canvas-warm);
+        border-bottom: 1.5px solid var(--border-mid);
       }
 
       th {
@@ -366,9 +441,9 @@
         text-align: left;
         font-size: 10px;
         font-weight: 700;
-        color: var(--text-light);
-        letter-spacing: 0.8px;
+        letter-spacing: 0.9px;
         text-transform: uppercase;
+        color: var(--ink-muted);
         white-space: nowrap;
       }
 
@@ -377,182 +452,215 @@
       }
 
       tbody tr {
-        border-bottom: 1px solid var(--cream-dark);
-        transition: background 0.15s ease;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.12s;
       }
 
       tbody tr:last-child {
         border-bottom: none;
       }
       tbody tr:hover {
-        background: rgba(201, 168, 76, 0.04);
+        background: rgba(184, 134, 11, 0.04);
       }
 
       td {
         padding: 12px 14px;
-        color: var(--text-dark);
+        color: var(--ink-soft);
         vertical-align: middle;
         white-space: nowrap;
       }
 
-      .item-badge {
+      .badge-item {
         display: inline-flex;
-        align-items: center;
-        background: rgba(13, 27, 42, 0.07);
-        color: var(--navy-mid);
-        border-radius: 50px;
-        padding: 3px 9px;
-        font-size: 11px;
-        font-weight: 500;
-      }
-
-      .amount-cell {
-        font-weight: 600;
-        color: var(--navy);
-      }
-
-      .grand-total-cell {
-        font-weight: 700;
-        color: var(--navy);
-        font-size: 13px;
-      }
-
-      .free-badge {
-        display: inline-flex;
-        align-items: center;
-        background: var(--success-bg);
-        color: var(--success);
-        border-radius: 50px;
-        padding: 3px 9px;
-        font-size: 11px;
-        font-weight: 600;
-      }
-
-      .distance-cell {
-        display: flex;
         align-items: center;
         gap: 5px;
-        color: var(--text-mid);
+        background: rgba(14, 15, 13, 0.07);
+        color: var(--ink-soft);
+        border-radius: 50px;
+        padding: 3px 10px;
+        font-size: 11.5px;
+        font-weight: 600;
       }
 
-      .distance-cell svg {
-        width: 12px;
-        height: 12px;
-        fill: var(--text-light);
+      .badge-item svg {
+        width: 10px;
+        height: 10px;
+        fill: var(--ink-muted);
       }
 
-      /* Action buttons */
+      .amt {
+        font-weight: 700;
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+      }
+      .grand-amt {
+        font-weight: 700;
+        color: var(--gold);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 15px;
+      }
+
+      .badge-free {
+        display: inline-flex;
+        align-items: center;
+        background: var(--emerald-bg);
+        color: var(--emerald);
+        border-radius: 50px;
+        padding: 3px 10px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+
+      .dist-cell {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: var(--ink-muted);
+        font-size: 12px;
+      }
+
+      .dist-cell svg {
+        width: 11px;
+        height: 11px;
+        fill: var(--ink-ghost);
+      }
+
       .actions {
         display: flex;
-        gap: 5px;
+        gap: 4px;
         justify-content: center;
-        align-items: center;
       }
 
-      .action-btn {
+      .act-btn {
         display: inline-flex;
         align-items: center;
         gap: 4px;
         padding: 5px 10px;
-        border-radius: 6px;
+        border-radius: var(--r-sm);
+        font-family: "Syne", sans-serif;
         font-size: 11px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.2s ease;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        border: 1.5px solid transparent;
         cursor: pointer;
-        border: none;
-        font-family: "DM Sans", sans-serif;
+        text-decoration: none;
+        transition: all 0.17s;
       }
 
-      .action-btn svg {
-        width: 11px;
-        height: 11px;
+      .act-btn svg {
+        width: 10px;
+        height: 10px;
         flex-shrink: 0;
       }
 
-      .btn-receipt {
-        background: rgba(13, 27, 42, 0.08);
-        color: var(--navy);
-        border: 1px solid rgba(13, 27, 42, 0.12);
+      .act-receipt {
+        background: rgba(14, 15, 13, 0.06);
+        color: var(--ink-soft);
+        border-color: var(--border-mid);
       }
-      .btn-receipt:hover {
-        background: var(--navy);
-        color: var(--white);
-      }
-
-      .btn-edit {
-        background: rgba(183, 121, 31, 0.1);
-        color: var(--warn);
-        border: 1px solid rgba(183, 121, 31, 0.2);
-      }
-      .btn-edit:hover {
-        background: var(--warn);
-        color: var(--white);
+      .act-receipt:hover {
+        background: var(--ink);
+        color: #fff;
+        border-color: var(--ink);
       }
 
-      .btn-delete {
-        background: rgba(192, 57, 43, 0.08);
-        color: var(--danger);
-        border: 1px solid rgba(192, 57, 43, 0.15);
+      .act-edit {
+        background: var(--amber-bg);
+        color: var(--amber);
+        border-color: rgba(122, 79, 0, 0.22);
       }
-      .btn-delete:hover {
-        background: var(--danger);
-        color: var(--white);
+      .act-edit:hover {
+        background: var(--amber);
+        color: #fff;
+        border-color: var(--amber);
       }
 
-      .empty-state {
-        padding: 56px 24px;
+      .act-delete {
+        background: var(--ruby-bg);
+        color: var(--ruby);
+        border-color: rgba(139, 26, 26, 0.2);
+      }
+      .act-delete:hover {
+        background: var(--ruby);
+        color: #fff;
+        border-color: var(--ruby);
+      }
+
+      .empty {
+        padding: 64px 24px;
         text-align: center;
-      }
-      .empty-state svg {
-        width: 44px;
-        height: 44px;
-        fill: var(--cream-dark);
-        margin-bottom: 14px;
-      }
-      .empty-state p {
-        color: var(--text-light);
-        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
       }
 
-      .messages-wrap {
-        margin-bottom: 20px;
-      }
-
-      .message-alert {
-        padding: 12px 16px;
-        border-radius: var(--radius-sm);
-        font-weight: 600;
-        font-size: 13.5px;
-        margin-bottom: 10px;
+      .empty-icon {
+        width: 56px;
+        height: 56px;
+        background: var(--canvas-warm);
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        gap: 8px;
+        justify-content: center;
+        border: 1px solid var(--border);
       }
 
-      .message-alert.error {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
+      .empty-icon svg {
+        width: 24px;
+        height: 24px;
+        fill: var(--ink-ghost);
+      }
+      .empty h3 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--ink-soft);
+      }
+      .empty p {
+        font-size: 13px;
+        color: var(--ink-ghost);
+        max-width: 260px;
+        line-height: 1.6;
       }
 
-      .message-alert.success {
-        background: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
+      .tbl-footer {
+        padding: 14px 20px;
+        background: var(--canvas-warm);
+        border-top: 1.5px solid var(--border-mid);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 24px;
       }
 
-      .message-alert.warning {
-        background: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffeeba;
+      .tbl-footer-stat {
+        text-align: right;
+      }
+      .tbl-footer-stat span {
+        display: block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: var(--ink-ghost);
+      }
+      .tbl-footer-stat strong {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .tbl-footer-stat strong.gold {
+        color: var(--gold);
       }
 
-      /* ANIMATION */
-      @keyframes fadeSlideUp {
+      @keyframes fadeUp {
         from {
           opacity: 0;
-          transform: translateY(16px);
+          transform: translateY(18px);
         }
         to {
           opacity: 1;
@@ -560,478 +668,531 @@
         }
       }
 
-      /* ─── NAVIGATION BAR ─── */
-      .top-nav {
-        width: 100%;
-        background: linear-gradient(
-          135deg,
-          var(--navy) 0%,
-          var(--navy-light) 100%
-        );
-
-        padding: 18px 28px;
-        border-radius: var(--radius);
-        margin-bottom: 26px;
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-
-        box-shadow: var(--shadow-md);
-      }
-
-      .nav-logo {
-        font-family: "Playfair Display", serif;
-        font-size: 24px;
-        color: var(--gold);
-        letter-spacing: 0.5px;
-      }
-
-      .nav-links {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-
-      .nav-links a {
-        text-decoration: none;
-        color: var(--white);
-        padding: 10px 16px;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        transition: all 0.25s ease;
-      }
-
-      .nav-links a:hover {
-        background: rgba(255, 255, 255, 0.12);
-        color: var(--gold-light);
-      }
-
-      .nav-links a.active {
-        background: var(--gold);
-        color: var(--navy);
-      }
-
-      /* ERROR INPUT STYLE */
-      .input-error {
-        border: 1.5px solid #dc3545 !important;
-        background: #fff5f5 !important;
-      }
-
-      /* ERROR TEXT */
-      .error-text {
-        color: #dc3545;
-        font-size: 12px;
-        margin-top: 4px;
-        display: block;
-        font-weight: 500;
-      }
-
-      @media (max-width: 768px) {
-        body {
-          padding: 12px;
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-8px);
         }
-
-        .layout {
-          grid-template-columns: 1fr !important;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
+      }
 
-        .admin-nav {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 10px;
+      @media (max-width: 900px) {
+        .workspace {
+          grid-template-columns: 1fr;
         }
-
+        .topbar {
+          padding: 0 16px;
+          height: auto;
+          flex-wrap: wrap;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          gap: 8px;
+        }
+        .page {
+          padding: 24px 16px 48px;
+        }
+        .page-title {
+          font-size: 30px;
+        }
         .nav-links {
-          width: 100%;
-          justify-content: space-between;
+          gap: 2px;
         }
-
         .nav-links a {
+          padding: 6px 9px;
           font-size: 12px;
         }
+      }
 
-        table {
-          font-size: 11px;
+      @media (max-width: 600px) {
+        .field-row {
+          grid-template-columns: 1fr;
         }
-
-        th,
-        td {
-          padding: 8px 10px;
-        }
-
-        .card-header h2 {
-          font-size: 15px;
-        }
-
-        .form-body {
-          padding: 18px;
-        }
-
-        .table-wrapper {
-          overflow-x: auto;
-          -webkit-overflow-scrolling: touch;
-        }
-
         .actions {
           flex-direction: column;
-          gap: 4px;
+          align-items: stretch;
+        }
+        .act-btn {
+          justify-content: center;
+        }
+        .tbl-footer {
+          flex-wrap: wrap;
+          gap: 12px;
         }
       }
     </style>
   </head>
-
   <body>
     {% load static %}
 
-    <!-- ─── NAVIGATION ─── -->
-    <nav class="top-nav">
-      <div class="nav-logo">Nyondo Hardware</div>
-
+    <nav class="topbar">
+      <div class="topbar-logo">Nyondo<span>Hardware</span></div>
       <div class="nav-links">
-        <!-- HOME FOR EVERYONE -->
         <a href="{% url 'index' %}">Home</a>
 
-        <!-- ADMIN -->
         {% if request.session.role == "admin" %}
         <a href="{% url 'dash' %}">Dashboard</a>
-        <a href="{% url 'sales' %}">Sales</a>
-        <a href="{% url 'stock' %}">Add Stock</a>
+        <a href="{% url 'sales' %}" class="active">Sales</a>
+        <a href="{% url 'stock' %}">Stock</a>
         <a href="{% url 'supplier' %}">Suppliers</a>
-        <a href="{% url 'register' %}">Register Customer</a>
-        <a href="{% url 'credit' %}">Supplier Credit</a>
+        <a href="{% url 'register' %}">Customers</a>
+        <a href="{% url 'credit' %}">Credit</a>
         <a href="{% url 'reports' %}">Reports</a>
         <a href="{% url 'deposit' %}">Deposits</a>
-
+        {% endif %} {% if request.session.role == "sales" %}
+        <a href="{% url 'sales' %}" class="active">Sales</a>
+        {% endif %} {% if request.session.role == "stock_manager" %}
+        <a href="{% url 'stock' %}">Stock</a>
         {% endif %}
 
-        <!-- SALES PERSON -->
-        {% if request.session.role == "sales" %}
-
-        <a href="{% url 'sales' %}">Sales</a>
-
-        {% endif %}
-
-        <!-- STOCK MANAGER -->
-        {% if request.session.role == "stock_manager" %}
-
-        <a href="{% url 'stock' %}">Add Stock</a>
-
-        {% endif %}
-
-        <!-- LOGOUT FOR EVERYONE -->
         <a
           href="{% url 'logout' %}"
+          class="logout"
           onclick="return confirm('Are you sure you want to log out?');"
+          >Logout</a
         >
-          Logout
-        </a>
       </div>
     </nav>
 
-    <div class="page-header">
-      <div class="brand">
-        <div class="brand-icon"></div>
-        <div class="brand-text">
-          <h1>Sales Management</h1>
-          <p>Track &middot; Manage &middot; Receipt</p>
+    <div class="page">
+      <div class="page-hero">
+        <div class="page-hero-left">
+          <div class="page-eyebrow">Sales Management</div>
+          <h1 class="page-title">Sales Records</h1>
+          <p class="page-subtitle">
+            Record, track and receipt every transaction with confidence.
+          </p>
         </div>
       </div>
-    </div>
 
-    {% if messages %}
-    <div class="messages-wrap">
-      {% for message in messages %}
-      <div
-        class="message-alert {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}warning{% endif %}"
-      >
-        {{ message }}
+      {% if messages %}
+      <div class="alerts">
+        {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}warning{% endif %}"
+        >
+          {% if message.tags == 'success' %}
+          <svg class="alert-icon" viewBox="0 0 20 20">
+            <path
+              d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zm4.707 7.707-5.656 5.657a1 1 0 0 1-1.414 0L5.293 11.02a1 1 0 1 1 1.414-1.414l1.637 1.636 4.949-4.95a1 1 0 0 1 1.414 1.415z"
+            />
+          </svg>
+          {% elif message.tags == 'error' %}
+          <svg class="alert-icon" viewBox="0 0 20 20">
+            <path
+              d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zM9 5h2v6H9V5zm1 10a1.25 1.25 0 1 1 0-2.5A1.25 1.25 0 0 1 10 15z"
+            />
+          </svg>
+          {% else %}
+          <svg class="alert-icon" viewBox="0 0 20 20">
+            <path
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm-1-8a1 1 0 0 0-1 1v3a1 1 0 0 0 2 0V6a1 1 0 0 0-1-1z"
+            />
+          </svg>
+          {% endif %} {{ message }}
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
-    {% endif %}
+      {% endif %}
 
-    <div class="layout">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-header-icon"></div>
-          <div>
-            <h2>Register Sale</h2>
-            <p>Complete all fields to record a sale</p>
+      <div class="workspace">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-icon">
+              <svg viewBox="0 0 20 20">
+                <path
+                  d="M10 1a9 9 0 1 0 0 18A9 9 0 0 0 10 1zm.75 4a.75.75 0 0 0-1.5 0v4.5l-2.47 2.47a.75.75 0 1 0 1.06 1.06l2.72-2.72A.75.75 0 0 0 10.75 10V5z"
+                />
+              </svg>
+            </div>
+            <div class="panel-head-copy">
+              <h2>Register Sale</h2>
+              <p>Complete all fields to record a transaction</p>
+            </div>
+          </div>
+
+          <div class="form-body">
+            <form method="POST" id="salesForm" novalidate>
+              {% csrf_token %}
+
+              <p class="section-label">Item Details</p>
+
+              <div class="field">
+                <label>Item Name <span class="req">*</span></label>
+                <div class="inp-wrap">
+                  <svg class="ico" viewBox="0 0 20 20">
+                    <path
+                      d="M3 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v2a1 1 0 0 1-.293.707L12 11.414V15a1 1 0 0 1-.553.894l-4 2A1 1 0 0 1 6 17v-5.586L3.293 6.707A1 1 0 0 1 3 6V4z"
+                    />
+                  </svg>
+                  <select name="stock_id" required>
+                    <option value="">Select an item</option>
+                    {% for stock in stocks %}
+                    <option value="{{ stock.id }}">
+                      {{ stock.item_name }} ({{ stock.quantity }} available)
+                    </option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <span class="err-text">{{ errors.stock }}</span>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label>Quantity <span class="req">*</span></label>
+                  <div class="inp-wrap">
+                    <svg class="ico" viewBox="0 0 20 20">
+                      <path
+                        d="M2 5.5a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H2.5a.5.5 0 0 1-.5-.5zM2 10a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm0 4.5a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H2.5a.5.5 0 0 1-.5-.5z"
+                      />
+                    </svg>
+                    <input
+                      type="number"
+                      name="quantity"
+                      min="1"
+                      placeholder="0"
+                      required
+                    />
+                  </div>
+                  <span class="err-text">{{ errors.quantity }}</span>
+                </div>
+
+                <div class="field">
+                  <label>Date <span class="req">*</span></label>
+                  <div class="inp-wrap">
+                    <svg class="ico" viewBox="0 0 20 20">
+                      <path
+                        d="M5 3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zm0 1h10a1 1 0 0 1 1 1v1H4V5a1 1 0 0 1 1-1zM4 7h12v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7z"
+                      />
+                    </svg>
+                    <input type="date" name="date" required />
+                  </div>
+                  <span class="err-text">{{ errors.date }}</span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Unit Price (UGX) <span class="req">*</span></label>
+                <div class="inp-wrap">
+                  <svg class="ico" viewBox="0 0 20 20">
+                    <path
+                      d="M10 1a9 9 0 1 0 0 18A9 9 0 0 0 10 1zm.5 5H9.485C8.663 6 8 6.672 8 7.5c0 .825.663 1.5 1.485 1.5H10.5C11.881 9 13 10.12 13 11.5S11.881 14 10.5 14H10v1H9v-1c-1.381 0-2.5-1.12-2.5-2.5H8c0 .828.672 1.5 1.5 1.5h1c.828 0 1.5-.672 1.5-1.5S11.328 10 10.5 10H9.485C8.11 10 7 8.88 7 7.5S8.11 5 9.485 5H10.5C11.881 5 13 6.12 13 7.5H11.5C11.5 6.672 11.052 6 10.5 6z"
+                    />
+                  </svg>
+                  <input
+                    type="number"
+                    name="unit_price"
+                    min="1"
+                    placeholder="0"
+                    required
+                  />
+                </div>
+                <span class="err-text">{{ errors.price }}</span>
+              </div>
+
+              <div class="divider"></div>
+              <p class="section-label">Customer Details</p>
+
+              <div class="field">
+                <label>Customer Name <span class="req">*</span></label>
+                <div class="inp-wrap">
+                  <svg class="ico" viewBox="0 0 20 20">
+                    <path
+                      d="M10 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 8a6 6 0 1 1 12 0H4z"
+                    />
+                  </svg>
+                  <input
+                    type="text"
+                    name="customer_name"
+                    placeholder="Full name"
+                    required
+                  />
+                </div>
+                <span class="err-text">{{ errors.customer }}</span>
+              </div>
+
+              <div class="field">
+                <label>Customer Contact <span class="req">*</span></label>
+                <div class="inp-wrap">
+                  <svg class="ico" viewBox="0 0 20 20">
+                    <path
+                      d="M2 3a2 2 0 0 1 2-2h2.518a1 1 0 0 1 .95.685l.892 2.674a1 1 0 0 1-.32 1.077l-.949.8a1 1 0 0 0-.261 1.183 11.056 11.056 0 0 0 5.001 5.001 1 1 0 0 0 1.183-.261l.8-.949a1 1 0 0 1 1.077-.32l2.674.892A1 1 0 0 1 19 12.482V15a2 2 0 0 1-2 2H16C7.163 17 2 11.837 2 4V3z"
+                    />
+                  </svg>
+                  <input
+                    type="text"
+                    name="customer_contact"
+                    placeholder="+256740230081"
+                    pattern="^\+256[0-9]{9}$"
+                    maxlength="13"
+                    required
+                  />
+                </div>
+                <span class="err-text">{{ errors.contact }}</span>
+              </div>
+
+              <div class="divider"></div>
+              <p class="section-label">Item Specification</p>
+
+              <div class="field-row">
+                <div class="field">
+                  <label>Item Type <span class="req">*</span></label>
+                  <div class="inp-wrap">
+                    <svg class="ico" viewBox="0 0 20 20">
+                      <path
+                        d="M9 2a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3V4a2 2 0 0 0-2-2H9zm0 2h2v1H9V4z"
+                      />
+                    </svg>
+                    <input
+                      type="text"
+                      name="item_type"
+                      placeholder="e.g. Roofing"
+                      required
+                    />
+                  </div>
+                  <span class="err-text">{{ errors.type }}</span>
+                </div>
+
+                <div class="field">
+                  <label>Item Brand <span class="req">*</span></label>
+                  <div class="inp-wrap">
+                    <svg class="ico" viewBox="0 0 20 20">
+                      <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292z"
+                      />
+                    </svg>
+                    <input
+                      type="text"
+                      name="item_brand"
+                      placeholder="e.g. Mabati"
+                      required
+                    />
+                  </div>
+                  <span class="err-text">{{ errors.brand }}</span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Distance (km)</label>
+                <div class="inp-wrap">
+                  <svg class="ico" viewBox="0 0 20 20">
+                    <path
+                      d="M10 2a6 6 0 0 0-6 6c0 4.41 5.27 9.56 5.5 9.78a.75.75 0 0 0 1 0C10.73 17.56 16 12.41 16 8a6 6 0 0 0-6-6zm0 8.5A2.5 2.5 0 1 1 10 5a2.5 2.5 0 0 1 0 5.5z"
+                    />
+                  </svg>
+                  <input
+                    type="number"
+                    name="distance_km"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                  />
+                </div>
+              </div>
+
+              <button type="submit" class="btn-primary">
+                <svg viewBox="0 0 20 20">
+                  <path
+                    d="M10 1a9 9 0 1 0 0 18A9 9 0 0 0 10 1zm4.47 7.53-4.75 4.75a.75.75 0 0 1-1.06 0L6.53 11.15a.75.75 0 1 1 1.06-1.06l1.6 1.6 4.22-4.22a.75.75 0 0 1 1.06 1.06z"
+                  />
+                </svg>
+                Record Sale
+              </button>
+            </form>
           </div>
         </div>
 
-        <div class="form-body">
-          <form method="POST" id="salesForm" novalidate>
-            {% csrf_token %}
-
-            <!-- ITEM -->
-            <div class="field-group">
-              <label>Item Name *</label>
-              <div class="input-wrap">
-                <select name="stock_id" required>
-                  <option value="">Select Item</option>
-                  {% for stock in stocks %}
-                  <option value="{{ stock.id }}">
-                    {{ stock.item_name }} ({{ stock.quantity }} available)
-                  </option>
-                  {% endfor %}
-                </select>
-              </div>
-              <span class="error-text">{{ errors.stock }}</span>
-            </div>
-
-            <!-- QUANTITY + DATE -->
-            <div class="field-row">
-              <div class="field-group">
-                <label>Quantity *</label>
-                <div class="input-wrap">
-                  <input type="number" name="quantity" min="1" required />
-                </div>
-                <span class="error-text">{{ errors.quantity }}</span>
-              </div>
-
-              <div class="field-group">
-                <label>Date *</label>
-                <div class="input-wrap">
-                  <input type="date" name="date" required />
-                </div>
-                <span class="error-text">{{ errors.date }}</span>
-              </div>
-            </div>
-
-            <!-- UNIT PRICE -->
-            <div class="field-group">
-              <label>Unit Price *</label>
-              <div class="input-wrap">
-                <input type="number" name="unit_price" min="1" required />
-              </div>
-              <span class="error-text">{{ errors.price }}</span>
-            </div>
-
-            <!-- CUSTOMER NAME -->
-            <div class="field-group">
-              <label>Customer Name *</label>
-              <div class="input-wrap">
-                <input type="text" name="customer_name" required />
-              </div>
-              <span class="error-text">{{ errors.customer }}</span>
-            </div>
-
-            <!-- CONTACT -->
-            <div class="field-group">
-              <label>Customer Contact *</label>
-
-              <div class="input-wrap">
-                <input
-                  type="text"
-                  name="customer_contact"
-                  placeholder="+256740230081"
-                  pattern="^\+256[0-9]{9}$"
-                  maxlength="13"
-                  required
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-icon">
+              <svg viewBox="0 0 20 20">
+                <path
+                  d="M3 4a1 1 0 0 1 1-1h12a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1zm0 4a1 1 0 0 1 1-1h12a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1zm0 4a1 1 0 0 1 1-1h12a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1zm0 4a1 1 0 0 1 1-1h12a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1z"
                 />
-              </div>
-
-              <span class="error-text">{{ errors.contact }}</span>
+              </svg>
             </div>
-
-            <!-- ITEM TYPE -->
-            <div class="field-row">
-              <div class="field-group">
-                <label>Item Type *</label>
-                <div class="input-wrap">
-                  <input type="text" name="item_type" required />
-                </div>
-                <span class="error-text">{{ errors.type }}</span>
-              </div>
-
-              <div class="field-group">
-                <label>Item Brand *</label>
-                <div class="input-wrap">
-                  <input type="text" name="item_brand" required />
-                </div>
-                <span class="error-text">{{ errors.brand }}</span>
-              </div>
+            <div class="panel-head-copy">
+              <h2>Sales Records</h2>
+              <p>All registered transactions</p>
             </div>
-
-            <!-- DISTANCE -->
-            <div class="field-group">
-              <label>Distance (KM) *</label>
-              <div class="input-wrap">
-                <input
-                  type="number"
-                  name="distance_km"
-                  min="0"
-                  step="0.01"
-                  required
-                />
-              </div>
-            </div>
-
-            <button type="submit" class="btn-submit">Add Sale</button>
-          </form>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-header-icon"></div>
-          <div>
-            <h2>Sales Records</h2>
-            <p>All registered sales transactions</p>
           </div>
-        </div>
 
-        <div class="table-wrapper">
-          <table id="salesTable">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Qty</th>
-                <th>Date</th>
-                <th>Unit Price</th>
-                <th>Customer</th>
-                <th>Contact</th>
-                <th>Type</th>
-                <th>Brand</th>
-                <th>Total</th>
-                <th>Dist.</th>
-                <th>Transport</th>
-                <th>Grand Total</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for sale in sales %}
-              <tr>
-                <td><span class="item-badge">{{ sale.item_name }}</span></td>
-                <td>{{ sale.quantity }}</td>
-                <td>{{ sale.date }}</td>
-                <td class="amount-cell">{{ sale.unit_price }}</td>
-                <td>{{ sale.customer_name }}</td>
-                <td>{{ sale.customer_contact }}</td>
-                <td>{{ sale.item_type }}</td>
-                <td>{{ sale.item_brand }}</td>
-                <td class="amount-cell">{{ sale.total }}</td>
-                <td>
-                  <div class="distance-cell">{{ sale.distance_km }} km</div>
-                </td>
-                <td>
-                  {% if sale.transport == 0 %}
-                  <span class="free-badge">FREE</span>
-                  {% else %}
-                  <span class="amount-cell">{{ sale.transport }}</span>
-                  {% endif %}
-                </td>
-                <td class="grand-total-cell">
-                  {{ sale.total|add:sale.transport }}
-                </td>
-                <td>
-                  <div class="actions">
-                    <a
-                      href="{% url 'receipt' sale.id %}"
-                      class="action-btn btn-receipt"
-                    >
-                      Receipt
-                    </a>
-                    <a
-                      href="{% url 'edit_sales' sale.id %}"
-                      class="action-btn btn-edit"
-                    >
-                      Edit
-                    </a>
-                    <a
-                      href="{% url 'delete_sale' sale.id %}"
-                      class="action-btn btn-delete"
-                      onclick="
-                        return confirm(
-                          'Are you sure you want to delete this sale? This action cannot be undone!',
-                        );
-                      "
-                    >
-                      Delete
-                    </a>
-                  </div>
-                </td>
-              </tr>
-              {% empty %}
-              <tr>
-                <td colspan="13">
-                  <div class="empty-state">
-                    <p>No sales recorded yet. Add your first sale!</p>
-                  </div>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Qty</th>
+                  <th>Date</th>
+                  <th>Unit Price</th>
+                  <th>Customer</th>
+                  <th>Contact</th>
+                  <th>Type</th>
+                  <th>Brand</th>
+                  <th>Total</th>
+                  <th>Distance</th>
+                  <th>Transport</th>
+                  <th>Grand Total</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for sale in sales %}
+                <tr>
+                  <td><span class="badge-item">{{ sale.item_name }}</span></td>
+                  <td>{{ sale.quantity }}</td>
+                  <td>{{ sale.date }}</td>
+                  <td class="amt">{{ sale.unit_price|floatformat:0 }}</td>
+                  <td>{{ sale.customer_name }}</td>
+                  <td>{{ sale.customer_contact }}</td>
+                  <td>{{ sale.item_type }}</td>
+                  <td>{{ sale.item_brand }}</td>
+                  <td class="amt">{{ sale.total|floatformat:0 }}</td>
+                  <td>
+                    <div class="dist-cell">
+                      <svg viewBox="0 0 20 20">
+                        <path
+                          d="M10 2a6 6 0 0 0-6 6c0 4.41 5.27 9.56 5.5 9.78a.75.75 0 0 0 1 0C10.73 17.56 16 12.41 16 8a6 6 0 0 0-6-6zm0 8.5A2.5 2.5 0 1 1 10 5a2.5 2.5 0 0 1 0 5.5z"
+                        />
+                      </svg>
+                      {{ sale.distance_km }} km
+                    </div>
+                  </td>
+                  <td>
+                    {% if sale.transport == 0 %}
+                    <span class="badge-free">FREE</span>
+                    {% else %}
+                    <span class="amt">{{ sale.transport|floatformat:0 }}</span>
+                    {% endif %}
+                  </td>
+                  <td class="grand-amt">
+                    {{ sale.total|add:sale.transport|floatformat:0 }}
+                  </td>
+                  <td>
+                    <div class="actions">
+                      <a
+                        href="{% url 'receipt' sale.id %}"
+                        class="act-btn act-receipt"
+                      >
+                        <svg viewBox="0 0 20 20">
+                          <path
+                            d="M4 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4zm2 4h8a1 1 0 0 1 0 2H6a1 1 0 0 1 0-2zm0 4h8a1 1 0 0 1 0 2H6a1 1 0 0 1 0-2zm0 4h5a1 1 0 0 1 0 2H6a1 1 0 0 1 0-2z"
+                          />
+                        </svg>
+                        Receipt
+                      </a>
+                      <a
+                        href="{% url 'edit_sales' sale.id %}"
+                        class="act-btn act-edit"
+                      >
+                        <svg viewBox="0 0 20 20">
+                          <path
+                            d="M13.586 3.586a2 2 0 1 1 2.828 2.828l-.793.793-2.828-2.828.793-.793zm-2.207 2.207L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+                          />
+                        </svg>
+                        Edit
+                      </a>
+                      <a
+                        href="{% url 'delete_sale' sale.id %}"
+                        class="act-btn act-delete"
+                        onclick="
+                          return confirm(
+                            'Delete this sale? This cannot be undone.',
+                          );
+                        "
+                      >
+                        <svg viewBox="0 0 20 20">
+                          <path
+                            d="M9 2a1 1 0 0 0-.894.553L7.382 4H4a1 1 0 0 0 0 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6a1 1 0 0 0 0-2h-3.382l-.724-1.447A1 1 0 0 0 11 2H9zm-1 6a1 1 0 0 1 2 0v5a1 1 0 0 1-2 0V8zm4 0a1 1 0 0 1 2 0v5a1 1 0 0 1-2 0V8z"
+                          />
+                        </svg>
+                        Delete
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="13">
+                    <div class="empty">
+                      <div class="empty-icon">
+                        <svg viewBox="0 0 20 20">
+                          <path
+                            d="M3 4a1 1 0 0 1 1-1h12a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1zm0 4a1 1 0 0 1 1-1h12a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1zm0 4a1 1 0 0 1 1-1h12a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1zm0 4a1 1 0 0 1 1-1h12a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1z"
+                          />
+                        </svg>
+                      </div>
+                      <h3>No sales yet</h3>
+                      <p>
+                        Register your first sale using the form on the left to
+                        get started.
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          {% if sales %}
+          <div class="tbl-footer">
+            <div class="tbl-footer-stat">
+              <span>Total Records</span>
+              <strong>{{ sales|length }}</strong>
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
-    <!-- <script>
+
+    <script>
       const form = document.getElementById("salesForm");
 
-      function showError(field, message) {
-        const parent = field.closest(".field-group");
-        const errorBox = parent.querySelector(".error-text");
-
-        field.classList.add("input-error");
-        errorBox.innerText = message;
+      function showErr(field, msg) {
+        const wrap = field.closest(".field");
+        if (!wrap) return;
+        const box = wrap.querySelector(".err-text");
+        field.classList.add("inp-error");
+        if (box) box.textContent = msg;
       }
 
-      function clearError(field) {
-        const parent = field.closest(".field-group");
-        const errorBox = parent.querySelector(".error-text");
-
-        field.classList.remove("input-error");
-        errorBox.innerText = "";
+      function clearErr(field) {
+        const wrap = field.closest(".field");
+        if (!wrap) return;
+        const box = wrap.querySelector(".err-text");
+        field.classList.remove("inp-error");
+        if (box) box.textContent = "";
       }
 
       form.addEventListener("submit", function (e) {
         let valid = true;
-
-        const fields = form.querySelectorAll("input, select");
-
-        fields.forEach((field) => {
-          clearError(field);
-
-          // REQUIRED VALIDATION
-          if (field.hasAttribute("required") && !field.value.trim()) {
-            showError(field, "This field is required");
+        form.querySelectorAll("input, select").forEach((f) => {
+          clearErr(f);
+          if (f.hasAttribute("required") && !f.value.trim()) {
+            showErr(f, "This field is required");
             valid = false;
           }
-
-          // PHONE VALIDATION
-          if (field.name === "customer_contact" && field.value.trim()) {
-            const phonePattern = /^\+256[0-9]{9}$/;
-
-            if (!phonePattern.test(field.value)) {
-              showError(field, "Enter valid phone (+256XXXXXXXXX)");
+          if (f.name === "customer_contact" && f.value.trim()) {
+            if (!/^\+256[0-9]{9}$/.test(f.value)) {
+              showErr(f, "Use format: +256XXXXXXXXX");
               valid = false;
             }
           }
-
-          // NUMBER VALIDATION
           if (
-            (field.name === "quantity" ||
-              field.name === "unit_price" ||
-              field.name === "distance_km") &&
-            field.value &&
-            Number(field.value) <= 0
+            ["quantity", "unit_price"].includes(f.name) &&
+            f.value &&
+            Number(f.value) <= 0
           ) {
-            showError(field, "Must be greater than 0");
+            showErr(f, "Must be greater than 0");
             valid = false;
           }
         });
-
-        if (!valid) {
-          e.preventDefault();
-        }
+        if (!valid) e.preventDefault();
       });
-    </script> -->
+    </script>
   </body>
 </html>

@@ -6,10 +6,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
-
-# HOME
-
-
 def index(request):
     return render(request, "index.html")
 
@@ -125,10 +121,14 @@ def sign(request):
                 }[role])
 
     return render(request, "sign.html", {"error": error})
+
+
 def logout_view(request):
     logout(request)
     request.session.flush()
     return redirect("log")
+
+
 @login_required
 def register(request):
 
@@ -172,6 +172,8 @@ def register(request):
     return render(request, 'register.html', {
         'customers': customers
     })
+
+
 @login_required
 def edit_customer(request, id):
     customer = get_object_or_404(Register, id=id)
@@ -194,9 +196,6 @@ def delete_customer(request, id):
     return redirect("register")
 
 
-#login
-from django.contrib import messages
-from django.shortcuts import render, redirect
 
 
 # DASHBOARD
@@ -211,7 +210,7 @@ def dash(request):
     role = request.session.get("role")
 
     # BLOCK NON-ADMINS
-    if role != "admin":#if user not admin send them away
+    if role != "admin":  #if user not admin send them away
         return redirect("sign") 
 
     # TOTAL PRODUCTS
@@ -478,7 +477,7 @@ def sales(request):
             if "distance" not in errors:
                 errors["distance"] = "Enter a valid distance"
 
-        # DATE VALIDATION (FIXED)
+        # DATE VALIDATION 
         try:
             sale_date = datetime.strptime(sale_date_str, "%Y-%m-%d").date()
             today = date.today()
@@ -540,11 +539,6 @@ def sales(request):
     })
 
 
-def deposit(request):
-
-    if request.method == "POST":
-
-        amount = float(request.POST.get("amount") or 0)
     
 #Deposit
 
@@ -623,9 +617,9 @@ def deposit(request):
     return render(request, "deposit.html", {
         "deposits": deposits
     })
+
+
 # RECEIPT
-
-
 @login_required
 def receipt(request, id):
     sale = get_object_or_404(Sale, id=id)
@@ -633,7 +627,6 @@ def receipt(request, id):
 
 
 # SUPPLIERS
-
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -670,7 +663,7 @@ def suppliers(request):
         if not location:
             errors["location"] = "Location is required"
 
-        # CONTACT VALIDATION (STRICT 13 CHAR RULE)
+        # CONTACT VALIDATION 
         if contact:
             if len(contact) != 13:
                 errors["contact"] = "Contact must be exactly 13 characters"
@@ -704,8 +697,6 @@ def suppliers(request):
     })
 
 # EDIT STOCK
-
-
 @login_required
 def edit_stock(request, id):
     stock = get_object_or_404(Stock, id=id)
@@ -925,7 +916,7 @@ def credit(request):
         if not date_str:
             errors["date"] = "Date is required"
 
-        # DEFAULTS
+       
         quantity = None
         unit_price = None
         amount_paid = 0
@@ -957,7 +948,7 @@ def credit(request):
             except:
                 errors["amount_paid"] = "Enter a valid amount"
 
-        # DATE VALIDATION (FIXED PROPERLY HERE)
+        # DATE VALIDATION 
         credit_date = None
 
         if date_str:
@@ -1052,7 +1043,7 @@ def edit_supplier_credit(request, id):
         except:
             errors["amount_paid"] = "Invalid amount paid"
 
-        # DATE (FIXED)
+        # DATE 
         credit_date = parse_date(date_str)
 
         if not credit_date:
@@ -1073,7 +1064,7 @@ def edit_supplier_credit(request, id):
             messages.success(request, "Credit updated successfully!")
             return redirect("credit")
 
-        # if errors → show form again
+        # if errors show form again
         return render(request, "edit_credit.html", {
             "credit": credit,
             "errors": errors
@@ -1123,7 +1114,7 @@ def reports(request):
     total_cost = Decimal(str(total_cost))
 
     # CALCULATE PROFIT
-    profit = total_sales - total_cost#gets the profit
+    profit = total_sales - total_cost  #gets the profit
 
     recent_sales = Sale.objects.all().order_by('-id')[:5]
 
