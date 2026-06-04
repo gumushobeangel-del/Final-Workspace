@@ -452,7 +452,6 @@
     {% endif %}
 
     <div class="layout">
-      <!-- Form -->
       <div class="card">
         <div class="card-header">
           <h2>Record Credit</h2>
@@ -527,7 +526,6 @@
         </div>
       </div>
 
-      <!-- Table -->
       <div class="card">
         <div class="card-header">
           <h2>Credit Records</h2>
@@ -675,7 +673,7 @@
         const dateField = document.querySelector('[name="date"]');
 
         if (dateField.value) {
-          const selectedDate = dateField.value; // string "YYYY-MM-DD"
+          const selectedDate = dateField.value; //string "YYYY-MM-DD"
 
           const today = new Date();
           const todayStr = today.toISOString().split("T")[0]; // YYYY-MM-DD

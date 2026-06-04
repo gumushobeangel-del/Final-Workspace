@@ -57,7 +57,7 @@
         color: var(--text-dark);
       }
 
-      /* ─── PAGE HEADER ─── */
+      /*  PAGE HEADER  */
       .page-header {
         display: flex;
         align-items: center;
@@ -113,7 +113,7 @@
         gap: 20px;
       }
 
-      /* ─── MESSAGES ─── */
+      /*  MESSAGES  */
       .messages-wrap {
         margin-bottom: 20px;
       }
@@ -206,7 +206,7 @@
         font-weight: 400;
       }
 
-      /* ─── FORM ─── */
+      /*  FORM */
       .form-body {
         padding: 28px;
       }
@@ -374,7 +374,7 @@
         flex-shrink: 0;
       }
 
-      /* ─── TABLE ─── */
+      /*  TABLE  */
       .table-wrapper {
         overflow-x: auto;
       }
@@ -544,7 +544,7 @@
         font-size: 14px;
       }
 
-      /* ─── NAVIGATION BAR ─── */
+      /*  NAVIGATION BAR  */
       .top-nav {
         width: 100%;
         background: linear-gradient(
@@ -641,7 +641,7 @@
         }
       }
 
-      /* ─── ANIMATIONS ─── */
+      /*  ANIMATIONS */
       @keyframes fadeSlideUp {
         from {
           opacity: 0;
@@ -931,7 +931,6 @@
       form.addEventListener("submit", function (e) {
         let valid = true;
 
-        /* remove old errors */
         document
           .querySelectorAll(".error-message")
           .forEach((el) => el.remove());
