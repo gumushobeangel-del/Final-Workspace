@@ -196,8 +196,6 @@ def delete_customer(request, id):
     return redirect("register")
 
 
-
-
 # DASHBOARD
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum
@@ -217,7 +215,7 @@ def dash(request):
     total_products = Stock.objects.count()#count the records
 
     # LOW STOCK
-    low_stock = Stock.objects.filter(quantity__lt=20).count()#select specific records if less tha 20 low stock
+    low_stock = Stock.objects.filter(quantity__lt=20).count()  #select specific records if less tha 20 low stock
 
     # SUPPLIERS
     suppliers = Supplier.objects.count()
@@ -1064,7 +1062,7 @@ def edit_supplier_credit(request, id):
             messages.success(request, "Credit updated successfully!")
             return redirect("credit")
 
-        # if errors show form again
+        # if errors   show form again
         return render(request, "edit_credit.html", {
             "credit": credit,
             "errors": errors

@@ -161,7 +161,7 @@ class Credit(models.Model):
 
         super().save(*args, **kwargs)
 
-    def __str__(self):
+    def __str__(self): 
         return f"{self.supplier_name} - {self.item_name}"
     
     
